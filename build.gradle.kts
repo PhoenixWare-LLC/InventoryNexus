@@ -20,11 +20,14 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webmvc")
-    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    //for automatic restart when the code is updated
+    implementation("org.springframework.boot:spring-boot-devtools")
+    //for application health and metrics
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
+    //adding security... this way we can lock down endpoints.
     implementation("org.springframework.boot:spring-boot-starter-security")
-    implementation("org.springframework.boot:spring-boot-starter-validation")
-    implementation("org.springframework.boot:spring-boot-starter-restclient")
-
+    //adding spring data jpa
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // PostgresSQL driver
     runtimeOnly("org.postgresql:postgresql")
 
