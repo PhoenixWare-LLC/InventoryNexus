@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://192.168.0.173:5342/wms_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate #Use flyway for migrations in prod
+    show-sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://your-keycloak-realms.com/your-realm # Or jwk-set-uri for others
+          # For some IdPs: jwk-set-uri: https://...
+
+server:
+  port: 8080
