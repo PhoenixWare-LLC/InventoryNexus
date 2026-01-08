@@ -2,6 +2,7 @@ package com.phoenixware.shopify_integration.shopify_integration_backend.dao;
 
 import com.phoenixware.shopify_integration.shopify_integration_backend.entity.Order;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,8 @@ import java.util.Objects;
 
 @Repository
 public class OrderDAOImpl implements OrderDAO{
+
+    @PersistenceContext
     private EntityManager entityManager;
 
     public OrderDAOImpl(EntityManager theEntityManager) {
