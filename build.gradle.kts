@@ -28,6 +28,10 @@ dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-security")
 //    adding spring data jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+    //adding rest
+    implementation("org.springframework.boot:spring-boot-starter-data-rest")
+    //adding springdoc
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
     // PostgresSQL driver
     runtimeOnly("org.postgresql:postgresql")
 
