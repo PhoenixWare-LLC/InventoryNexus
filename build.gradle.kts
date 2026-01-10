@@ -25,8 +25,8 @@ dependencies {
     //for application health and metrics
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     //adding security... this way we can lock down endpoints.
-    implementation("org.springframework.boot:spring-boot-starter-security")
-    //adding spring data jpa
+//    implementation("org.springframework.boot:spring-boot-starter-security")
+//    adding spring data jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     // PostgresSQL driver
     runtimeOnly("org.postgresql:postgresql")

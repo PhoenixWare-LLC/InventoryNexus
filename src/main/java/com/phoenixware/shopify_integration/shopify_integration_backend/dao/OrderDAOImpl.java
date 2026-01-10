@@ -14,25 +14,27 @@ import java.util.Objects;
 @Repository
 public class OrderDAOImpl implements OrderDAO{
 
-    @PersistenceContext
-    private EntityManager entityManager;
+    private final EntityManager entityManager;
 
     public OrderDAOImpl(EntityManager theEntityManager) {
         entityManager = theEntityManager;
     }
 
     @Override
-    @Transactional
-    public void saveOrder(Order theOrder) {
-        entityManager.persist(theOrder);
+    public Order commit(Order theOrder) {
+        Order dbOrder = entityManager.merge(theOrder);
+
+        return dbOrder;
+        // Below is only if you want to create an order... but what if I want to just have an update/create method.
+//        entityManager.persist(theOrder);
     }
     @Override
-    public Order getOrderById (Integer id) {
+    public Order getById(Integer id) {
         return entityManager.find(Order.class, id);
     }
 
     @Override
-    public List<Order> getAllUnshippedOrdersFromTimestamp(LocalDateTime start) {
+    public List<Order> getAllUnshippedFromTimestamp(LocalDateTime start) {
         Objects.requireNonNull(start, "Start cannot be null!");
         TypedQuery<Order> theQuery = entityManager.createQuery("SELECT order FROM Order order WHERE order.creationTimestamp>=:start", Order.class);
         theQuery.setParameter("start", start);
@@ -40,16 +42,7 @@ public class OrderDAOImpl implements OrderDAO{
     }
 
     @Override
-    public Order getOrderById(String id) {
-        Objects.requireNonNull(id, "ID cannot be null!");
-
-        TypedQuery<Order> theQuery = entityManager.createQuery("SELECT order FROM Order order WHERE order.id=:theId", Order.class);
-        theQuery.setParameter("theId", id);
-        return theQuery.getSingleResult();
-    }
-
-    @Override
-    public List<Order> getAllUnshippedOrdersByMarketplace(List<String> marketplaces) {
+    public List<Order> getAllUnshippedByMarketplace(List<String> marketplaces) {
         Objects.requireNonNull(marketplaces, "Marketplaces cannot be null!");
 
         if (marketplaces.isEmpty()) {
@@ -62,7 +55,7 @@ public class OrderDAOImpl implements OrderDAO{
     }
 
     @Override
-    public List<Order> getAllOrders() {
+    public List<Order> getAll() {
         TypedQuery<Order> theQuery = entityManager.createQuery("SELECT order FROM Order order", Order.class);
         return theQuery.getResultList();
     }
@@ -73,8 +66,7 @@ public class OrderDAOImpl implements OrderDAO{
     }
 
     @Override
-    @Transactional
-    public void shipOrder(Order order, String trackingNumber) {
+    public void ship(Order order, String trackingNumber) {
         order.setTrackingNumber(trackingNumber);
         order.setShipped(true);
         entityManager.merge(order);
@@ -82,14 +74,12 @@ public class OrderDAOImpl implements OrderDAO{
     }
 
     @Override
-    @Transactional
-    public void deleteOrder(Order order) {
+    public void delete(Order order) {
         entityManager.remove(order);
     }
 
     @Override
-    @Transactional
-    public void deleteOrderById(int id) {
+    public void deleteById(int id) {
         // find the order
         Order order = entityManager.find(Order.class, id);
 
@@ -98,8 +88,7 @@ public class OrderDAOImpl implements OrderDAO{
     }
 
     @Override
-    @Transactional
-    public int deleteCanceledOrders() {
+    public int deleteCanceled() {
         return entityManager.createQuery("DELETE FROM Order WHERE status='CANCELED'").executeUpdate();
     }
 

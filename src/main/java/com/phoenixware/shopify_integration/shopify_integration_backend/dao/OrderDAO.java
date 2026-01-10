@@ -6,15 +6,14 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface OrderDAO {
-    void saveOrder(Order order);
-    Order getOrderById(Integer id);
-    List<Order> getAllUnshippedOrdersFromTimestamp(LocalDateTime start);
-    Order getOrderById(String id);
-    List<Order> getAllUnshippedOrdersByMarketplace(List<String> marketplaces);
-    List<Order> getAllOrders();
+    Order commit(Order order);
+    Order getById(Integer id);
+    List<Order> getAllUnshippedFromTimestamp(LocalDateTime start);
+    List<Order> getAllUnshippedByMarketplace(List<String> marketplaces);
+    List<Order> getAll();
     int markShippedOrdersFulfilled();
-    void shipOrder(Order order, String trackingNumber);
-    void deleteOrder(Order order);
-    void deleteOrderById(int id);
-    int deleteCanceledOrders();
+    void ship(Order order, String trackingNumber);
+    void delete(Order order);
+    void deleteById(int id);
+    int deleteCanceled();
 }
