@@ -17,35 +17,35 @@ import javax.sql.DataSource;
 @Configuration
 public class InventoryNexusSecurityConfig {
 
-    @Bean
-    public UserDetailsManager userDetailsManager(DataSource dataSource) {
-        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-
-        jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT user_id, pw, active FROM employees WHERE user_id = ?");
-
-        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT user_id, role FROM roles WHERE user_id = ?");
-
-        return jdbcUserDetailsManager;
-
-//        return new JdbcUserDetailsManager(dataSource);
-    }
-
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.authorizeHttpRequests(configurer ->
-                configurer
-                        .requestMatchers(HttpMethod.GET, "/orders").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("EMPLOYEE")
-                        .requestMatchers(HttpMethod.POST, "/orders").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PUT, "/orders/**").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.PATCH, "/orders/**").hasRole("MANAGER")
-                        .requestMatchers(HttpMethod.DELETE, "/orders/**").hasRole("ADMIN"));
-
-        http.httpBasic(Customizer.withDefaults());
-
-        // disable CSRF or Cross Site Request Forgery... This will be a stateless API.
-        http.csrf(csrf -> csrf.disable());
-
-        return http.build();
-    }
+//    @Bean
+//    public UserDetailsManager userDetailsManager(DataSource dataSource) {
+//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
+//
+//        jdbcUserDetailsManager.setUsersByUsernameQuery("SELECT user_id, pw, active FROM employees WHERE user_id = ?");
+//
+//        jdbcUserDetailsManager.setAuthoritiesByUsernameQuery("SELECT user_id, role FROM roles WHERE user_id = ?");
+//
+//        return jdbcUserDetailsManager;
+//
+////        return new JdbcUserDetailsManager(dataSource);
+//    }
+//
+//    @Bean
+//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests(configurer ->
+//                configurer
+//                        .requestMatchers(HttpMethod.GET, "/orders").hasRole("EMPLOYEE")
+//                        .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("EMPLOYEE")
+//                        .requestMatchers(HttpMethod.POST, "/orders").hasRole("MANAGER")
+//                        .requestMatchers(HttpMethod.PUT, "/orders/**").hasRole("MANAGER")
+//                        .requestMatchers(HttpMethod.PATCH, "/orders/**").hasRole("MANAGER")
+//                        .requestMatchers(HttpMethod.DELETE, "/orders/**").hasRole("ADMIN"));
+//
+//        http.httpBasic(Customizer.withDefaults());
+//
+//        // disable CSRF or Cross Site Request Forgery... This will be a stateless API.
+//        http.csrf(csrf -> csrf.disable());
+//
+//        return http.build();
+//    }
 }
