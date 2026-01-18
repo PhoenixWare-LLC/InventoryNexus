@@ -1,17 +1,22 @@
 package com.phoenixware.inventorynexus.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
+@Slf4j
+@Data
 @Entity
 @Table(name = "order_item")
 public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "itemid")
-    private int id;
+    private UUID id;
 
     @Column(name = "orderid")
     private int orderId;
@@ -32,66 +37,5 @@ public class OrderItem {
     private LocalDateTime creationTimestamp;
 
     public OrderItem() {
-    }
-
-    public OrderItem(int orderId, String sku, String title, BigDecimal price, int quantity) {
-        this.orderId = orderId;
-        this.sku = sku;
-        this.title = title;
-        this.price = price;
-        this.quantity = quantity;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getOrder_id() {
-        return orderId;
-    }
-
-    public void setOrder_id(int orderId) {
-        this.orderId = orderId;
-    }
-
-    public String getSku() {
-        return sku;
-    }
-
-    public void setSku(String sku) {
-        this.sku = sku;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
-    @Override
-    public String toString() {
-        return "OrderItem [id=" + id + ", orderId=" + orderId + ", sku=" + sku + ", title=" + title + ", price=" + price + ", quantity=" + quantity + ", creation_timestamp=" + creationTimestamp + "]";
     }
 }

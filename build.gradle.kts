@@ -32,6 +32,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-rest")
     //adding springdoc
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1")
+    implementation("org.projectlombok:lombok")
     // PostgresSQL driver
     runtimeOnly("org.postgresql:postgresql")
 

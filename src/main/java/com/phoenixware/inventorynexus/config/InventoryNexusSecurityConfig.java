@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.config;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -14,6 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 import javax.sql.DataSource;
 
+@Slf4j
 @Configuration
 public class InventoryNexusSecurityConfig {
 
