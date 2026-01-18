@@ -40,7 +40,7 @@ CREATE SEQUENCE public."Order_Item_ItemID_seq"
 
 CREATE TABLE public.order_item (
                                    id_viewable integer NOT NULL DEFAULT nextval('public."Order_Item_ItemID_seq"'::regclass),
-                                   "orderid_Old" integer NOT NULL,
+                                   "order_id_viewable" integer NOT NULL,
                                    sku character varying(50) NOT NULL,
                                    item_name character varying(255) NOT NULL,
                                    quantity integer NOT NULL,

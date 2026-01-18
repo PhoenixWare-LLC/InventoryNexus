@@ -30,7 +30,8 @@ public class InventoryNexusSecurityConfig {
 //        http.authorizeHttpRequests((requests) -> requests.anyRequest().authenticated());
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/", "/about", "/contact","/faq", "/error").permitAll()
-                .requestMatchers("/orders", "/orderitems", "/binlocations","/parentproducts", "/shipments", "/shipmentpackages", "/transactions").authenticated());
+                .requestMatchers("/orders", "/orderitems", "/binlocations","/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
+                , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**").authenticated());
         http.formLogin(withDefaults());
         http.httpBasic(withDefaults());
         return http.build();

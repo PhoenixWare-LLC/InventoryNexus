@@ -1,7 +1,7 @@
 package com.phoenixware.inventorynexus.repository;
 
-import com.phoenixware.inventorynexus.entity.ParentProduct;
-import org.springframework.data.jpa.repository.JpaRepository;
+import lombok.Data;
 
-public interface ParentProductRepository {
+@Data
+public class ParentProductRepository {
 }

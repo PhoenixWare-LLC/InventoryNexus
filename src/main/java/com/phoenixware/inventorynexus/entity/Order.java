@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -15,8 +16,14 @@ import java.util.UUID;
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "orderid")
+    @Column(name = "id")
     private UUID id;
+
+    @Column(name = "id_viewable")
+    private int viewableId;
+
+    @OneToMany
+    private Set<OrderItem> orderItems;
 
     @Column(name = "name")
     private String name;
