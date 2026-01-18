@@ -2,17 +2,10 @@ package com.phoenixware.inventorynexus.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.provisioning.JdbcUserDetailsManager;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import javax.sql.DataSource;
+import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
 public class InventoryNexusSecurityConfig {
@@ -27,25 +20,17 @@ public class InventoryNexusSecurityConfig {
 //
 //        return jdbcUserDetailsManager;
 //
-////        return new JdbcUserDetailsManager(dataSource);
+
+    //        return new JdbcUserDetailsManager(dataSource);
 //    }
-//
-//    @Bean
-//    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests(configurer ->
-//                configurer
-//                        .requestMatchers(HttpMethod.GET, "/orders").hasRole("EMPLOYEE")
-//                        .requestMatchers(HttpMethod.GET, "/orders/**").hasRole("EMPLOYEE")
-//                        .requestMatchers(HttpMethod.POST, "/orders").hasRole("MANAGER")
-//                        .requestMatchers(HttpMethod.PUT, "/orders/**").hasRole("MANAGER")
-//                        .requestMatchers(HttpMethod.PATCH, "/orders/**").hasRole("MANAGER")
-//                        .requestMatchers(HttpMethod.DELETE, "/orders/**").hasRole("ADMIN"));
-//
-//        http.httpBasic(Customizer.withDefaults());
-//
-//        // disable CSRF or Cross Site Request Forgery... This will be a stateless API.
-//        http.csrf(csrf -> csrf.disable());
-//
-//        return http.build();
-//    }
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+//        http.authorizeHttpRequests((requests) -> requests.anyRequest().authenticated());
+        http.authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/", "/about", "/contact","/faq", "/error").permitAll()
+                .requestMatchers("/orders", "/orderitems", "/binlocations","/parentproducts", "/shipments", "/shipmentpackages", "/transactions").authenticated());
+        http.formLogin(withDefaults());
+        http.httpBasic(withDefaults());
+        return http.build();
+    }
 }

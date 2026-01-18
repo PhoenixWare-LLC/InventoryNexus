@@ -1,0 +1,22 @@
+services:
+  db:
+    image: postgres:16  # Specific version for stability
+    container_name: my-dev-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql
+      - ./init-db:/docker-entrypoint-initdb.d:ro  # Auto-runs .sql files on fresh start
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  pgdata:  # Persists data across restarts

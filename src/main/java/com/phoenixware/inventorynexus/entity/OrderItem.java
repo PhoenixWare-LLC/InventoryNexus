@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "order_item")
@@ -11,10 +12,10 @@ public class OrderItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "itemid")
-    private int id;
+    private UUID id;
 
     @Column(name = "orderid")
-    private int orderId;
+    private UUID orderId;
 
     @Column(name = "sku")
     private String sku;
@@ -34,7 +35,7 @@ public class OrderItem {
     public OrderItem() {
     }
 
-    public OrderItem(int orderId, String sku, String title, BigDecimal price, int quantity) {
+    public OrderItem(UUID orderId, String sku, String title, BigDecimal price, int quantity) {
         this.orderId = orderId;
         this.sku = sku;
         this.title = title;
@@ -42,19 +43,19 @@ public class OrderItem {
         this.quantity = quantity;
     }
 
-    public int getId() {
+    public UUID getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
-    public int getOrder_id() {
+    public UUID getOrder_id() {
         return orderId;
     }
 
-    public void setOrder_id(int orderId) {
+    public void setOrder_id(UUID orderId) {
         this.orderId = orderId;
     }
 
