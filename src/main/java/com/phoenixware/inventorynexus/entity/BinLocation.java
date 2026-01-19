@@ -1,9 +1,14 @@
 package com.phoenixware.inventorynexus.entity;
 
-import lombok.Data;
+import jakarta.persistence.Entity;
+import lombok.*;
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-@Data
+@Getter
+@Setter
+@Builder
+@Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class BinLocation {
 }

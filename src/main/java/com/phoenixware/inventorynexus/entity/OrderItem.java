@@ -1,16 +1,18 @@
 package com.phoenixware.inventorynexus.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Slf4j
-@Data
+@Getter
+@Setter
+@Builder
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "order_item")
 public class OrderItem {
     @Id
