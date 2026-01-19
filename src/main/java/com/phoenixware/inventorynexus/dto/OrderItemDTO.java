@@ -1,20 +1,16 @@
-package com.phoenixware.inventorynexus.entity;
+package com.phoenixware.inventorynexus.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @Builder
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "order_item")
-public class OrderItem {
+public class OrderItemDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "itemid")
@@ -38,10 +34,10 @@ public class OrderItem {
     @Column(name = "creation_timestamp", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime creationTimestamp;
 
-    public OrderItem() {
+    public OrderItemDTO() {
     }
 
-    public OrderItem(UUID orderId, String sku, String title, BigDecimal price, int quantity) {
+    public OrderItemDTO(UUID orderId, String sku, String title, BigDecimal price, int quantity) {
         this.orderId = orderId;
         this.sku = sku;
         this.title = title;

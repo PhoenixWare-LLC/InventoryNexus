@@ -1,21 +1,17 @@
-package com.phoenixware.inventorynexus.entity;
+package com.phoenixware.inventorynexus.dto;
 
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Builder;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
 @Builder
-@Entity
-@AllArgsConstructor
-@NoArgsConstructor
-@Table(name = "orders")
-public class Order {
+public class OrderDTO {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "orderid")
