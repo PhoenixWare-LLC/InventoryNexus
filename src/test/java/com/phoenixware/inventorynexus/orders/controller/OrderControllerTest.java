@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.controller;
+package com.phoenixware.inventorynexus.orders.controller;
 
 import com.phoenixware.inventorynexus.orders.controller.OrderController;
 import com.phoenixware.inventorynexus.orders.service.OrderService;

@@ -1,6 +1,4 @@
-package com.phoenixware.inventorynexus.repository;
-
-import lombok.Data;
+package com.phoenixware.inventorynexus.inventory.repository;
 
 /**
  * Author:      Collin Short

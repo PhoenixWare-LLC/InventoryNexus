@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.exception;
+package com.phoenixware.inventorynexus.orders.exception;
 
 import lombok.extern.slf4j.Slf4j;
 

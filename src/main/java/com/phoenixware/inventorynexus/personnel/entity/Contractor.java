@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.entity;
+package com.phoenixware.inventorynexus.personnel.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;

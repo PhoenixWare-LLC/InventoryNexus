@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.repository;
+package com.phoenixware.inventorynexus.orders.repository;
 
 import com.phoenixware.inventorynexus.orders.entity.OrderItem;
 import org.springframework.data.jpa.repository.JpaRepository;

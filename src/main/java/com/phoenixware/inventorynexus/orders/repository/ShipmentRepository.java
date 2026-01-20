@@ -1,9 +1,14 @@
-package com.phoenixware.inventorynexus.repository;
+package com.phoenixware.inventorynexus.orders.repository;
+
+import com.phoenixware.inventorynexus.orders.entity.Shipment;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.UUID;
 
 /**
  * Author:      Collin Short
  * Copyright:   Phoenixware LLC 2026
  * Created:     1/19/2026
  */
-public interface ShipmentRepository {
+public interface ShipmentRepository extends JpaRepository<Shipment, UUID> {
 }

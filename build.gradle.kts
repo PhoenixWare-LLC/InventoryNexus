@@ -25,22 +25,33 @@ dependencies {
     //for application health and metrics
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     //adding security... this way we can lock down endpoints.
-    implementation("org.springframework.boot:spring-boot-starter-security")
+    //implementation("org.springframework.boot:spring-boot-starter-security")
     //adding spring data jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-    //adding rest
-    implementation("org.springframework.boot:spring-boot-starter-data-rest")
     implementation("org.projectlombok:lombok")
 
     // PostgresSQL driver
     runtimeOnly("org.postgresql:postgresql")
+    compileOnly("org.projectlombok:lombok")
 
     // Flyway for DB migrations...
     implementation("org.flywaydb:flyway-core")
+    val mapstructVersion = "1.6.3"
+    implementation("org.mapstruct:mapstruct:${mapstructVersion}")
+
+    annotationProcessor("org.mapstruct:mapstruct-processor:${mapstructVersion}")
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok-mapstruct-binding:0.2.0")
 
     testImplementation("org.springframework.boot:spring-boot-starter-data-jpa-test")
     testImplementation("org.springframework.boot:spring-boot-starter-webmvc-test")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+tasks.withType<JavaCompile> {
+    options.compilerArgs.addAll(listOf(
+        "-Amapstruct.defaultComponentModel=spring"
+    ))
 }
 
 tasks.withType<Test> {

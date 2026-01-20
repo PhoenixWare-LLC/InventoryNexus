@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.service;
+package com.phoenixware.inventorynexus.orders.service;
 
 /**
  * Author:      Collin Short

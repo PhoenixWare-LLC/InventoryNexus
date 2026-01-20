@@ -1,7 +1,7 @@
-package com.phoenixware.inventorynexus.service;
+package com.phoenixware.inventorynexus.orders.service;
 
 import com.phoenixware.inventorynexus.orders.mapper.OrderItemMapper;
-import com.phoenixware.inventorynexus.repository.OrderItemRepository;
+import com.phoenixware.inventorynexus.orders.repository.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;

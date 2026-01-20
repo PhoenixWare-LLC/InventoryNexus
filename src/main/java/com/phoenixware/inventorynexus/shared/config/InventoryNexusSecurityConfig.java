@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.config;
+package com.phoenixware.inventorynexus.shared.config;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;

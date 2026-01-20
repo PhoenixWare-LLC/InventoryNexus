@@ -1,5 +1,7 @@
-package com.phoenixware.inventorynexus.entity;
+package com.phoenixware.inventorynexus.inventory.entity;
 
+import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
+import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
@@ -15,9 +17,9 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
+@DiscriminatorValue("FULL")
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
-    @Id
-    private UUID id;
+public class Product extends BaseProduct {
+    private long sold;
 }

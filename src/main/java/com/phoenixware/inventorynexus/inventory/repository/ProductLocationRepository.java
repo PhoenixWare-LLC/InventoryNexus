@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.repository;
+package com.phoenixware.inventorynexus.inventory.repository;
 
 /**
  * Author:      Collin Short

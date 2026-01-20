@@ -1,7 +1,7 @@
-package com.phoenixware.inventorynexus.mapper;
+package com.phoenixware.inventorynexus.orders.mapper;
 
-import com.phoenixware.inventorynexus.dto.OrderDTO;
-import com.phoenixware.inventorynexus.entity.Order;
+import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.entity.Order;
 import org.mapstruct.Mapper;
 
 /**

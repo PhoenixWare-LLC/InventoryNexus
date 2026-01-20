@@ -1,8 +1,8 @@
-package com.phoenixware.inventorynexus.service;
+package com.phoenixware.inventorynexus.orders.service;
 
 import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
-import com.phoenixware.inventorynexus.repository.OrderRepository;
+import com.phoenixware.inventorynexus.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
@@ -46,6 +46,25 @@ public class OrderServiceJPA implements OrderService {
                 .orElse(null)));
     }
 
+    @Override
+    public void patchOrderById(UUID orderId, OrderDTO orderDTO) {
+
+    }
+
+    @Override
+    public void deleteById(UUID orderId) {
+
+    }
+
+    @Override
+    public void putById(UUID orderId) {
+
+    }
+
+    @Override
+    public OrderDTO saveNewOrder(OrderDTO orderDTO) {
+        return null;
+    }
 
 
 }

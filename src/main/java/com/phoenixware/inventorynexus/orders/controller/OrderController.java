@@ -1,18 +1,39 @@
-package com.phoenixware.inventorynexus.controller;
+package com.phoenixware.inventorynexus.orders.controller;
 
-import com.phoenixware.inventorynexus.service.OrderService;
-import org.springframework.web.bind.annotation.RestController;
+import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.exception.OrderExceptionResponse;
+import com.phoenixware.inventorynexus.orders.exception.OrderNotFoundException;
+import com.phoenixware.inventorynexus.orders.service.OrderService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.io.NotActiveException;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Author:      Collin Short
  * Copyright:   Phoenixware LLC 2026
  * Created:     1/19/2026
  */
-@RestController
+@Slf4j
+@RestController("api")
 public class OrderController {
     private final OrderService orderService;
 
     public OrderController (OrderService orderService) {
         this.orderService = orderService;
+    }
+
+    @GetMapping("/orders/{order_id}")
+    public OrderDTO getById(@PathVariable("order_id") UUID orderId) {
+        return orderService.getOrderById(orderId).orElseThrow(OrderNotFoundException::new);
+    }
+
+    @GetMapping("/orders")
+    public List<OrderDTO> getAll() {
+        return orderService.getAllOrders();
     }
 }

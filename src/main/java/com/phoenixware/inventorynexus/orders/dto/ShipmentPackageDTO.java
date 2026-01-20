@@ -1,7 +1,15 @@
-package com.phoenixware.inventorynexus.dto;
+package com.phoenixware.inventorynexus.orders.dto;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 /**
  * Author:      Collin Short
@@ -11,4 +19,17 @@ import lombok.Data;
 @Data
 @Builder
 public class ShipmentPackageDTO {
+    private UUID id;
+    private UUID fkShipment;
+    private String trackingNumber;
+    private String status;
+    private String packageType;
+    private BigDecimal lengthInInches;
+    private BigDecimal widthInInches;
+    private BigDecimal heightInInches;
+    private BigDecimal weightInPounds;
+    private LocalDateTime creationTimestamp;
+    private LocalDateTime modificationTimestamp;
+    private String createdBy;
+    private String modifiedBy;
 }

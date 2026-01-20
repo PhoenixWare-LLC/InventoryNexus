@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.controller;
+package com.phoenixware.inventorynexus.inventory.controller;
 
 import org.springframework.web.bind.annotation.RestController;
 

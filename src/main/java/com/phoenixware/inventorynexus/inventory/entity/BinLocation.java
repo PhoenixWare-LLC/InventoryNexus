@@ -1,9 +1,8 @@
-package com.phoenixware.inventorynexus.entity;
+package com.phoenixware.inventorynexus.inventory.entity;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.UUID;
 

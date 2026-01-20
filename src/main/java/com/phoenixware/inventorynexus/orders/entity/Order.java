@@ -1,8 +1,7 @@
-package com.phoenixware.inventorynexus.entity;
+package com.phoenixware.inventorynexus.orders.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import lombok.extern.slf4j.Slf4j;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,9 +29,6 @@ public class Order {
     @Column(name = "id_viewable")
     private int viewableId;
 
-    @OneToMany
-    private Set<OrderItem> orderItems;
-
     @Column(name = "name")
     private String name;
 
@@ -56,6 +52,17 @@ public class Order {
 
     @Column(name = "creation_timestamp", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime creationTimestamp;
+
+//    @Column(name = "modification_timestamp")
+//    private LocalDateTime modificationTimestamp;
+//
+//    // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
+//    @Column(name = "created_by")
+//    private String createdBy;
+//
+//    // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
+//    @Column(name = "modified_by")
+//    private String modifiedBy;
 
     @Column(name = "shipped")
     private boolean shipped;

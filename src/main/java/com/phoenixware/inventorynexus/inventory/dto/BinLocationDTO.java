@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.dto;
+package com.phoenixware.inventorynexus.inventory.dto;
 
 import lombok.Builder;
 import lombok.Data;

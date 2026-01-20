@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.service;
+package com.phoenixware.inventorynexus.orders.service;
 
 import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
 
@@ -17,4 +17,14 @@ public interface OrderService {
     List<OrderDTO> getAllOrders();
 
     Optional<OrderDTO> getOrderById(UUID id);
+
+    void patchOrderById(UUID orderId, OrderDTO orderDTO);
+
+    void deleteById(UUID orderId);
+
+    void putById(UUID orderId);
+
+    OrderDTO saveNewOrder(OrderDTO orderDTO);
+
+
 }
