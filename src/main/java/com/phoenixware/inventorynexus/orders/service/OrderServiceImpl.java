@@ -43,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void putById(UUID orderId) {
+    public void putById(UUID orderId, OrderDTO orderDTO) {
 
     }
 

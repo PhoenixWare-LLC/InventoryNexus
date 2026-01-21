@@ -22,7 +22,7 @@ public interface OrderService {
 
     void deleteById(UUID orderId);
 
-    void putById(UUID orderId);
+    void putById(UUID orderId, OrderDTO orderDTO);
 
     OrderDTO saveNewOrder(OrderDTO orderDTO);
 

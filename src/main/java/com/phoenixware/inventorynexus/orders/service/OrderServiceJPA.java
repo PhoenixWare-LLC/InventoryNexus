@@ -1,6 +1,8 @@
 package com.phoenixware.inventorynexus.orders.service;
 
 import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.entity.Order;
+import com.phoenixware.inventorynexus.orders.exception.OrderNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
@@ -53,17 +55,30 @@ public class OrderServiceJPA implements OrderService {
 
     @Override
     public void deleteById(UUID orderId) {
-
+        if (orderRepository.existsById(orderId)) {
+            orderRepository.deleteById(orderId);
+        } else {
+            throw new OrderNotFoundException();
+        }
     }
 
     @Override
-    public void putById(UUID orderId) {
+    public void putById(UUID orderId, OrderDTO orderDTO) {
+        Order existingOrder = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
 
+        if (existingOrder.isFulfilled() || existingOrder.isShipped()) {
+            throw new IllegalStateException("Cannot update a shipped/fulfilled order");
+        }
+
+        Order updatedOrder = orderMapper.orderDtoToOrder(orderDTO);
+        updatedOrder.setId(orderId);
+
+        orderRepository.save(updatedOrder);
     }
 
     @Override
     public OrderDTO saveNewOrder(OrderDTO orderDTO) {
-        return null;
+        return orderMapper.orderToOrderDto(orderRepository.save(orderMapper.orderDtoToOrder(orderDTO)));
     }
 
 
