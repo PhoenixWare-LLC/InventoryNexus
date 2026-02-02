@@ -18,7 +18,7 @@ import java.util.UUID;
  * Created:     1/19/2026
  */
 @Slf4j
-@RestController("api")
+@RestController
 public class OrderController {
     private final OrderService orderService;
 

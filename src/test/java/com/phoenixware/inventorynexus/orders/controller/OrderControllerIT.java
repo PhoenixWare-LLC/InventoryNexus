@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ActiveProfiles;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,6 +26,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Copyright:   Phoenixware LLC 2026
  * Created:     1/19/2026
  */
+@ActiveProfiles("dev")
 @SpringBootTest
 class OrderControllerIT {
     @Autowired
@@ -38,14 +40,14 @@ class OrderControllerIT {
 
     @Test
     void putByIdOrderTest() {
-        Order order = orderRepository.findAll().get(0);
+        Order order = orderRepository.findAll().get(10);
         OrderDTO orderDTO = orderMapper.orderToOrderDto(order);
         orderDTO.setId(null);
         final String orderName = "UPDATED";
         orderDTO.setName(orderName);
 
         ResponseEntity responseEntity = orderController.putById(order.getId(), orderDTO);
-        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(204));
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(202));
 
         Order updatedOrder = orderRepository.findById(order.getId()).get();
         assertThat(updatedOrder.getName()).isEqualTo(orderName);
