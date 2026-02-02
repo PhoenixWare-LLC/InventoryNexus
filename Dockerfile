@@ -23,6 +23,12 @@ COPY --from=builder /builder/extracted/application/ ./
 # Add non root user to container.
 RUN addgroup --system spring && adduser --system --ingroup spring spring
 USER spring:spring
+
+#Tell docker to expose this port... IT IS A WEB APP.AFTER ALL.
+EXPOSE 80
+
+# Tell docker what profile to use explicitely
+ENV SPRING_PROFILES_ACTIVE=prod
 # Start the application jar - this is not the uber jar used by the builder
 # This jar only contains application code and references to the extracted jar files
 # This layout is efficient to start up and AOT cache (and CDS) friendly
