@@ -3,11 +3,16 @@ package com.phoenixware.inventorynexus.shared.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static org.springframework.security.config.Customizer.withDefaults;
+
 //import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.web.SecurityFilterChain;
 //
 //import static org.springframework.security.config.Customizer.withDefaults;
-
+@Configuration
 public class InventoryNexusSecurityConfig {
 
 //    @Bean
@@ -23,14 +28,16 @@ public class InventoryNexusSecurityConfig {
 
     //        return new JdbcUserDetailsManager(dataSource);
 //    }
-//    @Bean
-//    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-//        http.authorizeHttpRequests((requests) -> requests
-//                .requestMatchers("/", "/about", "/contact","/faq", "/error").permitAll()
-//                .requestMatchers("/orders", "/orderitems", "/binlocations","/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
-//                , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**").authenticated());
-//        http.formLogin(withDefaults());
-//        http.httpBasic(withDefaults());
-//        return http.build();
-//    }
+    @Bean
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((requests) -> requests
+                .requestMatchers("/", "/about", "/contact","/faq", "/error").permitAll()
+                .requestMatchers("/orders", "/orderitems", "/binlocations","/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
+                        , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**").authenticated());
+//        http.formLogin(flc -> flc.disable());
+        http.formLogin(withDefaults());
+//        http.httpBasic(hbc -> hbc.disable());
+        http.httpBasic(withDefaults());
+        return http.build();
+    }
 }

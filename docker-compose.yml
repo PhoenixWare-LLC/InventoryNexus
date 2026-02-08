@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16  # Specific version for stability
+    image: postgres:16
     container_name: my-dev-postgres
     restart: unless-stopped
     ports:
@@ -11,12 +11,33 @@ services:
       POSTGRES_DB: ${DB_NAME}
     volumes:
       - pgdata:/var/lib/postgresql
-      - ./init-db:/docker-entrypoint-initdb.d:ro  # Auto-runs .sql files on fresh start
+      - ./init-db:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}" ]
       interval: 10s
       timeout: 5s
       retries: 5
+  vault:
+    image: hashicorp/vault:1.21.3
+    container_name: InventoryNexus-Vault
+    restart: unless-stopped
+    ports:
+      - "8200:8200"
+    environment:
+      VAULT_DEV_TOKEN: "myroot"
+      VAULT_DEV_LISTEN_ADDR: "0.0.0.0:8200"
+      VAULT_ADDR: "http://0.0.0.0:8200"
+    cap_add:
+      - IPC_LOCK
+    volumes:
+      - vaultdata:/vault/file
+    entrypoint: "/usr/local/bin/docker-entrypoint.sh"
+    command:
+      - server
+      - -dev
+      - -dev-root-token-id=myroot
+      - -dev-listen-address=0.0.0.0:8200
 
 volumes:
-  pgdata:  # Persists data across restarts
+  pgdata:
+  vaultdata:
