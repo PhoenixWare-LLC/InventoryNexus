@@ -54,5 +54,5 @@ CREATE TABLE public.order_item (
 );
 
 -- Optional: reset sequences to safe starting point (they'll auto-increment anyway)
-SELECT setval('public."Order_OrderID_seq"', 1, false);
+SELECT setval('public."Order_OrderID_seq"', 30, false);
 SELECT setval('public."Order_Item_ItemID_seq"', 1, false);
