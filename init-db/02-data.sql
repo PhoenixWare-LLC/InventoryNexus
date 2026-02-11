@@ -69,4 +69,15 @@ INSERT INTO public.orders (
     ON CONFLICT DO NOTHING;
 
 
+INSERT INTO public.users (username, password, enabled)
+VALUES
+        ('harold', '{bcrypt}$2y$12$vO.9p4kFJ6vGEnZCD4v/ZOako16Kbm/nn5b78PMPubazIfwCJV8E.', true),
+        ('john', '{bcrypt}$2y$12$b5ggjoBJKdpDl0/uoxVRROFH759xV7Z3ICyuPsR0eQTMJvmE8lme6', true)
+       ON CONFLICT DO NOTHING;
 
+INSERT INTO public.authorities(username, authority)
+VALUES
+    ('harold', 'ROLE_ADMIN'),
+    ('harold', 'ROLE_USER'),
+    ('john', 'ROLE_USER')
+ON CONFLICT DO NOTHING;
