@@ -53,6 +53,20 @@ CREATE TABLE public.order_item (
                                    CONSTRAINT fk_orderid FOREIGN KEY (fk_orderid) REFERENCES public.orders(id) NOT VALID
 );
 
+CREATE TABLE public.users (
+    username VARCHAR(50) NOT NULL PRIMARY KEY,
+    password VARCHAR(500) NOT NULL,
+    enabled BOOLEAN NOT NULL
+);
+
+CREATE TABLE public.authorities (
+    username VARCHAR(50) NOT NULL,
+    authority VARCHAR(50) NOT NULL,
+    CONSTRAINT fk_authorities_users FOREIGN KEY (username) REFERENCES public.users(username)
+);
+
+CREATE UNIQUE INDEX ix_auth_username on public.authorities (username, authority);
+
 -- Optional: reset sequences to safe starting point (they'll auto-increment anyway)
 SELECT setval('public."Order_OrderID_seq"', 30, false);
 SELECT setval('public."Order_Item_ItemID_seq"', 1, false);

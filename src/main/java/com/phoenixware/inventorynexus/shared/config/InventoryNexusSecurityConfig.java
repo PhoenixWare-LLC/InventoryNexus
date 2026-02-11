@@ -6,21 +6,18 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ott.OneTimeTokenService;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.authorization.AuthorizationManagerFactories;
-import org.springframework.security.authorization.AuthorizationManagerFactory;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authorization.EnableMultiFactorAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.FactorGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 
+import javax.sql.DataSource;
 import java.time.Duration;
 
 @Slf4j
@@ -30,7 +27,7 @@ import java.time.Duration;
 public class InventoryNexusSecurityConfig {
 
     @Bean
-    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
 
         // Set admin MFA for tasks that require additional privileges
         var adminMFA = AuthorizationManagerFactories.multiFactor()
@@ -64,8 +61,9 @@ public class InventoryNexusSecurityConfig {
         http.oneTimeTokenLogin(Customizer.withDefaults());
 
         // To disable http basic (very basic API authentication)
-        // http.httpBasic(hbc -> hbc.disable());
-        http.httpBasic(Customizer.withDefaults());
+        // Disable below as I am going to implement OAuth2.0
+         http.httpBasic(hbc -> hbc.disable());
+        // http.httpBasic(Customizer.withDefaults());
 
 
         return http.build();
@@ -82,15 +80,13 @@ public class InventoryNexusSecurityConfig {
     // Must have for method below
     @Bean
     PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
     }
 
     // Just for testing. My user of Harold with the password of f!nch
     @Bean
-    UserDetailsService userDetailsService(PasswordEncoder encoder) {
-        String password = encoder.encode("finch");
-        UserDetails user = User.withUsername("harold").password(password).roles("ADMIN", "USER").build();
-        return new InMemoryUserDetailsManager(user);
+    UserDetailsService userDetailsService(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
     }
 
     // Make sure password has not been compromised.
@@ -98,14 +94,5 @@ public class InventoryNexusSecurityConfig {
     CompromisedPasswordChecker compromisedPasswordChecker() {
         return new HaveIBeenPwnedRestApiPasswordChecker();
     }
-
-//    @Bean
-//    AuthorizationManagerFactory<Object> authz() {
-//        return AuthorizationManagerFactories.multiFactor()
-//                .requireFactors(
-//                        FactorGrantedAuthority.PASSWORD_AUTHORITY,
-//                        FactorGrantedAuthority.OTT_AUTHORITY
-//                ).build();
-//    }
 
 }
