@@ -34,38 +34,13 @@ public class InventoryNexusSecurityConfig {
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
-        // Admin endpoint, ensure user has entered password within 30 minutes... makes sense.
-        var adminMFA30Minute = AuthorizationManagerFactories.multiFactor()
-                .requireFactors(
-                        FactorGrantedAuthority.PASSWORD_AUTHORITY,
-                        FactorGrantedAuthority.OTT_AUTHORITY
-                )
-                .requireFactor(
-                        factor -> factor
-                                .passwordAuthority()
-                                .validDuration(Duration.ofMinutes(30))
-                )
-                .build();
-
-        // For secure endpoints, ensure the user has entered password within 1 hour.
-        var mfa1Hour = AuthorizationManagerFactories.multiFactor()
-                .requireFactors(
-                        FactorGrantedAuthority.PASSWORD_AUTHORITY,
-                        FactorGrantedAuthority.OTT_AUTHORITY
-                )
-                .requireFactor(factor -> factor
-                        .passwordAuthority()
-                        .validDuration(Duration.ofHours(1)))
-                .build();
-
         // Setup different requirements for different endpoints, with different security requirements.
         http.authorizeHttpRequests((requests) -> requests
                 .requestMatchers("/", "/about", "/contact", "/faq", "/error", "/ott/sent")
                 .permitAll()
                 .requestMatchers("/orders", "/orderitems", "/binlocations", "/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
-                        , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**")
-                .access(mfa1Hour.authenticated())
-                .requestMatchers("/admin/**").access(adminMFA30Minute.hasRole("ADMIN")));
+                        , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**").authenticated()
+                .requestMatchers("/admin/**", "/admin").hasRole("ADMIN").anyRequest().authenticated());
 
 
         // to disable form login (API only)
