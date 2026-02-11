@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.ott.OneTimeTokenService;
+import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.authorization.AuthorizationManagerFactories;
+import org.springframework.security.authorization.AuthorizationManagerFactory;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authorization.EnableMultiFactorAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -17,30 +19,40 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 
 import java.time.Duration;
 
 @Slf4j
 @Configuration
-@EnableWebSecurity(debug = true)
-@EnableMultiFactorAuthentication(
-        authorities = {
-                FactorGrantedAuthority.PASSWORD_AUTHORITY,
-                FactorGrantedAuthority.OTT_AUTHORITY
-        }
-)
+@EnableWebSecurity()
+@EnableMultiFactorAuthentication(authorities = {})
 public class InventoryNexusSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
 
+        // Set admin MFA for tasks that require additional privileges
+        var adminMFA = AuthorizationManagerFactories.multiFactor()
+                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofHours(4)))
+                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofMinutes(30)))
+                .build();
+
+        // Set basic MFA for endpoints to a full workday of 8 hours
+        var basicMFA = AuthorizationManagerFactories.multiFactor()
+                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofHours(8)))
+                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofHours(8)))
+                .build();
+
+
         // Setup different requirements for different endpoints, with different security requirements.
         http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/", "/about", "/contact", "/faq", "/error", "/ott/sent")
+                .requestMatchers("/", "/about", "/contact", "/faq", "/error", "/ott/**")
                 .permitAll()
                 .requestMatchers("/orders", "/orderitems", "/binlocations", "/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
-                        , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**").authenticated()
-                .requestMatchers("/admin/**", "/admin").hasRole("ADMIN").anyRequest().authenticated());
+                        , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**").access(basicMFA.hasRole("USER"))
+                .requestMatchers("/admin/**", "/admin").access(adminMFA.hasRole("ADMIN"))
+                .anyRequest().authenticated());
 
 
         // to disable form login (API only)
@@ -77,8 +89,23 @@ public class InventoryNexusSecurityConfig {
     @Bean
     UserDetailsService userDetailsService(PasswordEncoder encoder) {
         String password = encoder.encode("finch");
-        UserDetails user = User.withUsername("harold").password(password).roles("ADMIN").build();
+        UserDetails user = User.withUsername("harold").password(password).roles("ADMIN", "USER").build();
         return new InMemoryUserDetailsManager(user);
     }
+
+    // Make sure password has not been compromised.
+    @Bean
+    CompromisedPasswordChecker compromisedPasswordChecker() {
+        return new HaveIBeenPwnedRestApiPasswordChecker();
+    }
+
+//    @Bean
+//    AuthorizationManagerFactory<Object> authz() {
+//        return AuthorizationManagerFactories.multiFactor()
+//                .requireFactors(
+//                        FactorGrantedAuthority.PASSWORD_AUTHORITY,
+//                        FactorGrantedAuthority.OTT_AUTHORITY
+//                ).build();
+//    }
 
 }
