@@ -1,9 +1,12 @@
 package com.phoenixware.inventorynexus.shared.entity;
 
+import com.phoenixware.inventorynexus.orders.entity.OrderItem;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,6 +23,11 @@ public abstract class BaseProduct {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private UUID id;
+
+    @OneToMany(mappedBy = "product", orphanRemoval = true,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+                    CascadeType.DETACH, CascadeType.REFRESH})
+    private List<OrderItem> orderItemList = new ArrayList<>();
 
     @Column(name = "sku")
     private String sku;
@@ -49,4 +57,22 @@ public abstract class BaseProduct {
     // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
     @Column(name = "modified_by")
     private String modifiedBy;
+
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
+    }
+
+    public void add(OrderItem tempOrderItem) {
+        if (orderItemList == null) {
+            orderItemList = new ArrayList<>();
+        }
+
+        orderItemList.add(tempOrderItem);
+
+        tempOrderItem.setProduct(this);
+    }
 }
