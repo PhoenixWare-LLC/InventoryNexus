@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,25 +26,24 @@ public class AppUserDetailService implements UserDetailsService {
      * @throws UsernameNotFoundException
      */
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser appUserWithRoles = appUserRepository.findByUsernameWithRoles(username).orElseThrow(() ->
-                new UsernameNotFoundException("User not found with username: " + username));
 
-        AppUser appUserWithPrivileges =  appUserRepository.findByIdWithPrivileges(appUserWithRoles.getId())
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + appUserWithRoles.getId()));
+        AppUser appUser = appUserRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("User not found with username: " + username));
 
         Collection<GrantedAuthority> authorities = new ArrayList<>();
 
         // Gather the roles
-        appUserWithRoles.getUserRoles().forEach(
+        appUser.getUserRoles().forEach(
                 (role) ->
                         authorities.add(new SimpleGrantedAuthority(role.getName()))
         );
 
-        appUserWithPrivileges.getUserPrivileges().forEach(
+        appUser.getUserPrivileges().forEach(
                 (privilege ) ->
                         authorities.add(new SimpleGrantedAuthority(privilege.getName()))
         );
-        return new User(appUserWithRoles.getUsername(),appUserWithRoles.getPassword(), authorities);
+        return new User(appUser.getUsername(),appUser.getPassword(), authorities);
     }
 }
