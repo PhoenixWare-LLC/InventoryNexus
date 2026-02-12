@@ -51,21 +51,21 @@ CREATE TABLE public.order_item
     id                  uuid                            DEFAULT gen_random_uuid() NOT NULL,
     CONSTRAINT order_item_pkey PRIMARY KEY (id),
     CONSTRAINT order_items_id_viewable_key UNIQUE (id_viewable),
-    CONSTRAINT fk_orderid FOREIGN KEY (fk_orderid) REFERENCES public.orders (id) NOT VALID
+    CONSTRAINT fk_order_id FOREIGN KEY (fk_order_id) REFERENCES public.orders (id) NOT VALID
 );
 
 CREATE TABLE public.app_user
 (
-    id UUID NOT NULL DEFAULT gen_random_uuid(),
-    email VARCHAR(100) NOT NULL,
-    username VARCHAR(50) DEFAULT email,
+    id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(128) NOT NULL,
     active BOOLEAN NOT NULL DEFAULT false,
     admin BOOLEAN NOT NULL DEFAULT false,
     mfa_type VARCHAR(50) NOT NULL DEFAULT 'email',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(50) DEFAULT CURRENT_USER
-)
+);
 
 CREATE TABLE public.role
 (
@@ -73,11 +73,12 @@ CREATE TABLE public.role
     name VARCHAR(50) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(50) DEFAULT CURRENT_USER
-)
+);
 
 CREATE TABLE public.privilege
 (
     id UUID NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+    name VARCHAR(50) NOT NULL UNIQUE,
     resource_name VARCHAR(50) NOT NULL,
     read_privilege BOOLEAN NOT NULL DEFAULT false,
     write_privilege BOOLEAN NOT NULL DEFAULT false,
@@ -85,7 +86,7 @@ CREATE TABLE public.privilege
     delete_privilege BOOLEAN NOT NULL DEFAULT false,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(50) DEFAULT CURRENT_USER
-)
+);
 
 CREATE TABLE public.role_privilege
 (
@@ -93,17 +94,17 @@ CREATE TABLE public.role_privilege
     fk_privilege_id UUID NOT NULL,
     PRIMARY KEY (fk_role_id, fk_privilege_id),
     CONSTRAINT fk_role_privileges_role FOREIGN KEY (fk_role_id) REFERENCES public.role(id),
-    CONSTRAINT fk_role_privileges_privilege FOREIGN KEY (fk_privilege_id) REFERENCES public.privilege
-)
+    CONSTRAINT fk_role_privileges_privilege FOREIGN KEY (fk_privilege_id) REFERENCES public.privilege(id)
+);
 
 CREATE TABLE public.app_user_role
 (
     fk_role_id UUID NOT NULL,
     fk_app_user_id UUID NOT NULL,
-    PRIMARY KEY (fk_role_id, fk_user_id),
+    PRIMARY KEY (fk_role_id, fk_app_user_id),
     CONSTRAINT fk_app_user_role_role FOREIGN KEY (fk_role_id) REFERENCES public.role(id),
-    CONSTRAINT fk_app_user_role_app_user FOREIGN KEY (fk_user_id) REFERENCES public.app_user_role(id)
-)
+    CONSTRAINT fk_app_user_role_app_user FOREIGN KEY (fk_app_user_id) REFERENCES public.app_user(id)
+);
 
 CREATE TABLE public.app_user_privilege
 (
@@ -112,7 +113,7 @@ CREATE TABLE public.app_user_privilege
     PRIMARY KEY (fk_privilege_id, fk_app_user_id),
     CONSTRAINT fk_app_user_privilege_privilege FOREIGN KEY (fk_privilege_id) REFERENCES public.privilege(id),
     CONSTRAINT fk_app_user_privilege_app_user FOREIGN KEY (fk_app_user_id) REFERENCES public.app_user(id)
-)
+);
 
 
 CREATE INDEX idx_user_roles_user_id ON public.app_user_role(fk_app_user_id);

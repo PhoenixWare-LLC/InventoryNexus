@@ -71,22 +71,23 @@ VALUES (6, 'John Doe', '777 Spring Creek dr', NULL, 'Phoenix', 'AZ', '85392', 99
         'e02b7a37-8ce0-42f3-ad72-38159e598da6') ON CONFLICT DO NOTHING;
 
 INSERT INTO public.privilege (id,
+                              name,
                               resource_name,
                               read_privilege,
                               write_privilege,
                               update_privilege,
-                              delete_privilege,)
-VALUES ('e5a46dec-51f2-4cf7-aafc-9b1e3d5a00f1', "Order", true, true, true, true),
-       ('5915143b-a5ec-4f10-a830-478a31e73c20', "Order", true, true, true, false),
-       ('76063414-b71f-42c1-9c4e-09716d35153d', "Order", true, true, false, false),
-       ('011e344c-1e32-4b72-9541-51bad77458b5', "Order", true, false, false, false) ON CONFLICT DO NOTHING;
+                              delete_privilege)
+VALUES ('e5a46dec-51f2-4cf7-aafc-9b1e3d5a00f1', 'Order FA', 'Order', true, true, true, true),
+       ('5915143b-a5ec-4f10-a830-478a31e73c20', 'Order R/W', 'Order', true, true, true, false),
+       ('76063414-b71f-42c1-9c4e-09716d35153d', 'Order R/C', 'Order', true, true, false, false),
+       ('011e344c-1e32-4b72-9541-51bad77458b5', 'Order R', 'Order', true, false, false, false) ON CONFLICT DO NOTHING;
 
-INSERT INTO public.role (id
+INSERT INTO public.role (id,
     name)
-VALUES ('ccdc3990-98b3-4022-bb4a-ca70d5d10ab7', 'admin'),
-       ('94e83ffc-15d1-4498-8e96-38f0b65360d1', 'manager'),
-       ('fd72b270-1b87-4a75-bc68-1ea9ff34ef32', 'employee'),
-       ('586afaa4-2107-4f2b-bdb4-56c55a5f33f7', 'trainee') ON CONFLICT DO NOTHING;
+VALUES ('ccdc3990-98b3-4022-bb4a-ca70d5d10ab7', 'ROLE_ADMIN'),
+       ('94e83ffc-15d1-4498-8e96-38f0b65360d1', 'ROLE_MANAGER'),
+       ('fd72b270-1b87-4a75-bc68-1ea9ff34ef32', 'ROLE_EMPLOYEE'),
+       ('586afaa4-2107-4f2b-bdb4-56c55a5f33f7', 'ROLE_TRAINEE') ON CONFLICT DO NOTHING;
 
 INSERT INTO public.app_user (id,
                              email,
@@ -102,7 +103,7 @@ VALUES
     ('4b76f15c-afc4-4b82-90a2-94bad52a5d62',
      'sarah.connor.1984@gmail.com',
      'sarahc84',
-     '$2b$12$8Kj9pL.mF7xWvQ3zT9rY/.uJ5kH8nL2pQvR6tY1wX3eZ0aB9cD8eF',
+     '{bcrypt}$2y$12$udhJ9LrAuoz6CSvtWlSg2u0HwiU4ZV165rGQC6E0tpm5jFoWIi1Sa',
      false,
      false,
      'email',
@@ -112,8 +113,8 @@ VALUES
     -- 2. Active normal user
     ('60559c7d-ec6b-4934-8485-0fce9c4ca4c3',
      'michael.rivera.work@proton.me',
-     'mrivera',
-     '{bcrypt}$2b$12$4nX7vPqR2tY9wZ1aB8cD6.eF3kH5mL0pQvT8uJ2xW4zY6aR9bN1cV',
+     'mrivera89',
+     '{bcrypt}$2y$12$cvbf/SS0yvGL4aK8umw86OywGpTwjpIm7ZAo4JK9kQsxUcQOX9Mp.',
      true,
      false,
      'authenticator',
@@ -123,8 +124,8 @@ VALUES
     -- 3. Admin user
     ('2bfdf263-9a88-4d37-a44c-2bd9a19cd845',
      'admin.jessica@company.io',
-     'jessica_admin',
-     '{bcrypt}$2b$12$kP9mW3xQ8vT2rY7zA4cB6.nL1pF5uJ0wX9eD3tR6yZ2aB8cV4qN0m',
+     'jessica_admin98',
+     '{bcrypt}$2y$12$ZsKLfGO5fDLnvLLpdTce0u2PfNCTSMzv.XWQ3EX8OU9oReCCCup.e',
      true,
      true,
      'email',
@@ -135,7 +136,7 @@ VALUES
     ('a33cb313-11b3-4807-9bac-b9a22cbfe274',
      'david.kim1999@outlook.com',
      'david.kim1999@outlook.com',
-     '{bcrypt}$2b$12$7tY2pL9xW4vR8zQ3aB6cD.eF1kH0mN5uJ9wX2tY6rZ4aP8bV3qC0n',
+     '{bcrypt}$2y$12$It3Vxwm4R5N0JvEtgwiQqODpjADUfPCcdErLwxIAGdHckBDfO9JBq',
      true,
      false,
      'email',
@@ -173,11 +174,5 @@ VALUES
 
 INSERT INTO public.app_user_privilege (fk_privilege_id, fk_app_user_id)
 VALUES
-    -- Give Jessica the full Order privilege directly (in addition to role)
-    -- (demonstrates override / extra power scenario)
-    ('e5a46dec-51f2-4cf7-aafc-9b1e3d5a00f1', '2bfdf263-9a88-4d37-a44c-2bd9a19cd845'),
-
--- Give Michael one extra granular privilege (e.g. read-only on something else later)
--- ('some-other-privilege-id', '60559c7d-ec6b-4934-8485-0fce9c4ca4c3')
--- (commented out — add only if you later create more resources)
+    ('e5a46dec-51f2-4cf7-aafc-9b1e3d5a00f1', '2bfdf263-9a88-4d37-a44c-2bd9a19cd845')
 ON CONFLICT DO NOTHING;
