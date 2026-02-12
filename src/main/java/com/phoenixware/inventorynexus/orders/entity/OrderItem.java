@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.orders.entity;
 
+import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,14 +26,22 @@ public class OrderItem {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "fk_orderid")
-    private UUID orderId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "fk_order_id")
+    private Order order;
 
     @Column(name = "id_viewable")
     private int viewableId;
 
     @Column(name = "order_id_viewable")
     private int viewableOrderId;
+
+
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+    CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "fk_product_id")
+    private BaseProduct product;
 
     @Column(name = "sku")
     private String sku;
