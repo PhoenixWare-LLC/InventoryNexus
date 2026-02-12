@@ -26,8 +26,10 @@ public class OrderItem {
     @Column(name = "id")
     private UUID id;
 
-    @Column(name = "fk_orderid")
-    private UUID orderId;
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
+            CascadeType.DETACH, CascadeType.REFRESH})
+    @JoinColumn(name = "fk_order_id")
+    private Order order;
 
     @Column(name = "id_viewable")
     private int viewableId;

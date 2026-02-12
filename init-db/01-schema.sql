@@ -47,7 +47,7 @@ CREATE TABLE public.order_item
     quantity            integer                NOT NULL,
     base_price          numeric(10, 2)         NOT NULL,
     creation_timestamp  timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    fk_orderid          uuid,
+    fk_order_id          uuid,
     id                  uuid                            DEFAULT gen_random_uuid() NOT NULL,
     CONSTRAINT order_item_pkey PRIMARY KEY (id),
     CONSTRAINT order_items_id_viewable_key UNIQUE (id_viewable),
