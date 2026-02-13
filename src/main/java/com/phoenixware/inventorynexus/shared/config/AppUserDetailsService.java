@@ -5,7 +5,6 @@ import com.phoenixware.inventorynexus.shared.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -49,6 +48,6 @@ public class AppUserDetailsService implements UserDetailsService {
                 (privilege ) ->
                         authorities.add(new SimpleGrantedAuthority(privilege.getName()))
         );
-        return new User(appUser.getUsername(),appUser.getPassword(), authorities);
+        return new AppUserDetails(appUser, authorities);
     }
 }
