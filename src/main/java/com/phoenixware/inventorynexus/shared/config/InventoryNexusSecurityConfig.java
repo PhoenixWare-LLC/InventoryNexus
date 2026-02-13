@@ -17,6 +17,11 @@ import org.springframework.security.web.authentication.password.HaveIBeenPwnedRe
 
 import java.time.Duration;
 
+/**
+ * Author:      Collin Short
+ * Copyright:   Phoenixware LLC 2026
+ * Created:     02/12/2026
+ */
 @Slf4j
 @Configuration
 @EnableWebSecurity(debug = false)
@@ -45,9 +50,11 @@ public class InventoryNexusSecurityConfig {
                 .permitAll()
                 .requestMatchers("/orders", "/orderitems", "/binlocations", "/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
                         , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**").access(basicMFA.hasRole("USER"))
-                .requestMatchers("/admin/**", "/admin").access(adminMFA.hasRole("ADMIN"))
+                .requestMatchers("/admin/**", "/admin", "/users", "/users/**").access(adminMFA.hasRole("ADMIN"))
                 .anyRequest().authenticated());
 
+        // get that outta here.
+        http.csrf(csrf -> csrf.disable());
 
         // to disable form login (API only)
         //http.formLogin(flc -> flc.disable());
@@ -59,8 +66,8 @@ public class InventoryNexusSecurityConfig {
 
         // To disable http basic (very basic API authentication)
         // Disable below as I am going to implement OAuth2.0
-         http.httpBasic(hbc -> hbc.disable());
-        // http.httpBasic(Customizer.withDefaults());
+         // http.httpBasic(hbc -> hbc.disable());
+         http.httpBasic(Customizer.withDefaults());
 
 
         return http.build();

@@ -1,13 +1,10 @@
 package com.phoenixware.inventorynexus.orders.dto;
 
-import com.phoenixware.inventorynexus.orders.entity.OrderItem;
-import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -28,9 +25,6 @@ public class OrderDTO {
     private String postalCode;
     private BigDecimal total;
     private LocalDateTime creationTimestamp;
-//    private LocalDateTime modificationTimestamp;
-//    private String createdBy;
-//    private String modifiedBy;
     private boolean shipped;
     private boolean fulfilled;
     private String trackingNumber;

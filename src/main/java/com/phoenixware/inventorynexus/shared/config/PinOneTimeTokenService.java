@@ -11,6 +11,11 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+/**
+ * Author:      Collin Short
+ * Copyright:   Phoenixware LLC 2026
+ * Created:     02/12/2026
+ */
 public class PinOneTimeTokenService implements OneTimeTokenService {
     private static final int PIN_LENGTH = 6;
     private static final int MAX_PIN_VALUE = 100_000;

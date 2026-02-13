@@ -41,7 +41,7 @@ public class OrderController {
         OrderDTO savedOrder = orderService.saveNewOrder(orderDTO);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "orders/" + savedOrder.getId().toString());
+        headers.add("Location", "/orders/" + savedOrder.getId().toString());
 
         return new ResponseEntity(headers, HttpStatus.CREATED);
     }
