@@ -15,6 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Author:      Collin Short
+ * Copyright:   Phoenixware LLC 2026
+ * Created:     02/12/2026
+ */
 @Service
 @RequiredArgsConstructor
 public class AppUserDetailsService implements UserDetailsService {

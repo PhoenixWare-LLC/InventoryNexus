@@ -13,6 +13,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 
+/**
+ * Author:      Collin Short
+ * Copyright:   Phoenixware LLC 2026
+ * Created:     02/12/2026
+ */
 @Component
 public class OttSuccessHandler implements OneTimeTokenGenerationSuccessHandler {
 
