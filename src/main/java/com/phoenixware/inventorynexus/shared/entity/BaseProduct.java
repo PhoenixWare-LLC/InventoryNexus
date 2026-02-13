@@ -20,7 +20,7 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "product_type")
-@Table(name = "products", schema = "inventory")
+@Table(name = "products")
 @Data
 public abstract class BaseProduct {
     @Id
@@ -50,10 +50,10 @@ public abstract class BaseProduct {
     @Column(name = "gs1")
     private int gs1;
 
-    @Column(name = "creation_timestamp", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime creationTimestamp;
 
-    @Column(name = "modification_timestamp")
+    @Column(name = "modified_at")
     private LocalDateTime modificationTimestamp;
 
     // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.

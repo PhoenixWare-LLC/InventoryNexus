@@ -3,10 +3,7 @@ package com.phoenixware.inventorynexus.inventory.entity;
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import lombok.*;
-
-import java.util.UUID;
 
 /**
  * Author:      Collin Short
@@ -18,8 +15,6 @@ import java.util.UUID;
 @Builder
 @Entity
 @DiscriminatorValue("FULL")
-@AllArgsConstructor
 @NoArgsConstructor
 public class Product extends BaseProduct {
-    private long sold;
 }

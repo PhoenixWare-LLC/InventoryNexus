@@ -1,10 +1,12 @@
 package com.phoenixware.inventorynexus.orders.dto;
 
+import com.phoenixware.inventorynexus.orders.entity.OrderItem;
 import lombok.Builder;
 import lombok.Data;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -26,4 +28,5 @@ public class MinimalProductDTO {
     private LocalDateTime modificationTimestamp;
     private String createdBy;
     private String modifiedBy;
+    private List<OrderItem> orderItemList;
 }

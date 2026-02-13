@@ -38,6 +38,22 @@ CREATE SEQUENCE public."Order_Item_ItemID_seq"
     NO MINVALUE
     NO MAXVALUE CACHE 1;
 
+CREATE TABLE public.products
+(
+    id UUID NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
+    product_type VARCHAR(50) NOT NULL,
+    sku VARCHAR(50) NOT NULL,
+    price NUMERIC(10,2) NOT NULL,
+    cost NUMERIC(10,2) NOT NULL,
+    upc INTEGER NOT NULL,
+    gs1 INTEGER NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER
+);
+
+
 CREATE TABLE public.order_item
 (
     id_viewable         integer                NOT NULL DEFAULT nextval('public."Order_Item_ItemID_seq"'::regclass),
@@ -49,10 +65,14 @@ CREATE TABLE public.order_item
     creation_timestamp  timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     fk_order_id          uuid,
     id                  uuid                            DEFAULT gen_random_uuid() NOT NULL,
+    fk_product_id uuid NOT NULL,
+    CONSTRAINT fk_order_item_products_id FOREIGN KEY (fk_product_id) REFERENCES public.products(id),
     CONSTRAINT order_item_pkey PRIMARY KEY (id),
     CONSTRAINT order_items_id_viewable_key UNIQUE (id_viewable),
     CONSTRAINT fk_order_id FOREIGN KEY (fk_order_id) REFERENCES public.orders (id) NOT VALID
 );
+
+
 
 CREATE TABLE public.app_user
 (

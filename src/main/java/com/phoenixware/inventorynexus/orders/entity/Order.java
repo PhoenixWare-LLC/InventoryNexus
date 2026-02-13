@@ -6,7 +6,6 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -57,17 +56,6 @@ public class Order {
 
     @Column(name = "creation_timestamp", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime creationTimestamp;
-
-//    @Column(name = "modification_timestamp")
-//    private LocalDateTime modificationTimestamp;
-//
-//    // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
-//    @Column(name = "created_by")
-//    private String createdBy;
-//
-//    // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
-//    @Column(name = "modified_by")
-//    private String modifiedBy;
 
     @Column(name = "shipped")
     private boolean shipped;
