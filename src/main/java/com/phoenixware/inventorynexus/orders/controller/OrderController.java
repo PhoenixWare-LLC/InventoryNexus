@@ -64,8 +64,19 @@ public class OrderController {
     }
 
     @PatchMapping("/orders/{order_id}")
-    public OrderDTO patchById(@PathVariable("order_id") UUID orderId, @RequestBody OrderDTO orderDTO) {
-        return null;
+    public ResponseEntity patchById(@PathVariable("order_id") UUID orderId, @RequestBody OrderDTO orderDTO) {
+        OrderDTO patchedOrder = orderService.patchOrderById(orderId, orderDTO);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/orders/" + patchedOrder.getId());
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                patchedOrder,
+                httpHeaders,
+                HttpStatus.ACCEPTED
+        );
+
+        return responseEntity;
     }
 
     @DeleteMapping("/orders/{order_id}")
