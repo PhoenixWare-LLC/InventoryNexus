@@ -1,7 +1,6 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
 import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
-import com.phoenixware.inventorynexus.orders.exception.OrderNotFoundException;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -22,13 +21,13 @@ import java.util.UUID;
 public class OrderController {
     private final OrderService orderService;
 
-    public OrderController (OrderService orderService) {
+    public OrderController(OrderService orderService) {
         this.orderService = orderService;
     }
 
     @GetMapping("/orders/{order_id}")
     public OrderDTO getById(@PathVariable("order_id") UUID orderId) {
-        return orderService.getOrderById(orderId).orElseThrow(OrderNotFoundException::new);
+        return orderService.getOrderById(orderId);
     }
 
     @GetMapping("/orders")
@@ -40,17 +39,27 @@ public class OrderController {
     public ResponseEntity create(@RequestBody OrderDTO orderDTO) {
         OrderDTO savedOrder = orderService.saveNewOrder(orderDTO);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Location", "/orders/" + savedOrder.getId().toString());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/orders/" + savedOrder.getId().toString());
 
-        return new ResponseEntity(headers, HttpStatus.CREATED);
+        ResponseEntity responseEntity = new ResponseEntity<>(
+                orderDTO, httpHeaders, HttpStatus.CREATED
+        );
+
+        return responseEntity;
     }
 
     @PutMapping("/orders/{order_id}")
     public ResponseEntity putById(@PathVariable("order_id") UUID id, @RequestBody OrderDTO orderDTO) {
-        orderService.putById(id, orderDTO);
+        OrderDTO updatedOrder = orderService.putById(id, orderDTO);
 
-        ResponseEntity responseEntity = new ResponseEntity(HttpStatus.ACCEPTED);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/orders/" + updatedOrder.getId());
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                updatedOrder, httpHeaders, HttpStatus.ACCEPTED
+        );
+
         return responseEntity;
     }
 
@@ -60,7 +69,13 @@ public class OrderController {
     }
 
     @DeleteMapping("/orders/{order_id}")
-    public ResponseEntity deleteById() {
-        return null;
+    public ResponseEntity deleteById(@PathVariable("order_id") UUID id) {
+        orderService.deleteById(id);
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                HttpStatus.NO_CONTENT
+        );
+
+        return responseEntity;
     }
 }
