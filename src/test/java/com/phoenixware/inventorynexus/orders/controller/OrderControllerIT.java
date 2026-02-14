@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.Rollback;
@@ -39,6 +40,8 @@ class OrderControllerIT {
     OrderMapper orderMapper;
 
     @Test
+    @Transactional
+    @Rollback
     void putByIdOrderTest() {
         Order order = orderRepository.findAll().get(10);
         OrderDTO orderDTO = orderMapper.orderToOrderDto(order);
@@ -98,6 +101,26 @@ class OrderControllerIT {
         List<OrderDTO> dtos = orderController.getAll();
 
         assertThat(dtos.size()).isEqualTo(21);
+    }
+
+    @Test
+    @Transactional
+    @Rollback
+    void patchExistingOrder() {
+        Order order = orderRepository.findAll().getFirst();
+
+        OrderDTO patchFields = OrderDTO.builder()
+                .name("Sandy Beaches")
+                .state("NY")
+                .build();
+
+        OrderDTO patchedOrder = orderMapper.orderToOrderDto(orderMapper.updateOrderFromOrderDTO(patchFields, order));
+
+        ResponseEntity<?> responseEntity = orderController.patchById(order.getId(), patchFields);
+
+        assertThat(responseEntity.getBody()).isEqualTo(patchedOrder);
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
+        assertThat(responseEntity.getHeaders().getFirst("Location")).isEqualTo("/orders/" + patchedOrder.getId());
     }
 
     @Rollback

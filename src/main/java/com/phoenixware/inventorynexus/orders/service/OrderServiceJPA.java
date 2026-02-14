@@ -8,9 +8,9 @@ import com.phoenixware.inventorynexus.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @Primary
 @RequiredArgsConstructor
 public class OrderServiceJPA implements OrderService {
+
+    private final JsonMapper jsonMapper;
     private final OrderRepository orderRepository;
     private final OrderMapper orderMapper;
 
@@ -43,14 +45,25 @@ public class OrderServiceJPA implements OrderService {
     }
 
     @Override
-    public Optional<OrderDTO> getOrderById(UUID id) {
-        return Optional.ofNullable(orderMapper.orderToOrderDto(orderRepository.findById(id)
-                .orElse(null)));
+    public OrderDTO getOrderById(UUID id) {
+        return orderMapper.orderToOrderDto(
+                orderRepository.findById(id).orElseThrow(
+                        OrderNotFoundException::new
+                )
+        );
     }
 
     @Override
-    public void patchOrderById(UUID orderId, OrderDTO orderDTO) {
+    public OrderDTO patchOrderById(UUID orderId, OrderDTO orderDTO) {
+        Order currentOrder = orderRepository.findById(orderId).orElseThrow(
+                OrderNotFoundException::new
+        );
 
+        Order updatedOrder = orderMapper.updateOrderFromOrderDTO(orderDTO, currentOrder);
+
+        orderRepository.save(updatedOrder);
+
+        return orderMapper.orderToOrderDto(updatedOrder);
     }
 
     @Override
@@ -63,8 +76,10 @@ public class OrderServiceJPA implements OrderService {
     }
 
     @Override
-    public void putById(UUID orderId, OrderDTO orderDTO) {
-        Order existingOrder = orderRepository.findById(orderId).orElseThrow(OrderNotFoundException::new);
+    public OrderDTO putById(UUID orderId, OrderDTO orderDTO) {
+        Order existingOrder = orderRepository.findById(orderId).orElseThrow(
+                OrderNotFoundException::new
+        );
 
         if (existingOrder.isFulfilled() || existingOrder.isShipped()) {
             throw new IllegalStateException("Cannot update a shipped/fulfilled order");
@@ -74,6 +89,12 @@ public class OrderServiceJPA implements OrderService {
         updatedOrder.setId(orderId);
 
         orderRepository.save(updatedOrder);
+
+        Order orderFromDB = orderRepository.findById(orderId).orElseThrow(
+                OrderNotFoundException::new
+        );
+
+        return orderMapper.orderToOrderDto(orderFromDB);
     }
 
     @Override
