@@ -71,7 +71,7 @@ class OrderControllerIT {
         assertThat(responseEntity.getHeaders().getLocation()).isNotNull();
 
         String[] locationUUID = responseEntity.getHeaders().getLocation().getPath().split("/");
-        UUID savedUUID = UUID.fromString(locationUUID[1]);
+        UUID savedUUID = UUID.fromString(locationUUID[2]);
 
         Order order = orderRepository.findById(savedUUID).get();
         assertThat(order).isNotNull();
