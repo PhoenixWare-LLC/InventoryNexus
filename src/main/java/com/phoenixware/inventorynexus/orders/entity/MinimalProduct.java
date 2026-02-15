@@ -3,6 +3,7 @@ package com.phoenixware.inventorynexus.orders.entity;
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @DiscriminatorValue("BASIC")
+@Table(name = "product")
 @NoArgsConstructor
 public class MinimalProduct extends BaseProduct {
 }

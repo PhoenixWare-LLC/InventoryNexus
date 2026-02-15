@@ -38,7 +38,7 @@ CREATE SEQUENCE public."Order_Item_ItemID_seq"
     NO MINVALUE
     NO MAXVALUE CACHE 1;
 
-CREATE TABLE public.products
+CREATE TABLE public.product
 (
     id UUID NOT NULL PRIMARY KEY DEFAULT gen_random_uuid(),
     product_type VARCHAR(50) NOT NULL,
