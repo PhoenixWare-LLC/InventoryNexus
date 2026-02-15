@@ -3,6 +3,7 @@ package com.phoenixware.inventorynexus.inventory.entity;
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 
 /**
@@ -15,6 +16,7 @@ import lombok.*;
 @Builder
 @Entity
 @DiscriminatorValue("FULL")
+@Table(name = "product")
 @NoArgsConstructor
 public class Product extends BaseProduct {
 }

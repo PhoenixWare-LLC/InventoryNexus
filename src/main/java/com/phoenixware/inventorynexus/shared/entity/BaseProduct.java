@@ -20,7 +20,7 @@ import java.util.UUID;
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "product_type")
-@Table(name = "products")
+@Table(name = "product")
 @Data
 public abstract class BaseProduct {
     @Id
