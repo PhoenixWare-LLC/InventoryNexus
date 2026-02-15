@@ -1,6 +1,5 @@
 package com.phoenixware.inventorynexus.orders.dto;
 
-import com.phoenixware.inventorynexus.orders.entity.Order;
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import lombok.Builder;
 import lombok.Data;
@@ -18,7 +17,7 @@ import java.util.UUID;
 @Builder
 public class OrderItemDTO {
     private UUID id;
-    private Order order;
+    private OrderDTO order;
     private BaseProduct product;
     private int viewableId;
     private int viewableOrderId;
