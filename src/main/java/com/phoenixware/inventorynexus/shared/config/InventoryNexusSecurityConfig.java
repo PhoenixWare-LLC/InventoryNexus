@@ -65,7 +65,7 @@ public class InventoryNexusSecurityConfig {
                 .requestMatchers("/users", "/users/**")
                 .access((auth, context) -> {
                             Authentication authentication = auth.get();
-                            Object principal = (AppUserDetailsService) authentication.getPrincipal();
+                            Object principal = authentication.getPrincipal();
 
                             if (!(principal instanceof AppUserDetails appUserDetails)) {
                                 return new AuthorizationDecision(false);

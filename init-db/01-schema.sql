@@ -66,7 +66,7 @@ CREATE TABLE public.order_item
     fk_order_id          uuid,
     id                  uuid                            DEFAULT gen_random_uuid() NOT NULL,
     fk_product_id uuid NOT NULL,
-    CONSTRAINT fk_order_item_products_id FOREIGN KEY (fk_product_id) REFERENCES public.products(id),
+    CONSTRAINT fk_order_item_product_id FOREIGN KEY (fk_product_id) REFERENCES public.product(id),
     CONSTRAINT order_item_pkey PRIMARY KEY (id),
     CONSTRAINT order_items_id_viewable_key UNIQUE (id_viewable),
     CONSTRAINT fk_order_id FOREIGN KEY (fk_order_id) REFERENCES public.orders (id) NOT VALID
