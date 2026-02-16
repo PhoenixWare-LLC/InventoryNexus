@@ -1,5 +1,7 @@
 package com.phoenixware.inventorynexus.shared.dto;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -9,6 +11,7 @@ import java.util.UUID;
  * Copyright:   Phoenixware LLC 2026
  * Created:     2/14/2026
  */
+@Data
 public abstract class BaseProductDTO {
     private UUID id;
     private String sku;

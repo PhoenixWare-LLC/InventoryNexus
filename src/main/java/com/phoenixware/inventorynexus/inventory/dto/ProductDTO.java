@@ -3,6 +3,7 @@ package com.phoenixware.inventorynexus.inventory.dto;
 import com.phoenixware.inventorynexus.shared.dto.BaseProductDTO;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * Author:      Collin Short
@@ -11,5 +12,6 @@ import lombok.Data;
  */
 @Data
 @Builder
+@NoArgsConstructor
 public class ProductDTO extends BaseProductDTO {
 }

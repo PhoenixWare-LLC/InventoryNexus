@@ -12,8 +12,8 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface MinimalProductMapper {
 
-    MinimalProduct minimalProductDtoToMinimalProduct(MinimalProductDTO minimalProductDTO);
+    MinimalProduct mapFromDTO(MinimalProductDTO minimalProductDTO);
 
-    MinimalProductDTO minimalProductToMinimalProductDto(MinimalProduct minimalProduct);
+    MinimalProductDTO mapToDTO(MinimalProduct minimalProduct);
 
 }
