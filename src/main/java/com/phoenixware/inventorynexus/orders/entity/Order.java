@@ -30,9 +30,6 @@ public class Order {
             CascadeType.DETACH, CascadeType.REFRESH})
     private List<OrderItem> orderItems;
 
-    @Column(name = "id_viewable")
-    private int viewableId;
-
     @Column(name = "name")
     private String name;
 

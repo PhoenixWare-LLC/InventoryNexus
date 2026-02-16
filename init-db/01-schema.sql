@@ -12,7 +12,6 @@ CREATE SEQUENCE public."Order_OrderID_seq"
 
 CREATE TABLE public.orders
 (
-    id_viewable        integer                NOT NULL DEFAULT nextval('public."Order_OrderID_seq"'::regclass),
     name               character varying(255) NOT NULL,
     street_1           character varying(255) NOT NULL,
     street_2           character varying(255),
@@ -27,8 +26,7 @@ CREATE TABLE public.orders
     tracking_number    character varying(50),
     status             character varying(20),
     id                 uuid                            DEFAULT gen_random_uuid() NOT NULL,
-    CONSTRAINT orders_pkey PRIMARY KEY (id),
-    CONSTRAINT orders_id_viewable_key UNIQUE (id_viewable)
+    CONSTRAINT orders_pkey PRIMARY KEY (id)
 );
 
 CREATE SEQUENCE public."Order_Item_ItemID_seq"
@@ -56,8 +54,6 @@ CREATE TABLE public.product
 
 CREATE TABLE public.order_item
 (
-    id_viewable         integer                NOT NULL DEFAULT nextval('public."Order_Item_ItemID_seq"'::regclass),
-    "order_id_viewable" integer                NOT NULL,
     sku                 character varying(50)  NOT NULL,
     item_name           character varying(255) NOT NULL,
     quantity            integer                NOT NULL,
@@ -68,7 +64,6 @@ CREATE TABLE public.order_item
     fk_product_id uuid NOT NULL,
     CONSTRAINT fk_order_item_product_id FOREIGN KEY (fk_product_id) REFERENCES public.product(id),
     CONSTRAINT order_item_pkey PRIMARY KEY (id),
-    CONSTRAINT order_items_id_viewable_key UNIQUE (id_viewable),
     CONSTRAINT fk_order_id FOREIGN KEY (fk_order_id) REFERENCES public.orders (id) NOT VALID
 );
 

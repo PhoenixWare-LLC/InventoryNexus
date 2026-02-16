@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
 import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -20,9 +21,11 @@ import java.util.UUID;
 @RestController
 public class OrderController {
     private final OrderService orderService;
+    private final OrderMapper orderMapper;
 
-    public OrderController(OrderService orderService) {
+    public OrderController(OrderService orderService, OrderMapper orderMapper) {
         this.orderService = orderService;
+        this.orderMapper = orderMapper;
     }
 
     @GetMapping("/orders/{order_id}")
@@ -43,7 +46,7 @@ public class OrderController {
         httpHeaders.add("Location", "/orders/" + savedOrder.getId().toString());
 
         ResponseEntity responseEntity = new ResponseEntity<>(
-                orderDTO, httpHeaders, HttpStatus.CREATED
+                savedOrder, httpHeaders, HttpStatus.CREATED
         );
 
         return responseEntity;

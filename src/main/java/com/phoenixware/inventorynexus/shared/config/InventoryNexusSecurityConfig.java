@@ -48,6 +48,9 @@ public class InventoryNexusSecurityConfig {
                 .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofHours(8)))
                 .build();
 
+        var httpBasic = AuthorizationManagerFactories.multiFactor()
+                .requireFactor((f) -> f.passwordAuthority()).build();
+
 
         //TODO:
         // Change the access to request type to match that of the privilege system
@@ -59,7 +62,7 @@ public class InventoryNexusSecurityConfig {
                 .permitAll()
                 .requestMatchers( "/orders", "/orderitems", "/binlocations", "/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
                         , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**")
-                .access(basicMFA.hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN"))
+                .access(httpBasic.hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN"))
                 .requestMatchers("/admin/**", "/admin")
                 .access(adminMFA.hasRole("ADMIN"))
                 .requestMatchers("/users", "/users/**")

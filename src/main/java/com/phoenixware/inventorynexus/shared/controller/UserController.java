@@ -44,7 +44,13 @@ public class UserController {
                 HttpHeaders headers = new HttpHeaders();
                 headers.add("Location", "/users/" + registeredUser.getId());
 
-                return ResponseEntity.status(HttpStatus.CREATED).headers(headers).body("User created successfully");
+                ResponseEntity responseEntity = new ResponseEntity(
+                        "User Created Successfully",
+                        headers,
+                        HttpStatus.CREATED
+                );
+
+                return responseEntity;
             }
         } catch (Exception e) {
             log.error("Failed to register user", e);
