@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.shared.service;
 
-import com.phoenixware.inventorynexus.shared.dto.AppUserDTO;
+import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
 
 /**
  * Author:      Collin Short

@@ -1,5 +1,6 @@
-package com.phoenixware.inventorynexus.orders.dto;
+package com.phoenixware.inventorynexus.orders.dto.order;
 
+import com.phoenixware.inventorynexus.orders.dto.orderitem.OrderItemDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,7 +20,7 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDTO {
+public class OrderDetailedDTO {
     private UUID id;
     private List<OrderItemDTO> orderItems;
     private String name;

@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.shared.controller;
 
-import com.phoenixware.inventorynexus.shared.dto.AppUserDTO;
+import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
 import com.phoenixware.inventorynexus.shared.service.AppUserService;
 import com.phoenixware.inventorynexus.shared.util.CurrentUserService;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.inventory.dto;
+package com.phoenixware.inventorynexus.inventory.dto.productlocation;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,5 +10,5 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class TransactionDTO {
+public class ProductLocationDTO {
 }

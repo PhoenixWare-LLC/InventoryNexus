@@ -43,8 +43,8 @@ CREATE TABLE public.product
     sku VARCHAR(50) NOT NULL,
     price NUMERIC(10,2) NOT NULL,
     cost NUMERIC(10,2) NOT NULL,
-    upc INTEGER NOT NULL,
-    gs1 INTEGER NOT NULL,
+    upc VARCHAR(13),
+    gs1 VARCHAR(13),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
     modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -54,13 +54,13 @@ CREATE TABLE public.product
 
 CREATE TABLE public.order_item
 (
+    id                  uuid                            DEFAULT gen_random_uuid() NOT NULL,
     sku                 character varying(50)  NOT NULL,
     item_name           character varying(255) NOT NULL,
     quantity            integer                NOT NULL,
     base_price          numeric(10, 2)         NOT NULL,
     creation_timestamp  timestamp without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     fk_order_id          uuid,
-    id                  uuid                            DEFAULT gen_random_uuid() NOT NULL,
     fk_product_id uuid NOT NULL,
     CONSTRAINT fk_order_item_product_id FOREIGN KEY (fk_product_id) REFERENCES public.product(id),
     CONSTRAINT order_item_pkey PRIMARY KEY (id),

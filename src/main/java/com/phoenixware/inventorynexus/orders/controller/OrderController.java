@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
-import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import lombok.extern.slf4j.Slf4j;

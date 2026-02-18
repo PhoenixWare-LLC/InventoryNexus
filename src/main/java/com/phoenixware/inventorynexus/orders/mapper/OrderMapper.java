@@ -1,12 +1,10 @@
 package com.phoenixware.inventorynexus.orders.mapper;
 
-import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.Order;
 import com.phoenixware.inventorynexus.shared.mapper.BaseProductMapper;
-import org.mapstruct.BeanMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.*;
 
 /**
  * Author:      Collin Short
@@ -19,7 +17,12 @@ public interface OrderMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Order updateOrderFromOrderDTO(OrderDTO orderDTO, @MappingTarget Order order);
 
+    Order orderDetailedDtoToOrder(OrderDetailedDTO orderDetailedDTO);
+
+    OrderDetailedDTO orderToOrderDetailedDto(Order order);
+
     Order orderDtoToOrder(OrderDTO orderDTO);
 
+    @Mapping(target = "orderItems", ignore = true)
     OrderDTO orderToOrderDto(Order order);
 }

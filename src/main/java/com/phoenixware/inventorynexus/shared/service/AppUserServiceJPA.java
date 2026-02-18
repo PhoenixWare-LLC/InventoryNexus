@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.shared.service;
 
-import com.phoenixware.inventorynexus.shared.dto.AppUserDTO;
+import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;
 import com.phoenixware.inventorynexus.shared.mapper.AppUserMapper;

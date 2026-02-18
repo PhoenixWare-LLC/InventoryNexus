@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.service;
 
-import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
 
 import java.util.List;
 import java.util.UUID;

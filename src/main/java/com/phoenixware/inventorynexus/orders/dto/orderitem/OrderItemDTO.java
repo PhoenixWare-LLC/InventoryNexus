@@ -1,6 +1,7 @@
-package com.phoenixware.inventorynexus.orders.dto;
+package com.phoenixware.inventorynexus.orders.dto.orderitem;
 
-import com.phoenixware.inventorynexus.shared.dto.BaseProductDTO;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,10 +16,9 @@ import java.util.UUID;
  */
 @Data
 @Builder
+@JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "id")
 public class OrderItemDTO {
     private UUID id;
-    private OrderDTO order;
-    private BaseProductDTO product;
     private int viewableId;
     private int viewableOrderId;
     private String sku;

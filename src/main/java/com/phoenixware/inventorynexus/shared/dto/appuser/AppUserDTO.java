@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.shared.dto;
+package com.phoenixware.inventorynexus.shared.dto.appuser;
 
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;

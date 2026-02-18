@@ -1,6 +1,6 @@
-package com.phoenixware.inventorynexus.orders.dto;
+package com.phoenixware.inventorynexus.orders.dto.minimalproduct;
 
-import com.phoenixware.inventorynexus.shared.dto.BaseProductDTO;
+import com.phoenixware.inventorynexus.shared.dto.baseproduct.BaseProductDTO;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;

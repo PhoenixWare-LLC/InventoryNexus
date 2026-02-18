@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.service;
 
-import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
 import com.phoenixware.inventorynexus.orders.entity.Order;
 import com.phoenixware.inventorynexus.orders.exception.OrderNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;

@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
-import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

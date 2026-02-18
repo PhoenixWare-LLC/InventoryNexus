@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.shared.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.phoenixware.inventorynexus.orders.entity.OrderItem;
 import jakarta.persistence.*;
 import lombok.Data;
@@ -8,7 +9,6 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,7 +33,8 @@ public abstract class BaseProduct {
                     CascadeType.DETACH, CascadeType.REFRESH})
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    private List<OrderItem> orderItemList = new ArrayList<>();
+    @JsonManagedReference
+    private List<OrderItem> orderItems;
 
     @Column(name = "sku")
     private String sku;
@@ -45,10 +46,10 @@ public abstract class BaseProduct {
     private BigDecimal cost;
 
     @Column(name = "upc")
-    private int upc;
+    private String upc;
 
     @Column(name = "gs1")
-    private int gs1;
+    private String gs1;
 
     @Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime creationTimestamp;
@@ -63,14 +64,4 @@ public abstract class BaseProduct {
     // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
     @Column(name = "modified_by")
     private String modifiedBy;
-
-    public void add(OrderItem tempOrderItem) {
-        if (orderItemList == null) {
-            orderItemList = new ArrayList<>();
-        }
-
-        orderItemList.add(tempOrderItem);
-
-        tempOrderItem.setProduct(this);
-    }
 }

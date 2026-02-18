@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.shared.mapper;
 
-import com.phoenixware.inventorynexus.shared.dto.AppUserDTO;
+import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
 import com.phoenixware.inventorynexus.shared.entity.AppUser;
 import org.mapstruct.Mapper;
 
