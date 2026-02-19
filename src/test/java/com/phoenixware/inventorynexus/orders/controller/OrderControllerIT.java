@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
-import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.Order;
 import com.phoenixware.inventorynexus.orders.exception.OrderNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
@@ -44,12 +44,12 @@ class OrderControllerIT {
     @Rollback
     void putByIdOrderTest() {
         Order order = orderRepository.findAll().get(10);
-        OrderDTO orderDTO = orderMapper.orderToOrderDto(order);
-        orderDTO.setId(null);
+        OrderDetailedDTO orderDetailedDTO = orderMapper.orderToOrderDetailedDto(order);
+        orderDetailedDTO.setId(null);
         final String orderName = "UPDATED";
-        orderDTO.setName(orderName);
+        orderDetailedDTO.setName(orderName);
 
-        ResponseEntity responseEntity = orderController.putById(order.getId(), orderDTO);
+        ResponseEntity responseEntity = orderController.putById(order.getId(), orderDetailedDTO);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(202));
 
         Order updatedOrder = orderRepository.findById(order.getId()).get();
@@ -60,7 +60,7 @@ class OrderControllerIT {
     @Transactional
     @Test
     void saveNewOrderTest() {
-        OrderDTO orderDTO = OrderDTO.builder()
+        OrderDetailedDTO orderDetailedDTO = OrderDetailedDTO.builder()
                 .city("someCity")
                 .state("NY")
                 .name("Dave Ramsey")
@@ -69,7 +69,7 @@ class OrderControllerIT {
                 .total(BigDecimal.valueOf(69.99))
                 .postalCode("99911")
                 .build();
-        ResponseEntity responseEntity = orderController.create(orderDTO);
+        ResponseEntity responseEntity = orderController.create(orderDetailedDTO);
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatusCode.valueOf(201));
         assertThat(responseEntity.getHeaders().getLocation()).isNotNull();
 
@@ -91,14 +91,14 @@ class OrderControllerIT {
     void testGetById() {
         Order order = orderRepository.findAll().get(0);
 
-        OrderDTO dto = orderController.getById(order.getId());
+        OrderDetailedDTO dto = orderController.getById(order.getId());
 
         assertThat(dto).isNotNull();
     }
 
     @Test
     void testListOrders() {
-        List<OrderDTO> dtos = orderController.getAll();
+        List<OrderDetailedDTO> dtos = orderController.getAll();
 
         assertThat(dtos.size()).isEqualTo(21);
     }
@@ -109,12 +109,12 @@ class OrderControllerIT {
     void patchExistingOrder() {
         Order order = orderRepository.findAll().getFirst();
 
-        OrderDTO patchFields = OrderDTO.builder()
+        OrderDetailedDTO patchFields = OrderDetailedDTO.builder()
                 .name("Sandy Beaches")
                 .state("NY")
                 .build();
 
-        OrderDTO patchedOrder = orderMapper.orderToOrderDto(orderMapper.updateOrderFromOrderDTO(patchFields, order));
+        OrderDetailedDTO patchedOrder = orderMapper.orderToOrderDetailedDto(orderMapper.updateOrderFromOrderDetailedDTO(patchFields, order));
 
         ResponseEntity<?> responseEntity = orderController.patchById(order.getId(), patchFields);
 
@@ -128,7 +128,7 @@ class OrderControllerIT {
     @Test
     void testEmptyList() {
         orderRepository.deleteAll();
-        List<OrderDTO> dtos = orderController.getAll();
+        List<OrderDetailedDTO> dtos = orderController.getAll();
 
         assertThat(dtos.size()).isEqualTo(0);
 

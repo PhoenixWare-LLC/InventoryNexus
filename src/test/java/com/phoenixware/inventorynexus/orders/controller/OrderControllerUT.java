@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
-import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class OrderControllerUT {
     void putById_shouldReturn202AndUpdateName() {
         UUID orderId = UUID.randomUUID();
 
-        OrderDTO inputOrderDTO = OrderDTO.builder()
+        OrderDetailedDTO inputDetailedOrderDTO = OrderDetailedDTO.builder()
                 .id(null)
                 .name("Updated Order")
                 .city("Some city")
@@ -48,7 +48,7 @@ public class OrderControllerUT {
                 .trackingNumber("ahhh")
                 .build();
 
-        OrderDTO outputOrderDTO = OrderDTO.builder()
+        OrderDetailedDTO outputDetailedOrderDTO = OrderDetailedDTO.builder()
                 .id(orderId)
                 .name("Updated Order")
                 .city("Some city")
@@ -62,15 +62,15 @@ public class OrderControllerUT {
                 .trackingNumber("ahhh")
                 .build();
 
-        given(orderService.putById(orderId, inputOrderDTO)).willReturn(outputOrderDTO);
+        given(orderService.putById(orderId, inputDetailedOrderDTO)).willReturn(outputDetailedOrderDTO);
 
-        ResponseEntity<?> responseEntity = orderController.putById(orderId, inputOrderDTO);
+        ResponseEntity<?> responseEntity = orderController.putById(orderId, inputDetailedOrderDTO);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
         assertThat(responseEntity.getHeaders().getFirst("Location")).isEqualTo("/orders/" + orderId);
-        assertThat(responseEntity.getBody()).isEqualTo(outputOrderDTO);
+        assertThat(responseEntity.getBody()).isEqualTo(outputDetailedOrderDTO);
 
-        verify(orderService).putById(eq(orderId), eq(inputOrderDTO));
+        verify(orderService).putById(eq(orderId), eq(inputDetailedOrderDTO));
 
     }
 }
