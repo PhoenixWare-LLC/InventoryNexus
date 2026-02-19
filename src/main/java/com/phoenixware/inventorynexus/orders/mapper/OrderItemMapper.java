@@ -5,7 +5,6 @@ import com.phoenixware.inventorynexus.orders.dto.orderitem.OrderItemDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.OrderItem;
 import com.phoenixware.inventorynexus.shared.mapper.BaseProductMapper;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  * Author:      Collin Short
@@ -21,6 +20,5 @@ public interface OrderItemMapper {
 
     OrderItem orderItemDtoToOrderItem(OrderItemDTO orderItemDTO);
 
-    @Mapping(target = "order", ignore = true)
     OrderItemDTO orderItemToOrderItemDto(OrderItem orderItem);
 }

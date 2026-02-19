@@ -13,7 +13,6 @@ import com.phoenixware.inventorynexus.shared.dto.baseproduct.BaseProductDetailed
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import com.phoenixware.inventorynexus.shared.factory.BaseProductFactory;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.SubclassMapping;
 
@@ -44,6 +43,5 @@ public interface BaseProductMapper {
 
     @SubclassMapping(source = Product.class, target = ProductDTO.class)
     @SubclassMapping(source = MinimalProduct.class, target = MinimalProductDTO.class)
-    @Mapping(target = "orderItems", ignore = true)
     BaseProductDTO mapToDTO(BaseProduct product);
 }

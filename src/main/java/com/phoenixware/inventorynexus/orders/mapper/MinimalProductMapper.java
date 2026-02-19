@@ -4,7 +4,6 @@ import com.phoenixware.inventorynexus.orders.dto.minimalproduct.MinimalProductDT
 import com.phoenixware.inventorynexus.orders.dto.minimalproduct.MinimalProductDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.MinimalProduct;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 /**
  * Author:      Collin Short
@@ -20,7 +19,6 @@ public interface MinimalProductMapper {
 
     MinimalProduct mapFromDTO(MinimalProductDTO minimalProductDTO);
 
-    @Mapping(target = "orderItems", ignore = true)
     MinimalProductDTO mapToDTO(MinimalProduct minimalProduct);
 
 }
