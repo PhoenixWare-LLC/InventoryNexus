@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
-import com.phoenixware.inventorynexus.orders.dto.order.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import lombok.extern.slf4j.Slf4j;
@@ -29,18 +29,18 @@ public class OrderController {
     }
 
     @GetMapping("/orders/{order_id}")
-    public OrderDTO getById(@PathVariable("order_id") UUID orderId) {
+    public OrderDetailedDTO getById(@PathVariable("order_id") UUID orderId) {
         return orderService.getOrderById(orderId);
     }
 
     @GetMapping("/orders")
-    public List<OrderDTO> getAll() {
+    public List<OrderDetailedDTO> getAll() {
         return orderService.getAllOrders();
     }
 
     @PostMapping("/orders")
-    public ResponseEntity create(@RequestBody OrderDTO orderDTO) {
-        OrderDTO savedOrder = orderService.saveNewOrder(orderDTO);
+    public ResponseEntity create(@RequestBody OrderDetailedDTO orderDetailedDTO) {
+        OrderDetailedDTO savedOrder = orderService.saveNewOrder(orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/orders/" + savedOrder.getId().toString());
@@ -53,8 +53,8 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{order_id}")
-    public ResponseEntity putById(@PathVariable("order_id") UUID id, @RequestBody OrderDTO orderDTO) {
-        OrderDTO updatedOrder = orderService.putById(id, orderDTO);
+    public ResponseEntity putById(@PathVariable("order_id") UUID id, @RequestBody OrderDetailedDTO orderDetailedDTO) {
+        OrderDetailedDTO updatedOrder = orderService.putById(id, orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/orders/" + updatedOrder.getId());
@@ -67,8 +67,8 @@ public class OrderController {
     }
 
     @PatchMapping("/orders/{order_id}")
-    public ResponseEntity patchById(@PathVariable("order_id") UUID orderId, @RequestBody OrderDTO orderDTO) {
-        OrderDTO patchedOrder = orderService.patchOrderById(orderId, orderDTO);
+    public ResponseEntity patchById(@PathVariable("order_id") UUID orderId, @RequestBody OrderDetailedDTO orderDetailedDTO) {
+        OrderDetailedDTO patchedOrder = orderService.patchOrderById(orderId, orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/orders/" + patchedOrder.getId());

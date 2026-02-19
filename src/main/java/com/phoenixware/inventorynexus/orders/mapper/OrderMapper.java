@@ -17,6 +17,9 @@ public interface OrderMapper {
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Order updateOrderFromOrderDTO(OrderDTO orderDTO, @MappingTarget Order order);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Order updateOrderFromOrderDetailedDTO(OrderDetailedDTO orderDetailedDTO, @MappingTarget Order order);
+
     Order orderDetailedDtoToOrder(OrderDetailedDTO orderDetailedDTO);
 
     OrderDetailedDTO orderToOrderDetailedDto(Order order);
