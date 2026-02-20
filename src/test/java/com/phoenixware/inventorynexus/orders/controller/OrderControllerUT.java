@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
 import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
+import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class OrderControllerUT {
 
     @MockitoBean
     private OrderService orderService;
+
+    @MockitoBean
+    private OrderMapper orderMapper;
 
     @Test
     void putById_shouldReturn202AndUpdateName() {

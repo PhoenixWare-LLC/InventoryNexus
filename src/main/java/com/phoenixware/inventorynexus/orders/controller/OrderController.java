@@ -3,6 +3,7 @@ package com.phoenixware.inventorynexus.orders.controller;
 import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -19,14 +20,10 @@ import java.util.UUID;
  */
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
-
-    public OrderController(OrderService orderService, OrderMapper orderMapper) {
-        this.orderService = orderService;
-        this.orderMapper = orderMapper;
-    }
 
     @GetMapping("/orders/{order_id}")
     public OrderDetailedDTO getById(@PathVariable("order_id") UUID orderId) {
