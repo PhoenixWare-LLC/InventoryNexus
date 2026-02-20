@@ -27,27 +27,27 @@ import java.util.UUID;
  * Copyright:   Phoenixware LLC 2026
  * Created:     02/12/2026
  */
-@Profile("!prod")
+@Profile("prod")
 @Slf4j
 @Configuration
 @EnableWebSecurity(debug = false)
 @EnableMultiFactorAuthentication(authorities = {})
 @RequiredArgsConstructor
-public class InventoryNexusSecurityConfig {
+public class InventoryNexusProdSecurityConfig {
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
 
         // Set admin MFA for tasks that require additional privileges
         var adminMFA = AuthorizationManagerFactories.multiFactor()
-                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofDays(30)))
-                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofDays(30)))
+                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofHours(4)))
+                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofMinutes(30)))
                 .build();
 
         // Set basic MFA for endpoints to a full workday of 8 hours
         var basicMFA = AuthorizationManagerFactories.multiFactor()
-                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofDays(60)))
-                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofDays(60)))
+                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofHours(8)))
+                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofHours(8)))
                 .build();
 
         var httpBasic = AuthorizationManagerFactories.multiFactor()

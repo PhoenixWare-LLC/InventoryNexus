@@ -1,3 +1,4 @@
+spring.config.activate.on-profile=prod
 spring.datasource.url=${DATABASE_URL:jdbc:postgresql://host.docker.internal:5432/yourAwesomeDatabase}
 spring.datasource.username=${DATABASE_USERNAME:yourAwesomeUsername}
 spring.datasource.password=${DATABASE_PASSWORD:yourEquallyAwesomePassword}

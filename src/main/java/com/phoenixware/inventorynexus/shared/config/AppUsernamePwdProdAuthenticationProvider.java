@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -23,10 +24,10 @@ import java.util.LinkedHashSet;
  * Copyright:   Phoenixware LLC 2026
  * Created:     2/19/2026
  */
-@Profile("!prod")
+@Profile("prod")
 @Component
 @RequiredArgsConstructor
-public class AppUsernamePwdAuthenticationProvider implements AuthenticationProvider {
+public class AppUsernamePwdProdAuthenticationProvider implements AuthenticationProvider {
 
     private final AppUserDetailsService appUserDetailsService;
     private final PasswordEncoder passwordEncoder;
@@ -39,13 +40,15 @@ public class AppUsernamePwdAuthenticationProvider implements AuthenticationProvi
 
         UserDetails userDetails = appUserDetailsService.loadUserByUsername(username);
 
-        // additional logic would go here.
-        Collection<GrantedAuthority> authorities = new LinkedHashSet(this.authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
-        authorities.add(FactorGrantedAuthority.fromAuthority("FACTOR_PASSWORD"));
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(username, pwd, authorities);
-        return result;
-
-
+        if (passwordEncoder.matches(pwd, userDetails.getPassword())) {
+            // additional logic would go here.
+            Collection<GrantedAuthority> authorities = new LinkedHashSet(this.authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
+            authorities.add(FactorGrantedAuthority.fromAuthority("FACTOR_PASSWORD"));
+            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(username, pwd, authorities);
+            return result;
+        } else {
+            throw new BadCredentialsException("Invalid username or password!");
+        }
     }
 
     @Override
