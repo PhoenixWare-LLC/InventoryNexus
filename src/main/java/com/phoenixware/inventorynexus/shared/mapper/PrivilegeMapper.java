@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.shared.mapper;
 
-import com.phoenixware.inventorynexus.shared.dto.PrivilegeDTO;
+import com.phoenixware.inventorynexus.shared.dto.privilege.PrivilegeDTO;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import org.mapstruct.Mapper;
 

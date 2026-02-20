@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.orders.service;
 
-import com.phoenixware.inventorynexus.orders.dto.OrderDTO;
+import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,19 +11,19 @@ import java.util.UUID;
  * Created:     1/19/2026
  */
 public interface OrderService {
-    List<OrderDTO> getUnshippedOrders();
+    List<OrderDetailedDTO> getUnshippedOrders();
 
-    List<OrderDTO> getAllOrders();
+    List<OrderDetailedDTO> getAllOrders();
 
-    OrderDTO getOrderById(UUID id);
+    OrderDetailedDTO getOrderById(UUID id);
 
-    OrderDTO patchOrderById(UUID orderId, OrderDTO orderDTO);
+    OrderDetailedDTO patchOrderById(UUID orderId, OrderDetailedDTO orderDetailedDTO);
 
     void deleteById(UUID orderId);
 
-    OrderDTO putById(UUID orderId, OrderDTO orderDTO);
+    OrderDetailedDTO putById(UUID orderId, OrderDetailedDTO orderDetailedDTO);
 
-    OrderDTO saveNewOrder(OrderDTO orderDTO);
+    OrderDetailedDTO saveNewOrder(OrderDetailedDTO orderDetailedDTO);
 
 
 }

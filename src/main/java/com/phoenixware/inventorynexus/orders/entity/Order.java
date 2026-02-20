@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.orders.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -28,10 +29,8 @@ public class Order {
 
     @OneToMany(mappedBy = "order", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
+    @JsonManagedReference
     private List<OrderItem> orderItems;
-
-    @Column(name = "id_viewable")
-    private int viewableId;
 
     @Column(name = "name")
     private String name;

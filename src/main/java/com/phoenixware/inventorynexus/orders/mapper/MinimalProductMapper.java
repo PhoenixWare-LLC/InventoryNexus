@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.orders.mapper;
 
-import com.phoenixware.inventorynexus.orders.dto.MinimalProductDTO;
+import com.phoenixware.inventorynexus.orders.dto.minimalproduct.MinimalProductDTO;
+import com.phoenixware.inventorynexus.orders.dto.minimalproduct.MinimalProductDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.MinimalProduct;
 import org.mapstruct.Mapper;
 
@@ -12,8 +13,12 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface MinimalProductMapper {
 
-    MinimalProduct minimalProductDtoToMinimalProduct(MinimalProductDTO minimalProductDTO);
+    MinimalProduct mapFromDetailedDTO(MinimalProductDetailedDTO minimalProductDetailedDTO);
 
-    MinimalProductDTO minimalProductToMinimalProductDto(MinimalProduct minimalProduct);
+    MinimalProductDetailedDTO mapToDetailedDTO(MinimalProduct minimalProduct);
+
+    MinimalProduct mapFromDTO(MinimalProductDTO minimalProductDTO);
+
+    MinimalProductDTO mapToDTO(MinimalProduct minimalProduct);
 
 }

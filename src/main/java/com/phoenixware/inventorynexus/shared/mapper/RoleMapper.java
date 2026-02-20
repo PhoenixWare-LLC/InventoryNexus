@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.shared.mapper;
 
-import com.phoenixware.inventorynexus.shared.dto.RoleDTO;
+import com.phoenixware.inventorynexus.shared.dto.role.RoleDTO;
 import com.phoenixware.inventorynexus.shared.entity.Role;
 import org.mapstruct.Mapper;
 

@@ -1,9 +1,11 @@
-package com.phoenixware.inventorynexus.shared.dto;
+package com.phoenixware.inventorynexus.shared.dto.appuser;
 
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.Set;
@@ -16,6 +18,8 @@ import java.util.UUID;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class AppUserDTO {
     private UUID id;
     private Set<Role> userRoles;

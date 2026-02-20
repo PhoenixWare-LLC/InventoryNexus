@@ -1,5 +1,5 @@
-spring.application.name=${SPRING_APP_NAME:InventoryNexus}
-server.port=8081
+spring.application.name=${SPRING_APP_NAME:inventorynexus}
+
 #
 # expose the /info endpoint and /health endpoint
 #
@@ -18,15 +18,9 @@ info.app.name=${APP_NAME:InventoryNexus}
 info.app.version=${APP_VERSION:0.1.1}
 info.app.description=${APP_DESCRIPTION:The backend to the shopify integration application that performs business logic, performs API calls to Shopify and stores the data in a database.}
 
-spring.datasource.url=${DATABASE_URL:jdbc:postgresql://localhost:5432/postgres}
-spring.datasource.username=${DATABASE_USERNAME:My_Massive_Backend}
-spring.datasource.password=${DATABASE_PASSWORD:An_Equally_Massive_Password}
-
 #
 # set the default admin username and password
 #
-spring.security.user.name=${SECURITY_USERNAME:Finch}
-spring.security.user.password=${SECURITY_PASSWORD:devFinch}
 logging.level.org.springframework.security=${SPRING_SECURITY_LOG_LEVEL:TRACE}
 
 
@@ -47,3 +41,8 @@ logging.level.root=WARN
 #Adjust how the logging it output.
 #
 logging.pattern.console = ${LOGPATTERN_CONSOLE:%green(%d{HH:mm:ss.SSS}) %blue(%-5level) %red([%thread]) %yellow(%logger{15}) - %msg%n}
+
+#
+# Set prod environment to be default
+#
+spring.profiles.active=prod

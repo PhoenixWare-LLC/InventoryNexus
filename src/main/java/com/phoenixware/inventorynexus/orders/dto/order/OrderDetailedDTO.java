@@ -1,7 +1,10 @@
-package com.phoenixware.inventorynexus.orders.dto;
+package com.phoenixware.inventorynexus.orders.dto.order;
 
+import com.phoenixware.inventorynexus.orders.dto.orderitem.OrderItemDTO;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -15,10 +18,11 @@ import java.util.UUID;
  */
 @Data
 @Builder
-public class OrderDTO {
+@NoArgsConstructor
+@AllArgsConstructor
+public class OrderDetailedDTO {
     private UUID id;
     private List<OrderItemDTO> orderItems;
-    private int viewableId;
     private String name;
     private String street1;
     private String street2;

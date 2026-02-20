@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.orders.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import jakarta.persistence.*;
 import lombok.*;
@@ -29,18 +30,14 @@ public class OrderItem {
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
             CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "fk_order_id")
+    @JsonBackReference
     private Order order;
-
-    @Column(name = "id_viewable")
-    private int viewableId;
-
-    @Column(name = "order_id_viewable")
-    private int viewableOrderId;
 
 
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE,
     CascadeType.DETACH, CascadeType.REFRESH})
     @JoinColumn(name = "fk_product_id")
+    @JsonBackReference
     private BaseProduct product;
 
     @Column(name = "sku")

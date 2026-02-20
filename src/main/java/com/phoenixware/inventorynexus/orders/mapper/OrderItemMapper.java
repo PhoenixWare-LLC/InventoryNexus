@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.orders.mapper;
 
-import com.phoenixware.inventorynexus.orders.dto.OrderItemDTO;
+import com.phoenixware.inventorynexus.orders.dto.orderitem.OrderItemDTO;
+import com.phoenixware.inventorynexus.orders.dto.orderitem.OrderItemDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.OrderItem;
 import com.phoenixware.inventorynexus.shared.mapper.BaseProductMapper;
 import org.mapstruct.Mapper;
@@ -12,6 +13,10 @@ import org.mapstruct.Mapper;
  */
 @Mapper(uses = BaseProductMapper .class)
 public interface OrderItemMapper {
+
+    OrderItem orderItemDetailedDtoToOrderItem(OrderItemDetailedDTO orderItemDetailedDTO);
+
+    OrderItemDetailedDTO orderItemToOrderItemDetailedDto(OrderItem orderItem);
 
     OrderItem orderItemDtoToOrderItem(OrderItemDTO orderItemDTO);
 
