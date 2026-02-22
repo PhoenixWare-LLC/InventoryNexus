@@ -29,4 +29,4 @@ logging.level.org.springframework.vault=WARN
 #
 # Port
 #
-server.port=8081
+server.port=8080
