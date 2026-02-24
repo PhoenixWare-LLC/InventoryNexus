@@ -97,6 +97,9 @@ public class InventoryNexusProdSecurityConfig {
                 )
                 .anyRequest().authenticated());
 
+        // require https
+        http.redirectToHttps(Customizer.withDefaults());
+
         // get that outta here.
         http.csrf(csrf -> csrf.disable());
 
