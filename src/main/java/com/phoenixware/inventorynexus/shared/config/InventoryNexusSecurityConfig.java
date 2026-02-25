@@ -91,6 +91,18 @@ public class InventoryNexusSecurityConfig {
                                 hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN")
                 )
 
+                // api calls
+                .requestMatchers(
+                        "/api/**"
+                ).access(
+                        httpBasic
+                                .hasAnyRole(
+                                        "EMPLOYEE",
+                                        "MANAGER",
+                                        "ADMIN"
+                                )
+                )
+
                 // admin panels
                 .requestMatchers("/admin/**", "/admin")
                 .access(adminMFA.hasRole("ADMIN"))
@@ -123,7 +135,9 @@ public class InventoryNexusSecurityConfig {
         // To disable http basic (very basic API authentication)
         // Disable below as I am going to implement OAuth2.0
 //        // http.httpBasic(hbc -> hbc.disable());
-        http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
+        http.httpBasic(hbc -> hbc
+                .authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint())
+        );
 
 
         return http.build();

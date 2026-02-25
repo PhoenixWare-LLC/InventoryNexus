@@ -88,7 +88,23 @@ public class InventoryNexusProdSecurityConfig {
                 ).access(
                         // require basic mfa, longer credential validity
                         basicMFA.
-                                hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN")
+                                hasAnyRole(
+                                        "EMPLOYEE",
+                                        "MANAGER",
+                                        "ADMIN"
+                                )
+                )
+
+                // api calls
+                .requestMatchers(
+                        "/api/**"
+                ).access(
+                        httpBasic
+                                .hasAnyRole(
+                                        "EMPLOYEE",
+                                        "MANAGER",
+                                        "ADMIN"
+                                )
                 )
 
                 // admin panels
