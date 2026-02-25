@@ -23,7 +23,7 @@ public class OttSuccessHandler implements OneTimeTokenGenerationSuccessHandler {
 
     private static final Logger log = LoggerFactory.getLogger(OttSuccessHandler.class);
 
-    private final OneTimeTokenGenerationSuccessHandler redirectHandler = new RedirectOneTimeTokenGenerationSuccessHandler("/ott/sent");
+    private final OneTimeTokenGenerationSuccessHandler redirectHandler = new RedirectOneTimeTokenGenerationSuccessHandler("/login/ott");
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response, OneTimeToken oneTimeToken) throws IOException, ServletException {
