@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.ott.OneTimeTokenService;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.authorization.AuthorizationDecision;
+import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.authorization.AuthorizationManagerFactories;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authorization.EnableMultiFactorAuthentication;
@@ -18,6 +19,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 
 import java.time.Duration;
@@ -41,14 +43,22 @@ public class InventoryNexusSecurityConfig {
 
         // Set admin MFA for tasks that require additional privileges
         var adminMFA = AuthorizationManagerFactories.multiFactor()
-                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofDays(30)))
-                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofDays(30)))
+                .requireFactor((f) -> f
+                        .passwordAuthority()
+                        .validDuration(Duration.ofDays(30)))
+                .requireFactor((f) -> f
+                        .ottAuthority()
+                        .validDuration(Duration.ofDays(30)))
                 .build();
 
         // Set basic MFA for endpoints to a full workday of 8 hours
         var basicMFA = AuthorizationManagerFactories.multiFactor()
-                .requireFactor((f) -> f.passwordAuthority().validDuration(Duration.ofDays(60)))
-                .requireFactor((f) -> f.ottAuthority().validDuration(Duration.ofDays(60)))
+                .requireFactor((f) -> f
+                        .passwordAuthority()
+                        .validDuration(Duration.ofDays(60)))
+                .requireFactor((f) -> f
+                        .ottAuthority()
+                        .validDuration(Duration.ofDays(60)))
                 .build();
 
         var httpBasic = AuthorizationManagerFactories.multiFactor()
@@ -61,47 +71,43 @@ public class InventoryNexusSecurityConfig {
         // Admins that are marked as such on the user, have SuperAdmin privileges
         // Setup different requirements for different endpoints, with different security requirements.
         http.authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/", "/about", "/contact", "/faq", "/error", "/ott/**")
-                .permitAll()
-                .requestMatchers( "/orders", "/orderitems", "/binlocations", "/parentproducts", "/shipments", "/shipmentpackages", "/transactions"
-                        , "/orders/**", "/orderitems/**", "/binlocations/**", "/parentproducts/**", "/shipments/**", "/shipmentpackages/**", "/transactions/**")
-                .access(httpBasic.hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN"))
+                // public endpoints
+                .requestMatchers(
+                        "/", "/about", "/contact", "/faq", "/error", "/ott/**"
+                ).permitAll()
+
+                // employee endpoints
+                .requestMatchers(
+                        "/orders", "/orders/**",
+                        "/orderitems", "/orderitems/**",
+                        "/binlocations", "/binlocations/**",
+                        "/parentproducts", "/parentproducts/**",
+                        "/shipments", "/shipments/**",
+                        "/shipmentpackages", "/shipmentpackages/**",
+                        "/transactions", "/transactions/**"
+                ).access(
+                        // require basic mfa, longer credential validity
+                        basicMFA.
+                                hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN")
+                )
+
+                // admin panels
                 .requestMatchers("/admin/**", "/admin")
                 .access(adminMFA.hasRole("ADMIN"))
+
+                // user self management. or admin user administration
                 .requestMatchers("/users", "/users/**")
-                .access((auth, context) -> {
-                            Authentication authentication = auth.get();
-                            Object principal = authentication.getPrincipal();
+                .access(userSelfAccessOrAdmin())
 
-                            if (!(principal instanceof AppUserDetails appUserDetails)) {
-                                return new AuthorizationDecision(false);
-                            }
-                            String path = context.getRequest().getRequestURI();
-                            String pathUserId = path.substring(path.lastIndexOf("/") + 1);
-
-                            String httpMethod = context.getRequest().getMethod();
-
-                            boolean isAdmin = appUserDetails.getAppUser().isAdmin();
-                            if (!isAdmin) {
-                                isAdmin = appUserDetails.getAppUser().getUserRoles()
-                                        .stream()
-                                        .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
-                            }
-
-                            UUID currentUserId = appUserDetails.getAppUser().getId();
-
-
-                            return new AuthorizationDecision(isAdmin || (currentUserId.toString().equals(pathUserId) && !httpMethod.equals("DELETE")));
-
-                        }
-
-                )
+                // everything else requires authentication (default deny)
                 .anyRequest().authenticated());
 
         // TODO: add feature in here for session timeout based on endpoints/role
 
-        // set max sessions to 2...
-        http.sessionManagement(smc -> smc.maximumSessions(5).maxSessionsPreventsLogin(true));
+        http.sessionManagement(smc -> smc
+                .sessionFixation().changeSessionId()                                         // mitigate session fixation attacks
+                .maximumSessions(2).maxSessionsPreventsLogin(true)              // set max sessions to 2
+        );
 
         // get that outta here.
         http.csrf(csrf -> csrf.disable());
@@ -121,6 +127,37 @@ public class InventoryNexusSecurityConfig {
 
 
         return http.build();
+    }
+
+
+    private AuthorizationManager<RequestAuthorizationContext> userSelfAccessOrAdmin() {
+        return (auth, context) -> {
+            {
+                Authentication authentication = auth.get();
+                Object principal = authentication.getPrincipal();
+
+                if (!(principal instanceof AppUserDetails appUserDetails)) {
+                    return new AuthorizationDecision(false);
+                }
+                String path = context.getRequest().getRequestURI();
+                String pathUserId = path.substring(path.lastIndexOf("/") + 1);
+
+                String httpMethod = context.getRequest().getMethod();
+
+                boolean isAdmin = appUserDetails.getAppUser().isAdmin();
+                if (!isAdmin) {
+                    isAdmin = appUserDetails.getAppUser().getUserRoles()
+                            .stream()
+                            .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+                }
+
+                UUID currentUserId = appUserDetails.getAppUser().getId();
+
+
+                return new AuthorizationDecision(isAdmin || (currentUserId.toString().equals(pathUserId) && !httpMethod.equals("DELETE")));
+
+            }
+        };
     }
 
     @Bean
