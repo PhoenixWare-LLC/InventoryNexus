@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.shared.config;
 
+import com.phoenixware.inventorynexus.shared.exception.CustomBasicAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
@@ -114,7 +115,7 @@ public class InventoryNexusProdSecurityConfig {
         // To disable http basic (very basic API authentication)
         // Disable below as I am going to implement OAuth2.0
         // http.httpBasic(hbc -> hbc.disable());
-        http.httpBasic(Customizer.withDefaults());
+        http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
 
 
         return http.build();
