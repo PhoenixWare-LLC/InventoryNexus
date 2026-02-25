@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.shared.config;
 
+import com.phoenixware.inventorynexus.shared.exception.CustomAccessDeniedHandler;
 import com.phoenixware.inventorynexus.shared.exception.CustomBasicAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -113,6 +114,7 @@ public class InventoryNexusSecurityConfig {
         // Disable below as I am going to implement OAuth2.0
         // http.httpBasic(hbc -> hbc.disable());
         http.httpBasic(hbc -> hbc.authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
+        http.exceptionHandling(ehc -> ehc.accessDeniedHandler(new CustomAccessDeniedHandler()));
 
 
         return http.build();
