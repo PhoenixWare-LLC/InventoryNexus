@@ -99,6 +99,11 @@ public class InventoryNexusProdSecurityConfig {
                 )
                 .anyRequest().authenticated());
 
+        // TODO: add feature in here for session timeout based on endpoints/role
+
+        // set max sessions to 2...
+        http.sessionManagement(smc -> smc.maximumSessions(2).maxSessionsPreventsLogin(true));
+
         // require https
         http.redirectToHttps(Customizer.withDefaults());
 
