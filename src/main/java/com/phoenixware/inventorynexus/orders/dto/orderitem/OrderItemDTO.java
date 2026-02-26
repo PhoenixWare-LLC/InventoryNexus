@@ -19,8 +19,6 @@ import java.util.UUID;
 @JsonIdentityInfo(generator = ObjectIdGenerators.UUIDGenerator.class, property = "id")
 public class OrderItemDTO {
     private UUID id;
-    private int viewableId;
-    private int viewableOrderId;
     private String sku;
     private String title;
     private BigDecimal price;
