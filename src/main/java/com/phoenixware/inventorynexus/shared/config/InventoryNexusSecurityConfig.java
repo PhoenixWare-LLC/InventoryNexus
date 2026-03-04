@@ -1,8 +1,10 @@
 package com.phoenixware.inventorynexus.shared.config;
 
 import com.phoenixware.inventorynexus.shared.exception.CustomBasicAuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,8 +21,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -104,6 +109,21 @@ public class InventoryNexusSecurityConfig {
 
                 // everything else requires authentication (default deny)
                 .anyRequest().authenticated());
+
+        http.cors(cors -> {
+            cors.configurationSource(new CorsConfigurationSource() {
+                @Override
+                public @Nullable CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                    CorsConfiguration corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                    corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
+                    corsConfiguration.setAllowCredentials(true);
+                    corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+                    corsConfiguration.setMaxAge(3600L);
+                    return corsConfiguration;
+                }
+            });
+        });
 
         // TODO: add feature in here for session timeout based on endpoints/role
 

@@ -1,8 +1,10 @@
 package com.phoenixware.inventorynexus.shared.config;
 
 import com.phoenixware.inventorynexus.shared.exception.CustomBasicAuthenticationEntryPoint;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.jspecify.annotations.Nullable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -19,8 +21,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
 import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.time.Duration;
+import java.util.Collections;
 import java.util.UUID;
 
 /**
@@ -109,6 +114,21 @@ public class InventoryNexusProdSecurityConfig {
                 // everything else requires authentication (default deny)
                 .anyRequest().authenticated());
 
+        http.cors(cors -> {
+            cors.configurationSource(new CorsConfigurationSource() {
+                @Override
+                public @Nullable CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
+                    CorsConfiguration corsConfiguration = new CorsConfiguration();
+                    corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                    corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
+                    corsConfiguration.setAllowCredentials(true);
+                    corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+                    corsConfiguration.setMaxAge(3600L);
+                    return corsConfiguration;
+                }
+            });
+        });
+
         // TODO: add feature in here for session timeout based on endpoints/role
 
         http.sessionManagement(smc -> smc
@@ -132,31 +152,28 @@ public class InventoryNexusProdSecurityConfig {
 
     private AuthorizationManager<RequestAuthorizationContext> userSelfAccessOrAdmin() {
         return (auth, context) -> {
-            {
-                Authentication authentication = auth.get();
-                Object principal = authentication.getPrincipal();
+            Authentication authentication = auth.get();
+            Object principal = authentication.getPrincipal();
 
-                if (!(principal instanceof AppUserDetails appUserDetails)) {
-                    return new AuthorizationDecision(false);
-                }
-                String path = context.getRequest().getRequestURI();
-                String pathUserId = path.substring(path.lastIndexOf("/") + 1);
-
-                String httpMethod = context.getRequest().getMethod();
-
-                boolean isAdmin = appUserDetails.getAppUser().isAdmin();
-                if (!isAdmin) {
-                    isAdmin = appUserDetails.getAppUser().getUserRoles()
-                            .stream()
-                            .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
-                }
-
-                UUID currentUserId = appUserDetails.getAppUser().getId();
-
-
-                return new AuthorizationDecision(isAdmin || (currentUserId.toString().equals(pathUserId) && !httpMethod.equals("DELETE")));
-
+            if (!(principal instanceof AppUserDetails appUserDetails)) {
+                return new AuthorizationDecision(false);
             }
+            String path = context.getRequest().getRequestURI();
+            String pathUserId = path.substring(path.lastIndexOf("/") + 1);
+
+            String httpMethod = context.getRequest().getMethod();
+
+            boolean isAdmin = appUserDetails.getAppUser().isAdmin();
+            if (!isAdmin) {
+                isAdmin = appUserDetails.getAppUser().getUserRoles()
+                        .stream()
+                        .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+            }
+
+            UUID currentUserId = appUserDetails.getAppUser().getId();
+
+
+            return new AuthorizationDecision(isAdmin || (currentUserId.toString().equals(pathUserId) && !httpMethod.equals("DELETE")));
         };
     }
 
