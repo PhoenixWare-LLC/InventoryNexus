@@ -133,31 +133,31 @@ public class InventoryNexusSecurityConfig {
 
     private AuthorizationManager<RequestAuthorizationContext> userSelfAccessOrAdmin() {
         return (auth, context) -> {
-            {
-                Authentication authentication = auth.get();
-                Object principal = authentication.getPrincipal();
 
-                if (!(principal instanceof AppUserDetails appUserDetails)) {
-                    return new AuthorizationDecision(false);
-                }
-                String path = context.getRequest().getRequestURI();
-                String pathUserId = path.substring(path.lastIndexOf("/") + 1);
+            Authentication authentication = auth.get();
+            Object principal = authentication.getPrincipal();
 
-                String httpMethod = context.getRequest().getMethod();
-
-                boolean isAdmin = appUserDetails.getAppUser().isAdmin();
-                if (!isAdmin) {
-                    isAdmin = appUserDetails.getAppUser().getUserRoles()
-                            .stream()
-                            .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
-                }
-
-                UUID currentUserId = appUserDetails.getAppUser().getId();
-
-
-                return new AuthorizationDecision(isAdmin || (currentUserId.toString().equals(pathUserId) && !httpMethod.equals("DELETE")));
-
+            if (!(principal instanceof AppUserDetails appUserDetails)) {
+                return new AuthorizationDecision(false);
             }
+            String path = context.getRequest().getRequestURI();
+            String pathUserId = path.substring(path.lastIndexOf("/") + 1);
+
+            String httpMethod = context.getRequest().getMethod();
+
+            boolean isAdmin = appUserDetails.getAppUser().isAdmin();
+            if (!isAdmin) {
+                isAdmin = appUserDetails.getAppUser().getUserRoles()
+                        .stream()
+                        .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+            }
+
+            UUID currentUserId = appUserDetails.getAppUser().getId();
+
+
+            return new AuthorizationDecision(isAdmin || (currentUserId.toString().equals(pathUserId) && !httpMethod.equals("DELETE")));
+
+
         };
     }
 

@@ -8,11 +8,9 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.FactorGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
@@ -29,7 +27,6 @@ import java.util.LinkedHashSet;
 public class AppUsernamePwdAuthenticationProvider implements AuthenticationProvider {
 
     private final AppUserDetailsService appUserDetailsService;
-    private final PasswordEncoder passwordEncoder;
     private final GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
@@ -41,8 +38,7 @@ public class AppUsernamePwdAuthenticationProvider implements AuthenticationProvi
 
         // additional logic would go here.
         Collection<GrantedAuthority> authorities = new LinkedHashSet(this.authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
-        authorities.add(FactorGrantedAuthority.fromAuthority("FACTOR_PASSWORD"));
-        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(username, pwd, authorities);
+        UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(userDetails, pwd, authorities);
         return result;
 
 
