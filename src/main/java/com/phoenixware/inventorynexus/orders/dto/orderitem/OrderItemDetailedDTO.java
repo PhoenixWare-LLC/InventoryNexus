@@ -23,8 +23,6 @@ public class OrderItemDetailedDTO {
     private UUID id;
     private OrderDTO orderDTO;
     private BaseProductDTO baseProductDTO;
-    private int viewableId;
-    private int viewableOrderId;
     private String sku;
     private String title;
     private BigDecimal price;

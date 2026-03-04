@@ -9,7 +9,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.FactorGrantedAuthority;
 import org.springframework.security.core.authority.mapping.GrantedAuthoritiesMapper;
 import org.springframework.security.core.authority.mapping.NullAuthoritiesMapper;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -43,8 +42,7 @@ public class AppUsernamePwdProdAuthenticationProvider implements AuthenticationP
         if (passwordEncoder.matches(pwd, userDetails.getPassword())) {
             // additional logic would go here.
             Collection<GrantedAuthority> authorities = new LinkedHashSet(this.authoritiesMapper.mapAuthorities(userDetails.getAuthorities()));
-            authorities.add(FactorGrantedAuthority.fromAuthority("FACTOR_PASSWORD"));
-            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(username, pwd, authorities);
+            UsernamePasswordAuthenticationToken result = new UsernamePasswordAuthenticationToken(userDetails, pwd, authorities);
             return result;
         } else {
             throw new BadCredentialsException("Invalid username or password!");

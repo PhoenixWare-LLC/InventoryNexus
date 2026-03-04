@@ -3,6 +3,7 @@ package com.phoenixware.inventorynexus.shared.service;
 import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;
+import com.phoenixware.inventorynexus.shared.exception.UserNotFoundException;
 import com.phoenixware.inventorynexus.shared.mapper.AppUserMapper;
 import com.phoenixware.inventorynexus.shared.repository.AppUserRepository;
 import com.phoenixware.inventorynexus.shared.repository.PrivilegeRepository;
@@ -59,5 +60,10 @@ public class AppUserServiceJPA implements AppUserService {
         return appUserMapper.appUserToAppUserDto(
                 appUserRepository.save(
                         appUserMapper.appUserDtoToAppUser(appUserDTO)));
+    }
+
+    @Override
+    public AppUserDTO getAppUser(String username) {
+        return appUserMapper.appUserToAppUserDto(appUserRepository.findByUsername(username).orElseThrow(UserNotFoundException::new));
     }
 }

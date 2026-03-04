@@ -9,4 +9,5 @@ import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
  */
 public interface AppUserService {
     AppUserDTO createAppUser(AppUserDTO appUserDTO);
+    AppUserDTO getAppUser(String username);
 }
