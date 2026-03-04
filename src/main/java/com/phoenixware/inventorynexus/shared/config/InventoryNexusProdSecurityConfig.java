@@ -6,13 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.ott.OneTimeTokenService;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.authorization.AuthorizationManagerFactories;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authorization.EnableMultiFactorAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -34,7 +32,6 @@ import java.util.UUID;
 @Slf4j
 @Configuration
 @EnableWebSecurity(debug = false)
-@EnableMultiFactorAuthentication(authorities = {})
 @RequiredArgsConstructor
 public class InventoryNexusProdSecurityConfig {
 
@@ -46,18 +43,12 @@ public class InventoryNexusProdSecurityConfig {
                 .requireFactor((f) -> f
                         .passwordAuthority()
                         .validDuration(Duration.ofHours(4)))
-                .requireFactor((f) -> f
-                        .ottAuthority()
-                        .validDuration(Duration.ofMinutes(30)))
                 .build();
 
         // Set basic MFA for endpoints to a full workday of 8 hours
         var basicMFA = AuthorizationManagerFactories.multiFactor()
                 .requireFactor((f) -> f
                         .passwordAuthority()
-                        .validDuration(Duration.ofHours(8)))
-                .requireFactor((f) -> f
-                        .ottAuthority()
                         .validDuration(Duration.ofHours(8)))
                 .build();
 
@@ -133,8 +124,6 @@ public class InventoryNexusProdSecurityConfig {
 
         http.formLogin(Customizer.withDefaults());
 
-        http.oneTimeTokenLogin(Customizer.withDefaults());
-
         http.httpBasic(hbc -> hbc
                 .authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint()));
 
@@ -169,13 +158,6 @@ public class InventoryNexusProdSecurityConfig {
 
             }
         };
-    }
-
-    @Bean
-    public OneTimeTokenService oneTimeTokenService() {
-        PinOneTimeTokenService service = new PinOneTimeTokenService();
-        service.setTokenExpiresIn(Duration.ofMinutes(3));
-        return service;
     }
 
     @Bean

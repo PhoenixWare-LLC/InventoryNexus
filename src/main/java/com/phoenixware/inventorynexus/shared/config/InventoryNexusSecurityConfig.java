@@ -6,13 +6,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.ott.OneTimeTokenService;
 import org.springframework.security.authentication.password.CompromisedPasswordChecker;
 import org.springframework.security.authorization.AuthorizationDecision;
 import org.springframework.security.authorization.AuthorizationManager;
 import org.springframework.security.authorization.AuthorizationManagerFactories;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.authorization.EnableMultiFactorAuthentication;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.Authentication;
@@ -34,7 +32,6 @@ import java.util.UUID;
 @Slf4j
 @Configuration
 @EnableWebSecurity(debug = false)
-@EnableMultiFactorAuthentication(authorities = {})
 @RequiredArgsConstructor
 public class InventoryNexusSecurityConfig {
 
@@ -46,18 +43,12 @@ public class InventoryNexusSecurityConfig {
                 .requireFactor((f) -> f
                         .passwordAuthority()
                         .validDuration(Duration.ofDays(30)))
-                .requireFactor((f) -> f
-                        .ottAuthority()
-                        .validDuration(Duration.ofDays(30)))
                 .build();
 
         // Set basic MFA for endpoints to a full workday of 8 hours
         var basicMFA = AuthorizationManagerFactories.multiFactor()
                 .requireFactor((f) -> f
                         .passwordAuthority()
-                        .validDuration(Duration.ofDays(60)))
-                .requireFactor((f) -> f
-                        .ottAuthority()
                         .validDuration(Duration.ofDays(60)))
                 .build();
 
@@ -128,10 +119,6 @@ public class InventoryNexusSecurityConfig {
         //http.formLogin(flc -> flc.disable());
         http.formLogin(Customizer.withDefaults());
 
-        // To disable MFA via oneTimeTokenLogin
-        // http.oneTimeTokenLogin(ott -> ott.disable());
-        http.oneTimeTokenLogin(Customizer.withDefaults());
-
         // To disable http basic (very basic API authentication)
         // Disable below as I am going to implement OAuth2.0
 //        // http.httpBasic(hbc -> hbc.disable());
@@ -172,13 +159,6 @@ public class InventoryNexusSecurityConfig {
 
             }
         };
-    }
-
-    @Bean
-    public OneTimeTokenService oneTimeTokenService() {
-        PinOneTimeTokenService service = new PinOneTimeTokenService();
-        service.setTokenExpiresIn(Duration.ofMinutes(3));
-        return service;
     }
 
     @Bean
