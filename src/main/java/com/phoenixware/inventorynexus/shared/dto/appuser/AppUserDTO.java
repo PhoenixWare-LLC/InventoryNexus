@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.shared.dto.appuser;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,7 @@ public class AppUserDTO {
     private Set<Privilege> userPrivileges;
     private String email;
     private String username;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private boolean active = false;
     private boolean admin = false;

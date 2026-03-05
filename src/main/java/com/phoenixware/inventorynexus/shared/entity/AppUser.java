@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.shared.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -53,6 +54,8 @@ public class AppUser {
     private String username;  // often defaults to email
 
     @Column(nullable = false, length = 128)
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;  // hashed
 
     @Column(nullable = false)
