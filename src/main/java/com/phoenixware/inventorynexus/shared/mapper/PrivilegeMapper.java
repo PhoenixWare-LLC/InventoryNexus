@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.shared.mapper;
 
 import com.phoenixware.inventorynexus.shared.dto.privilege.PrivilegeDTO;
+import com.phoenixware.inventorynexus.shared.dto.privilege.PrivilegeDetailedDTO;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import org.mapstruct.Mapper;
 
@@ -14,4 +15,9 @@ public interface PrivilegeMapper {
     Privilege privilegeDtoToPrivilege(PrivilegeDTO privilegeDTO);
 
     PrivilegeDTO privilegeToPrivilegeDto(Privilege privilege);
+
+    PrivilegeDetailedDTO privilegeToPrivilegeDetailedDto(Privilege privilege);
+
+    Privilege privilegeDetailedDtoToPrivilege(PrivilegeDetailedDTO privilegeDetailedDTO);
+
 }

@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
+import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDetailedDTO;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;
 import com.phoenixware.inventorynexus.shared.exception.UserNotFoundException;
@@ -30,12 +31,12 @@ public class AppUserServiceJPA implements AppUserService {
     private final PrivilegeRepository privilegeRepository;
 
     /**
-     * @param appUserDTO
+     * @param appUserDetailedDTO
      * @return
      */
     @Override
-    public AppUserDTO createAppUser(AppUserDTO appUserDTO) {
-        Set<Role> roles = appUserDTO.getUserRoles()
+    public AppUserDTO createAppUser(AppUserDetailedDTO appUserDetailedDTO) {
+        Set<Role> roles = appUserDetailedDTO.getUserRoles()
                 .stream()
                 .map(dtoRole ->
                         roleRepository.findById(dtoRole.getId()).
@@ -44,9 +45,9 @@ public class AppUserServiceJPA implements AppUserService {
                 .collect(Collectors.toSet());
 
         // Sanitize the input...
-        appUserDTO.setUserRoles(roles);
+        appUserDetailedDTO.setUserRoles(roles);
 
-        Set<Privilege> privileges = appUserDTO.getUserPrivileges()
+        Set<Privilege> privileges = appUserDetailedDTO.getUserPrivileges()
                 .stream()
                 .map(dtoPrivilege ->
                         privilegeRepository.findById(dtoPrivilege.getId())
@@ -55,11 +56,11 @@ public class AppUserServiceJPA implements AppUserService {
                 .collect(Collectors.toSet());
 
         // Sanitize the input...
-        appUserDTO.setUserPrivileges(privileges);
+        appUserDetailedDTO.setUserPrivileges(privileges);
 
         return appUserMapper.appUserToAppUserDto(
                 appUserRepository.save(
-                        appUserMapper.appUserDtoToAppUser(appUserDTO)));
+                        appUserMapper.appUserDetailedDtoToAppUser(appUserDetailedDTO)));
     }
 
     @Override

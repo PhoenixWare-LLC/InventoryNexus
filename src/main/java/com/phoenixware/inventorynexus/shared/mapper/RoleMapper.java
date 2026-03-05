@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.shared.mapper;
 
 import com.phoenixware.inventorynexus.shared.dto.role.RoleDTO;
+import com.phoenixware.inventorynexus.shared.dto.role.RoleDetailedDTO;
 import com.phoenixware.inventorynexus.shared.entity.Role;
 import org.mapstruct.Mapper;
 
@@ -14,4 +15,8 @@ public interface RoleMapper {
     Role roleDtoToRole(RoleDTO roleDTO);
 
     RoleDTO roleToRoleDto(Role role);
+
+    Role roleDetailedDtoToRole(RoleDetailedDTO roleDetailedDTO);
+
+    RoleDetailedDTO roleToRoleDetailedDto(Role role);
 }
