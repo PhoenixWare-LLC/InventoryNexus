@@ -1,7 +1,7 @@
 package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.dto.contact.ContactDTO;
-import com.phoenixware.inventorynexus.shared.exception.ContactNotFoundException;
+import com.phoenixware.inventorynexus.shared.exception.contact.ContactNotFoundException;
 import com.phoenixware.inventorynexus.shared.mapper.ContactMapper;
 import com.phoenixware.inventorynexus.shared.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;

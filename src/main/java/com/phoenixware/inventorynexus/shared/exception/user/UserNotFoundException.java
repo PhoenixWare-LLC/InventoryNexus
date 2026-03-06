@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.shared.exception;
+package com.phoenixware.inventorynexus.shared.exception.user;
 
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,6 +1,6 @@
 package com.phoenixware.inventorynexus.shared.config;
 
-import com.phoenixware.inventorynexus.shared.exception.CustomBasicAuthenticationEntryPoint;
+import com.phoenixware.inventorynexus.shared.exception.auth.CustomBasicAuthenticationEntryPoint;
 import com.phoenixware.inventorynexus.shared.filter.CsrfCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;

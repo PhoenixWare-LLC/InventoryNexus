@@ -4,7 +4,7 @@ import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
 import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDetailedDTO;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;
-import com.phoenixware.inventorynexus.shared.exception.UserNotFoundException;
+import com.phoenixware.inventorynexus.shared.exception.user.UserNotFoundException;
 import com.phoenixware.inventorynexus.shared.mapper.AppUserMapper;
 import com.phoenixware.inventorynexus.shared.repository.AppUserRepository;
 import com.phoenixware.inventorynexus.shared.repository.PrivilegeRepository;

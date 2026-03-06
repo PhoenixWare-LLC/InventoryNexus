@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.shared.exception;
+package com.phoenixware.inventorynexus.shared.exception.auth;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
