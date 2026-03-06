@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @Service
 @Primary
 @RequiredArgsConstructor
-public class OrderServiceJPA implements OrderService {
+public class OrderServiceImpl implements OrderService {
 
     private final JsonMapper jsonMapper;
     private final OrderRepository orderRepository;

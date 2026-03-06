@@ -1,14 +1,12 @@
 package com.phoenixware.inventorynexus.orders.service;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
  * Author:      Collin Short
  * Copyright:   Phoenixware LLC 2026
- * Created:     1/19/2026
+ * Created:     3/6/2026
  */
-@Primary
 @Service
-public class MinimalProductServiceJPA implements MinimalProductService {
+public class ShipmentServiceImpl implements ShipmentService{
 }
