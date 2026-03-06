@@ -2,7 +2,7 @@ package com.phoenixware.inventorynexus.orders.controller;
 
 import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.Order;
-import com.phoenixware.inventorynexus.orders.exception.OrderNotFoundException;
+import com.phoenixware.inventorynexus.orders.exception.order.OrderNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.repository.OrderRepository;
 import jakarta.transaction.Transactional;

@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.orders.exception;
+package com.phoenixware.inventorynexus.inventory.exception.binlocation;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @ControllerAdvice
-public class OrderRestExceptionHandler {
+public class BinLocationRestExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<OrderExceptionResponse> handleException(OrderNotFoundException exc) {
+    public ResponseEntity<BinLocationExceptionResponse> handleException(BinLocationNotFoundException exc) {
         // create an OrderNotFoundException
 
-        OrderExceptionResponse error = new OrderExceptionResponse();
+        BinLocationExceptionResponse error = new BinLocationExceptionResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setMessage(exc.getMessage());
@@ -33,8 +33,8 @@ public class OrderRestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<OrderExceptionResponse> handleException(Exception exc) {
-        OrderExceptionResponse error = new OrderExceptionResponse();
+    public ResponseEntity<BinLocationExceptionResponse> handleException(Exception exc) {
+        BinLocationExceptionResponse error = new BinLocationExceptionResponse();
 
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(exc.getMessage());

@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.orders.exception;
+package com.phoenixware.inventorynexus.inventory.exception.product;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,16 +10,16 @@ import java.time.LocalDateTime;
  * Created:     1/19/2026
  */
 @Slf4j
-public class OrderExceptionResponse {
+public class ProductExceptionResponse {
     private int status;
     private String message;
     private LocalDateTime timestamp;
 
-    public OrderExceptionResponse() {
+    public ProductExceptionResponse() {
 
     }
 
-    public OrderExceptionResponse(int status, String message, LocalDateTime timestamp) {
+    public ProductExceptionResponse(int status, String message, LocalDateTime timestamp) {
         this.status = status;
         this.message = message;
         this.timestamp = timestamp;
