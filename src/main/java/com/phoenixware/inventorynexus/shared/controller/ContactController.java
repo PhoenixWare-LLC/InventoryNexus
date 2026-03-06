@@ -6,10 +6,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Author:      Collin Short
@@ -22,9 +22,31 @@ public class ContactController {
 
     private final ContactService contactService;
 
+    @GetMapping("/contacts/{contactId}")
+    public ResponseEntity contactForm(@PathVariable("contactId") UUID id) {
+        ContactDTO contactDTO = contactService.getContactById(id);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/contacts/" + contactDTO.getId());
+
+        ResponseEntity responseEntity = new ResponseEntity<>(
+                contactDTO,
+                httpHeaders,
+                HttpStatus.OK
+        );
+        return responseEntity;
+    }
+
     @GetMapping("/contacts")
-    public String contactForm() {
-        return "This will be the page where the form of contact will come into play.. yay.";
+    public ResponseEntity getAllContacts() {
+        List<ContactDTO> contactDTOS = contactService.findAll();
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                contactDTOS,
+                HttpStatus.OK
+        );
+
+        return responseEntity;
     }
 
     @PostMapping("/contacts")
@@ -32,7 +54,7 @@ public class ContactController {
         ContactDTO savedContact = contactService.createContact(contactDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/contact/" + savedContact.getId());
+        httpHeaders.add("Location", "/contacts/" + savedContact.getId());
 
         ResponseEntity responseEntity = new ResponseEntity<>(
                 savedContact,
