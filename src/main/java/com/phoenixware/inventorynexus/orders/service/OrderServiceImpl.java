@@ -6,7 +6,6 @@ import com.phoenixware.inventorynexus.orders.exception.order.OrderNotFoundExcept
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.json.JsonMapper;
 
@@ -20,7 +19,6 @@ import java.util.stream.Collectors;
  * Created:     1/19/2026
  */
 @Service
-@Primary
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 

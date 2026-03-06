@@ -1,6 +1,5 @@
 package com.phoenixware.inventorynexus.orders.service;
 
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
@@ -8,7 +7,6 @@ import org.springframework.stereotype.Service;
  * Copyright:   Phoenixware LLC 2026
  * Created:     1/19/2026
  */
-@Primary
 @Service
 public class MinimalProductServiceImpl implements MinimalProductService {
 }

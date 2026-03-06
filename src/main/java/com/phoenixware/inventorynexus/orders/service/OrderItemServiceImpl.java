@@ -3,7 +3,6 @@ package com.phoenixware.inventorynexus.orders.service;
 import com.phoenixware.inventorynexus.orders.mapper.OrderItemMapper;
 import com.phoenixware.inventorynexus.orders.repository.OrderItemRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
  * Created:     1/19/2026
  */
 @Service
-@Primary
 @RequiredArgsConstructor
 public class OrderItemServiceImpl implements OrderItemService {
     private final OrderItemRepository orderItemRepository;

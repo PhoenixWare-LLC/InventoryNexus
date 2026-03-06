@@ -3,7 +3,6 @@ package com.phoenixware.inventorynexus.shared.service;
 import com.phoenixware.inventorynexus.shared.mapper.PrivilegeMapper;
 import com.phoenixware.inventorynexus.shared.repository.PrivilegeRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
  * Created:     2/12/26
  */
 @Service
-@Primary
 @RequiredArgsConstructor
 public class PrivilegeServiceImpl implements PrivilegeService {
     private final PrivilegeRepository privilegeRepository;

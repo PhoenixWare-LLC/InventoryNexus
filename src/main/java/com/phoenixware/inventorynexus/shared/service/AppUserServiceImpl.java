@@ -10,7 +10,6 @@ import com.phoenixware.inventorynexus.shared.repository.AppUserRepository;
 import com.phoenixware.inventorynexus.shared.repository.PrivilegeRepository;
 import com.phoenixware.inventorynexus.shared.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -22,7 +21,6 @@ import java.util.stream.Collectors;
  * Created:     2/12/26
  */
 @Service
-@Primary
 @RequiredArgsConstructor
 public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;

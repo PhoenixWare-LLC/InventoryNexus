@@ -3,7 +3,6 @@ package com.phoenixware.inventorynexus.shared.service;
 import com.phoenixware.inventorynexus.shared.mapper.RoleMapper;
 import com.phoenixware.inventorynexus.shared.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
  * Created:     2/12/26
  */
 @Service
-@Primary
 @RequiredArgsConstructor
 public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
