@@ -56,7 +56,7 @@ public class InventoryNexusProdSecurityConfig {
         http.authorizeHttpRequests((requests) -> requests
                 // public endpoints
                 .requestMatchers(
-                        "/", "/about", "/contact", "/faq", "/error", "/ott/**"
+                        "/", "/about", "/contacts", "/faq", "/error", "/ott/**"
                 ).permitAll()
 
                 // employee endpoints

@@ -22,12 +22,12 @@ public class ContactController {
 
     private final ContactService contactService;
 
-    @GetMapping("/contact")
+    @GetMapping("/contacts")
     public String contactForm() {
         return "This will be the page where the form of contact will come into play.. yay.";
     }
 
-    @PostMapping("/contact")
+    @PostMapping("/contacts")
     public ResponseEntity createContact(@RequestBody ContactDTO contactDTO) {
         ContactDTO savedContact = contactService.createContact(contactDTO);
 
