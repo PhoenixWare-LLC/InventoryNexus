@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Service
 @Primary
 @RequiredArgsConstructor
-public class AppUserServiceJPA implements AppUserService {
+public class AppUserServiceImpl implements AppUserService {
     private final AppUserRepository appUserRepository;
     private final AppUserMapper appUserMapper;
     private final RoleRepository roleRepository;

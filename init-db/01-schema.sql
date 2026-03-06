@@ -3,12 +3,15 @@
 SET
 client_min_messages = warning;
 
-CREATE SEQUENCE public."Order_OrderID_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE CACHE 1;
+CREATE TABLE public.contact
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    subject VARCHAR(50) NOT NULL,
+    body VARCHAR(500) NOT NULL,
+    CONSTRAINT contact_pkey PRIMARY KEY (id)
+);
 
 CREATE TABLE public.orders
 (
@@ -135,7 +138,3 @@ CREATE INDEX idx_user_roles_user_id ON public.app_user_role(fk_app_user_id);
 CREATE INDEX idx_user_roles_role_id ON public.app_user_role(fk_role_id);
 CREATE INDEX idx_role_privileges_role_id ON public.role_privilege(fk_role_id);
 CREATE INDEX idx_user_privileges_user_id ON public.role_privilege(fk_privilege_id);
-
--- Optional: reset sequences to safe starting point (they'll auto-increment anyway)
-SELECT setval('public."Order_OrderID_seq"', 30, false);
-SELECT setval('public."Order_Item_ItemID_seq"', 1, false);

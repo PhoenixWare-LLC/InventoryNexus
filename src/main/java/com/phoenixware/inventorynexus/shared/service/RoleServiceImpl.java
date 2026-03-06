@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Primary
 @RequiredArgsConstructor
-public class RoleServiceJPA implements RoleService {
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     private final RoleMapper roleMapper;
 }

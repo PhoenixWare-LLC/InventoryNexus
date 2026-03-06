@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 @Service
 @Primary
 @RequiredArgsConstructor
-public class PrivilegeServiceJPA implements PrivilegeService {
+public class PrivilegeServiceImpl implements PrivilegeService {
     private final PrivilegeRepository privilegeRepository;
     private final PrivilegeMapper privilegeMapper;
 }
