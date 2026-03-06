@@ -116,7 +116,13 @@ public class InventoryNexusSecurityConfig {
         http.csrf(csrf ->
                 csrf
                         .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                        .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler));
+                        .csrfTokenRequestHandler(csrfTokenRequestAttributeHandler)
+                        .ignoringRequestMatchers(
+                                "/",
+                                "/abouts", "/abouts/**",
+                                "/contacts", "/contacts/**",
+                                "/faqs", "/faqs/**",
+                                "/error", "/error/**"));
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
 
