@@ -22,5 +22,5 @@ import lombok.Setter;
 @NoArgsConstructor
 public class MinimalProduct extends BaseProduct {
     @Column(name = "taxable")
-    private boolean taxable;
+    private Boolean taxable;
 }
