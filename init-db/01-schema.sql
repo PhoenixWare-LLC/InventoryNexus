@@ -3,12 +3,87 @@
 SET
 client_min_messages = warning;
 
-CREATE SEQUENCE public."Order_OrderID_seq"
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE CACHE 1;
+CREATE TABLE public.employee
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    CONSTRAINT employee_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.contractor
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    CONSTRAINT contractor_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.bin_location
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    CONSTRAINT bin_location_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.parent_product
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    CONSTRAINT parent_product_pk PRIMARY KEY (id)
+);
+
+CREATE TABLE public.product_location
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    CONSTRAINT product_location_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.transaction
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    CONSTRAINT transaction_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.shipment
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    master_tracking_number VARCHAR(50) NOT NULL,
+    carrier VARCHAR(50) NOT NULL,
+    service VARCHAR(25) NOT NULL,
+    cost NUMERIC(10,2) NOT NULL,
+    number_of_packages INTEGER NOT NULL,
+    type VARCHAR(50) NOT NULL,
+    status VARCHAR(10) NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
+    CONSTRAINT shipment_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE public.shipment_package
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    fk_shipment UUID NOT NULL,
+    tracking_number VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    package_type VARCHAR(25) NOT NULL,
+    length_in_inches NUMERIC(10,2) NOT NULL,
+    width_in_inches NUMERIC(10,2) NOT NULL,
+    height_in_inches NUMERIC(10,2) NOT NULL,
+    weight_in_pounds NUMERIC(10,2) NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    created_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
+    modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modified_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
+    CONSTRAINT shipment_package_pkey PRIMARY KEY (id),
+    CONSTRAINT shipment_fkey FOREIGN KEY (fk_shipment) REFERENCES public.shipment(id)
+);
+
+CREATE TABLE public.contact
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL,
+    subject VARCHAR(50) NOT NULL,
+    body VARCHAR(500) NOT NULL,
+    CONSTRAINT contact_pkey PRIMARY KEY (id)
+);
 
 CREATE TABLE public.orders
 (
@@ -45,6 +120,8 @@ CREATE TABLE public.product
     cost NUMERIC(10,2) NOT NULL,
     upc VARCHAR(13),
     gs1 VARCHAR(13),
+    taxable BOOLEAN,
+    weight NUMERIC(10,2),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     created_by VARCHAR(50) NOT NULL DEFAULT CURRENT_USER,
     modified_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -64,7 +141,7 @@ CREATE TABLE public.order_item
     fk_product_id uuid NOT NULL,
     CONSTRAINT fk_order_item_product_id FOREIGN KEY (fk_product_id) REFERENCES public.product(id),
     CONSTRAINT order_item_pkey PRIMARY KEY (id),
-    CONSTRAINT fk_order_id FOREIGN KEY (fk_order_id) REFERENCES public.orders (id) NOT VALID
+    CONSTRAINT fk_order_id FOREIGN KEY (fk_order_id) REFERENCES public.orders (id)
 );
 
 
@@ -135,7 +212,3 @@ CREATE INDEX idx_user_roles_user_id ON public.app_user_role(fk_app_user_id);
 CREATE INDEX idx_user_roles_role_id ON public.app_user_role(fk_role_id);
 CREATE INDEX idx_role_privileges_role_id ON public.role_privilege(fk_role_id);
 CREATE INDEX idx_user_privileges_user_id ON public.role_privilege(fk_privilege_id);
-
--- Optional: reset sequences to safe starting point (they'll auto-increment anyway)
-SELECT setval('public."Order_OrderID_seq"', 30, false);
-SELECT setval('public."Order_Item_ItemID_seq"', 1, false);

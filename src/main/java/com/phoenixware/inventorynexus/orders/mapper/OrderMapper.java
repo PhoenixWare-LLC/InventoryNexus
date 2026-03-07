@@ -13,18 +13,17 @@ import org.mapstruct.*;
  */
 @Mapper(uses = BaseProductMapper.class)
 public interface OrderMapper {
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Order updateOrderFromOrderDTO(OrderDTO orderDTO, @MappingTarget Order order);
-
-    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Order updateOrderFromOrderDetailedDTO(OrderDetailedDTO orderDetailedDTO, @MappingTarget Order order);
-
+    Order orderDtoToOrder(OrderDTO orderDTO);
     Order orderDetailedDtoToOrder(OrderDetailedDTO orderDetailedDTO);
 
-    OrderDetailedDTO orderToOrderDetailedDto(Order order);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Order patchOrderFromOrderDetailedDto(OrderDetailedDTO orderDetailedDTO, @MappingTarget Order order);
 
-    Order orderDtoToOrder(OrderDTO orderDTO);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Order patchOrderFromOrderDTO(OrderDTO orderDTO, @MappingTarget Order order);
 
     OrderDTO orderToOrderDto(Order order);
+    OrderDetailedDTO orderToOrderDetailedDto(Order order);
+
+
 }

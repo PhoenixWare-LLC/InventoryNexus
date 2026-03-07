@@ -1,12 +1,12 @@
 package com.phoenixware.inventorynexus.inventory.entity;
 
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
+import java.math.BigDecimal;
 
 /**
  * Author:      Collin Short
@@ -18,6 +18,12 @@ import lombok.Setter;
 @Builder
 @Entity
 @DiscriminatorValue("FULL")
+@AllArgsConstructor
 @NoArgsConstructor
 public class Product extends BaseProduct {
+    @Column(name = "weight")
+    private BigDecimal weight;
+
+    @Column(name = "taxable")
+    private boolean taxable;
 }

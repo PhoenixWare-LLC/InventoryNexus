@@ -28,8 +28,8 @@ public class OrderDTO {
     private String postalCode;
     private BigDecimal total;
     private LocalDateTime creationTimestamp;
-    private boolean shipped;
-    private boolean fulfilled;
+    private Boolean shipped;
+    private Boolean fulfilled;
     private String trackingNumber;
     private String marketplace;
     private String status;

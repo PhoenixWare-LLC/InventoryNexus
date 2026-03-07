@@ -2,8 +2,10 @@ package com.phoenixware.inventorynexus.shared.dto.privilege;
 
 import com.phoenixware.inventorynexus.shared.entity.AppUser;
 import com.phoenixware.inventorynexus.shared.entity.Role;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 import java.util.UUID;
@@ -15,6 +17,8 @@ import java.util.UUID;
  */
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class PrivilegeDTO {
     private UUID id;
     private Set<Role> roles;

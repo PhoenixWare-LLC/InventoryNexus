@@ -57,10 +57,10 @@ public class Order {
     private LocalDateTime creationTimestamp;
 
     @Column(name = "shipped")
-    private boolean shipped;
+    private Boolean shipped;
 
     @Column(name = "fulfilled")
-    private boolean fulfilled;
+    private Boolean fulfilled;
 
     @Column(name = "tracking_number")
     private String trackingNumber;

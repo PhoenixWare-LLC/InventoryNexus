@@ -11,19 +11,10 @@ import java.util.UUID;
  * Created:     1/19/2026
  */
 public interface OrderService {
-    List<OrderDetailedDTO> getUnshippedOrders();
-
-    List<OrderDetailedDTO> getAllOrders();
-
-    OrderDetailedDTO getOrderById(UUID id);
-
-    OrderDetailedDTO patchOrderById(UUID orderId, OrderDetailedDTO orderDetailedDTO);
-
-    void deleteById(UUID orderId);
-
-    OrderDetailedDTO putById(UUID orderId, OrderDetailedDTO orderDetailedDTO);
-
-    OrderDetailedDTO saveNewOrder(OrderDetailedDTO orderDetailedDTO);
-
-
+    OrderDetailedDTO create(OrderDetailedDTO orderDetailedDTO);
+    OrderDetailedDTO updateById(UUID id, OrderDetailedDTO orderDetailedDTO);
+    OrderDetailedDTO patchById(UUID id, OrderDetailedDTO orderDetailedDTO);
+    OrderDetailedDTO findById(UUID id);
+    List<OrderDetailedDTO> findAll();
+    void deleteById(UUID id);
 }

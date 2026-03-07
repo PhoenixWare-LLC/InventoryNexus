@@ -3,7 +3,10 @@ package com.phoenixware.inventorynexus.inventory.mapper;
 import com.phoenixware.inventorynexus.inventory.dto.product.ProductDTO;
 import com.phoenixware.inventorynexus.inventory.dto.product.ProductDetailedDTO;
 import com.phoenixware.inventorynexus.inventory.entity.Product;
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 
 /**
  * Author:      Collin Short
@@ -13,11 +16,17 @@ import org.mapstruct.Mapper;
 @Mapper
 public interface ProductMapper {
 
-    Product mapFromDetailedDTO(ProductDetailedDTO productDetailedDTO);
+    Product mapFromDto(ProductDTO productDTO);
+    Product mapFromDetailedDto(ProductDetailedDTO productDetailedDTO);
 
-    ProductDetailedDTO mapToDetailedDTO(Product product);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Product patchFromDto(ProductDTO productDTO, @MappingTarget Product product);
 
-    Product mapFromDTO(ProductDTO productDTO);
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    ProductDTO patchToDto(Product product, @MappingTarget ProductDTO productDTO);
 
-    ProductDTO mapToDTO(Product product);
+    ProductDTO mapToDto(Product product);
+    ProductDetailedDTO mapToDetailedDto(Product product);
+
+
 }

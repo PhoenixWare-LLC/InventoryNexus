@@ -16,6 +16,7 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
+@Table(name = "shipment")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Shipment {
@@ -47,17 +48,17 @@ public class Shipment {
     @Column(name = "status")
     private String status;
 
-    @Column(name = "creation_timestamp", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
-    private LocalDateTime creationTimestamp;
+    @Column(name = "created_at", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime createdAt;
 
-    @Column(name = "modification_timestamp")
-    private LocalDateTime modificationTimestamp;
+    @Column(name = "modified_at", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
+    private LocalDateTime modifiedAt;
 
     // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
-    @Column(name = "created_by")
+    @Column(name = "created_by", nullable = false, insertable = false, updatable = false)
     private String createdBy;
 
     // TODO: for now this will be only a String object, however in the future, this will need to store the key of the user that performed this action.
-    @Column(name = "modified_by")
+    @Column(name = "modified_by", nullable = false, insertable = false, updatable = false)
     private String modifiedBy;
 }

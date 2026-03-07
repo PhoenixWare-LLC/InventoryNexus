@@ -27,17 +27,17 @@ public class OrderController {
 
     @GetMapping("/orders/{order_id}")
     public OrderDetailedDTO getById(@PathVariable("order_id") UUID orderId) {
-        return orderService.getOrderById(orderId);
+        return orderService.findById(orderId);
     }
 
     @GetMapping("/orders")
     public List<OrderDetailedDTO> getAll() {
-        return orderService.getAllOrders();
+        return orderService.findAll();
     }
 
     @PostMapping("/orders")
     public ResponseEntity create(@RequestBody OrderDetailedDTO orderDetailedDTO) {
-        OrderDetailedDTO savedOrder = orderService.saveNewOrder(orderDetailedDTO);
+        OrderDetailedDTO savedOrder = orderService.create(orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/orders/" + savedOrder.getId().toString());
@@ -51,7 +51,7 @@ public class OrderController {
 
     @PutMapping("/orders/{order_id}")
     public ResponseEntity putById(@PathVariable("order_id") UUID id, @RequestBody OrderDetailedDTO orderDetailedDTO) {
-        OrderDetailedDTO updatedOrder = orderService.putById(id, orderDetailedDTO);
+        OrderDetailedDTO updatedOrder = orderService.updateById(id, orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/orders/" + updatedOrder.getId());
@@ -65,7 +65,7 @@ public class OrderController {
 
     @PatchMapping("/orders/{order_id}")
     public ResponseEntity patchById(@PathVariable("order_id") UUID orderId, @RequestBody OrderDetailedDTO orderDetailedDTO) {
-        OrderDetailedDTO patchedOrder = orderService.patchOrderById(orderId, orderDetailedDTO);
+        OrderDetailedDTO patchedOrder = orderService.patchById(orderId, orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/orders/" + patchedOrder.getId());

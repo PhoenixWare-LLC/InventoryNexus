@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class AboutController {
 
-    @GetMapping("/about")
+    @GetMapping("/abouts")
     public String getAbout() {
         return "Welcome to the Inventory Nexus, a one stop shop to all of your e-commerce needs.";
     }

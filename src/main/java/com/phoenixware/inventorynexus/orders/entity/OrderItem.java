@@ -50,7 +50,7 @@ public class OrderItem {
     private BigDecimal price;
 
     @Column(name = "quantity")
-    private int quantity;
+    private Integer quantity;
 
     @Column(name = "creation_timestamp", nullable = false, insertable = false, updatable = false, columnDefinition = "TIMESTAMP = DEFAULT CURRENT_TIMESTAMP")
     private LocalDateTime creationTimestamp;

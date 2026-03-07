@@ -1,14 +1,12 @@
 package com.phoenixware.inventorynexus.shared.dto.appuser;
 
-import com.phoenixware.inventorynexus.shared.entity.Privilege;
-import com.phoenixware.inventorynexus.shared.entity.Role;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -22,10 +20,9 @@ import java.util.UUID;
 @NoArgsConstructor
 public class AppUserDTO {
     private UUID id;
-    private Set<Role> userRoles;
-    private Set<Privilege> userPrivileges;
     private String email;
     private String username;
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
     private boolean active = false;
     private boolean admin = false;

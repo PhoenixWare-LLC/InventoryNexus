@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.shared.controller;
 
 import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
+import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDetailedDTO;
 import com.phoenixware.inventorynexus.shared.service.AppUserService;
 import com.phoenixware.inventorynexus.shared.util.CurrentUserService;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +32,12 @@ public class UserController {
 
 
     @PostMapping("/users")
-    public ResponseEntity<String> registerUser(@RequestBody AppUserDTO appUserDTO) {
+    public ResponseEntity<String> registerUser(@RequestBody AppUserDetailedDTO appUserDetailedDTO) {
         try {
-            appUserDTO.setPassword(passwordEncoder.encode(appUserDTO.getPassword()));
+            appUserDetailedDTO.setPassword(passwordEncoder.encode(appUserDetailedDTO.getPassword()));
 
-            appUserDTO.setId(null);
-            AppUserDTO registeredUser = appUserService.createAppUser(appUserDTO);
+            appUserDetailedDTO.setId(null);
+            AppUserDTO registeredUser = appUserService.create(appUserDetailedDTO);
 
 
             if (registeredUser == null) {
@@ -67,6 +68,6 @@ public class UserController {
 
     @GetMapping("/user")
     public AppUserDTO getUserAfterAuthentication(Authentication authentication) {
-        return appUserService.getAppUser(authentication.getName());
+        return appUserService.findByUsername(authentication.getName());
     }
 }
