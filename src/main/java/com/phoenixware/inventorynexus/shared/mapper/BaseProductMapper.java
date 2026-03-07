@@ -12,9 +12,7 @@ import com.phoenixware.inventorynexus.shared.dto.baseproduct.BaseProductDTO;
 import com.phoenixware.inventorynexus.shared.dto.baseproduct.BaseProductDetailedDTO;
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
 import com.phoenixware.inventorynexus.shared.factory.BaseProductFactory;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
-import org.mapstruct.SubclassMapping;
+import org.mapstruct.*;
 
 /**
  * Author:      Collin Short
@@ -29,19 +27,31 @@ import org.mapstruct.SubclassMapping;
 unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface BaseProductMapper {
 
-    @SubclassMapping(source = ProductDetailedDTO.class, target = Product.class)
-    @SubclassMapping(source = MinimalProductDetailedDTO.class, target = MinimalProduct.class)
-    BaseProduct mapFromDetailedDTO(BaseProductDetailedDTO baseProductDetailedDTO);
-
-    @SubclassMapping(source = Product.class, target = ProductDetailedDTO.class)
-    @SubclassMapping(source = MinimalProduct.class, target = MinimalProductDetailedDTO.class)
-    BaseProductDetailedDTO mapToDetailedDTO(BaseProduct baseProduct);
-
     @SubclassMapping(source = ProductDTO.class, target = Product.class)
     @SubclassMapping(source = MinimalProductDTO.class, target = MinimalProduct.class)
-    BaseProduct mapFromDTO(BaseProductDTO baseProductDTO);
+    BaseProduct mapFromDto(BaseProductDTO baseProductDTO);
+
+    @SubclassMapping(source = ProductDetailedDTO.class, target = Product.class)
+    @SubclassMapping(source = MinimalProductDetailedDTO.class, target = MinimalProduct.class)
+    BaseProduct mapFromDetailedDto(BaseProductDetailedDTO baseProductDetailedDTO);
+
+    // TODO: Once Mapstruct 1.7 is released, this code will compile update mapstruct once released and uncomment
+//    @SubclassMapping(source = ProductDTO.class, target = Product.class)
+//    @SubclassMapping(source = MinimalProductDTO.class, target = MinimalProduct.class)
+//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+//    BaseProduct patchFromDto(BaseProductDTO baseProductDTO, @MappingTarget BaseProduct baseProduct);
+
+    // TODO: Once Mapstruct 1.7 is released, this code will compile update mapstruct once released and uncomment
+//    @SubclassMapping(source = Product.class, target = ProductDTO.class)
+//    @SubclassMapping(source = MinimalProduct.class, target = MinimalProductDTO.class)
+//    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+//    BaseProductDTO patchToDto(BaseProduct baseProduct, @MappingTarget BaseProductDTO baseProductDTO);
 
     @SubclassMapping(source = Product.class, target = ProductDTO.class)
     @SubclassMapping(source = MinimalProduct.class, target = MinimalProductDTO.class)
-    BaseProductDTO mapToDTO(BaseProduct product);
+    BaseProductDTO mapToDto(BaseProduct product);
+
+    @SubclassMapping(source = Product.class, target = ProductDetailedDTO.class)
+    @SubclassMapping(source = MinimalProduct.class, target = MinimalProductDetailedDTO.class)
+    BaseProductDetailedDTO mapToDetailedDto(BaseProduct baseProduct);
 }

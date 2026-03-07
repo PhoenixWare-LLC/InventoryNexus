@@ -1,7 +1,6 @@
 package com.phoenixware.inventorynexus.personnel.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.UUID;
@@ -15,9 +14,12 @@ import java.util.UUID;
 @Setter
 @Builder
 @Entity
+@Table(name = "employee")
 @AllArgsConstructor
 @NoArgsConstructor
 public class Employee {
     @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 }

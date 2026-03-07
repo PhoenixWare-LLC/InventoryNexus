@@ -11,4 +11,5 @@ import java.util.UUID;
  * Created:     3/4/2026
  */
 public interface ContactRepository extends JpaRepository<Contact, UUID> {
+    UUID id(UUID id);
 }

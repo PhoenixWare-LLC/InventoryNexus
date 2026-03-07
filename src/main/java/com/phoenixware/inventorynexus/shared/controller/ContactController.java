@@ -24,7 +24,7 @@ public class ContactController {
 
     @GetMapping("/contacts/{contactId}")
     public ResponseEntity contactForm(@PathVariable("contactId") UUID id) {
-        ContactDTO contactDTO = contactService.getContactById(id);
+        ContactDTO contactDTO = contactService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/contacts/" + contactDTO.getId());
@@ -51,7 +51,7 @@ public class ContactController {
 
     @PostMapping("/contacts")
     public ResponseEntity createContact(@RequestBody ContactDTO contactDTO) {
-        ContactDTO savedContact = contactService.createContact(contactDTO);
+        ContactDTO savedContact = contactService.create(contactDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/contacts/" + savedContact.getId());

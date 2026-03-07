@@ -114,7 +114,7 @@ class OrderControllerIT {
                 .state("NY")
                 .build();
 
-        OrderDetailedDTO patchedOrder = orderMapper.orderToOrderDetailedDto(orderMapper.updateOrderFromOrderDetailedDTO(patchFields, order));
+        OrderDetailedDTO patchedOrder = orderMapper.orderToOrderDetailedDto(orderMapper.patchOrderFromOrderDetailedDto(patchFields, order));
 
         ResponseEntity<?> responseEntity = orderController.patchById(order.getId(), patchFields);
 

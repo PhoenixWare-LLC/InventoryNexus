@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.shared.exception.user;
+package com.phoenixware.inventorynexus.orders.exception.minimalproduct;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @ControllerAdvice
-public class UserRestExceptionHandler {
+public class MinimalProductRestExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<UserExceptionResponse> handleException(UserNotFoundException exc) {
+    public ResponseEntity<MinimalProductExceptionResponse> handleException(MinimalProductNotFoundException exc) {
         // create an OrderNotFoundException
 
-        UserExceptionResponse error = new UserExceptionResponse();
+        MinimalProductExceptionResponse error = new MinimalProductExceptionResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setMessage(exc.getMessage());
@@ -33,8 +33,8 @@ public class UserRestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<UserExceptionResponse> handleException(Exception exc) {
-        UserExceptionResponse error = new UserExceptionResponse();
+    public ResponseEntity<MinimalProductExceptionResponse> handleException(Exception exc) {
+        MinimalProductExceptionResponse error = new MinimalProductExceptionResponse();
 
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(exc.getMessage());

@@ -1,6 +1,7 @@
 package com.phoenixware.inventorynexus.orders.dto.minimalproduct;
 
 import com.phoenixware.inventorynexus.shared.dto.baseproduct.BaseProductDTO;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @Builder
+@AllArgsConstructor
 @NoArgsConstructor
 public class MinimalProductDTO extends BaseProductDTO {
+    private boolean taxable;
 }

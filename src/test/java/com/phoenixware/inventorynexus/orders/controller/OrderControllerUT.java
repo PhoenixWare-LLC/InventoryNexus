@@ -66,7 +66,7 @@ public class OrderControllerUT {
                 .trackingNumber("ahhh")
                 .build();
 
-        given(orderService.putById(orderId, inputDetailedOrderDTO)).willReturn(outputDetailedOrderDTO);
+        given(orderService.updateById(orderId, inputDetailedOrderDTO)).willReturn(outputDetailedOrderDTO);
 
         ResponseEntity<?> responseEntity = orderController.putById(orderId, inputDetailedOrderDTO);
 
@@ -74,7 +74,7 @@ public class OrderControllerUT {
         assertThat(responseEntity.getHeaders().getFirst("Location")).isEqualTo("/orders/" + orderId);
         assertThat(responseEntity.getBody()).isEqualTo(outputDetailedOrderDTO);
 
-        verify(orderService).putById(eq(orderId), eq(inputDetailedOrderDTO));
+        verify(orderService).updateById(eq(orderId), eq(inputDetailedOrderDTO));
 
     }
 }

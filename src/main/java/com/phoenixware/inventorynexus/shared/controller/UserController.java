@@ -37,7 +37,7 @@ public class UserController {
             appUserDetailedDTO.setPassword(passwordEncoder.encode(appUserDetailedDTO.getPassword()));
 
             appUserDetailedDTO.setId(null);
-            AppUserDTO registeredUser = appUserService.createAppUser(appUserDetailedDTO);
+            AppUserDTO registeredUser = appUserService.create(appUserDetailedDTO);
 
 
             if (registeredUser == null) {
@@ -68,6 +68,6 @@ public class UserController {
 
     @GetMapping("/user")
     public AppUserDTO getUserAfterAuthentication(Authentication authentication) {
-        return appUserService.getAppUser(authentication.getName());
+        return appUserService.findByUsername(authentication.getName());
     }
 }

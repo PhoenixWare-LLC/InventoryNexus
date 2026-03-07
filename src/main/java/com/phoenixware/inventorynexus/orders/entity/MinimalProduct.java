@@ -1,8 +1,10 @@
 package com.phoenixware.inventorynexus.orders.entity;
 
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
+import jakarta.persistence.Column;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,6 +18,9 @@ import lombok.Setter;
 @Getter
 @Entity
 @DiscriminatorValue("BASIC")
+@AllArgsConstructor
 @NoArgsConstructor
 public class MinimalProduct extends BaseProduct {
+    @Column(name = "taxable")
+    private boolean taxable;
 }

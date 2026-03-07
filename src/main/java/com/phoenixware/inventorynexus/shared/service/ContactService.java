@@ -11,7 +11,10 @@ import java.util.UUID;
  * Created:     3/4/2026
  */
 public interface ContactService {
-    ContactDTO createContact(ContactDTO contactDTO);
-    ContactDTO getContactById(UUID id);
+    ContactDTO create(ContactDTO contactDTO);
+    ContactDTO updateById(UUID id, ContactDTO contactDTO);
+    ContactDTO patchById(UUID id, ContactDTO contactDTO);
+    ContactDTO findById(UUID id);
     List<ContactDTO> findAll();
+    void deleteById(UUID id);
 }
