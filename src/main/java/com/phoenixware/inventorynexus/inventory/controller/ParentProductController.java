@@ -22,13 +22,13 @@ public class ParentProductController {
     private final ParentProductService parentProductService;
 
     @GetMapping("/parent-products/{id}")
-    public ResponseEntity getParentProduct(@PathVariable("id") UUID id) {
+    public ResponseEntity<ParentProductDTO> getParentProduct(@PathVariable("id") UUID id) {
         ParentProductDTO parentProductDTO = parentProductService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/parent-products/" + parentProductDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ParentProductDTO> responseEntity = new ResponseEntity<>(
                 parentProductDTO,
                 httpHeaders,
                 HttpStatus.FOUND
@@ -38,13 +38,13 @@ public class ParentProductController {
     }
 
     @PutMapping("/parent-products/{id}")
-    public ResponseEntity putParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
+    public ResponseEntity<ParentProductDTO> putParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO updatedParentProductDTO = parentProductService.updateById(id, parentProductDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/parent-products/" + updatedParentProductDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ParentProductDTO> responseEntity = new ResponseEntity<>(
                 updatedParentProductDTO,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -54,13 +54,13 @@ public class ParentProductController {
     }
 
     @PatchMapping("/parent-products/{id}")
-    public ResponseEntity patchParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
+    public ResponseEntity<ParentProductDTO> patchParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO patchedParentProductDTO = parentProductService.patchById(id, parentProductDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/parent-products/" + patchedParentProductDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ParentProductDTO> responseEntity = new ResponseEntity<>(
                 patchedParentProductDTO,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -70,13 +70,13 @@ public class ParentProductController {
     }
 
     @PostMapping("/parent-products")
-    public ResponseEntity postParentProduct(@RequestBody ParentProductDTO parentProductDTO) {
+    public ResponseEntity<ParentProductDTO> postParentProduct(@RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO postedParentProductDto = parentProductService.create(parentProductDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/parent-products/" + postedParentProductDto.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ParentProductDTO> responseEntity = new ResponseEntity<>(
                 postedParentProductDto,
                 httpHeaders,
                 HttpStatus.CREATED
@@ -86,10 +86,10 @@ public class ParentProductController {
     }
 
     @DeleteMapping("/parent-products/{id}")
-    public ResponseEntity deleteParentProduct(@PathVariable("id") UUID id) {
+    public ResponseEntity<ParentProductDTO> deleteParentProduct(@PathVariable("id") UUID id) {
         parentProductService.deleteById(id);
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ParentProductDTO> responseEntity = new ResponseEntity<>(
                 HttpStatus.OK
         );
 

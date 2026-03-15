@@ -22,13 +22,13 @@ public class BinLocationController {
     private final BinLocationService binLocationService;
 
     @GetMapping("/bin-locations/{id}")
-    public ResponseEntity getBinLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<BinLocationDTO> getBinLocation(@PathVariable("id") UUID id) {
         BinLocationDTO binLocationDTO = binLocationService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/bin-locations/" + binLocationDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<BinLocationDTO> responseEntity = new ResponseEntity<>(
                 binLocationDTO,
                 httpHeaders,
                 HttpStatus.FOUND
@@ -38,13 +38,13 @@ public class BinLocationController {
     }
 
     @PutMapping("/bin-locations/{id}")
-    public ResponseEntity putBinLocation(@PathParam("id") UUID id, @RequestBody BinLocationDTO binLocationDTO) {
+    public ResponseEntity<BinLocationDTO> putBinLocation(@PathParam("id") UUID id, @RequestBody BinLocationDTO binLocationDTO) {
         BinLocationDTO updatedBinLocationDto = binLocationService.updateById(id, binLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/bin-locations/" + updatedBinLocationDto.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<BinLocationDTO> responseEntity = new ResponseEntity<>(
                 updatedBinLocationDto,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -54,13 +54,13 @@ public class BinLocationController {
     }
 
     @PatchMapping("/bin-locations/{id}")
-    public ResponseEntity patchBinLocation(@PathParam("id") UUID id, @RequestBody BinLocationDTO binLocationDTO) {
+    public ResponseEntity<BinLocationDTO> patchBinLocation(@PathParam("id") UUID id, @RequestBody BinLocationDTO binLocationDTO) {
         BinLocationDTO patchedBinLocationDto = binLocationService.patchById(id, binLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/bin-locations/" + patchedBinLocationDto);
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<BinLocationDTO> responseEntity = new ResponseEntity<>(
                 patchedBinLocationDto,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -70,13 +70,13 @@ public class BinLocationController {
     }
 
     @PostMapping("/bin-locations/")
-    public ResponseEntity postBinLocation(@RequestBody BinLocationDTO binLocationDTO) {
+    public ResponseEntity<BinLocationDTO> postBinLocation(@RequestBody BinLocationDTO binLocationDTO) {
         BinLocationDTO postedBinLocationDto = binLocationService.create(binLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/bin-locations/" + postedBinLocationDto.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<BinLocationDTO> responseEntity = new ResponseEntity<>(
                 postedBinLocationDto,
                 httpHeaders,
                 HttpStatus.CREATED
@@ -86,10 +86,10 @@ public class BinLocationController {
     }
 
     @DeleteMapping("/bin-locations/{id}")
-    public ResponseEntity deleteBinLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<BinLocationDTO> deleteBinLocation(@PathVariable("id") UUID id) {
         binLocationService.deleteById(id);
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<BinLocationDTO> responseEntity = new ResponseEntity<>(
                 HttpStatus.OK
         );
 

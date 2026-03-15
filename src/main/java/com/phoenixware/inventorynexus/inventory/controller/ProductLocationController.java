@@ -21,13 +21,13 @@ public class ProductLocationController {
     private final ProductLocationService productLocationService;
 
     @GetMapping("/product-locations/{id}")
-    public ResponseEntity getProductLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<ProductLocationDTO> getProductLocation(@PathVariable("id") UUID id) {
         ProductLocationDTO productLocationDTO = productLocationService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + productLocationDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ProductLocationDTO> responseEntity = new ResponseEntity<>(
                 productLocationDTO,
                 httpHeaders,
                 HttpStatus.FOUND
@@ -37,13 +37,13 @@ public class ProductLocationController {
     }
 
     @PutMapping("/product-locations/{id}")
-    public ResponseEntity updateProductLocation(@PathVariable UUID id, @RequestBody ProductLocationDTO productLocationDTO) {
+    public ResponseEntity<ProductLocationDTO> updateProductLocation(@PathVariable UUID id, @RequestBody ProductLocationDTO productLocationDTO) {
         ProductLocationDTO updatedProductLocationDTO = productLocationService.updateById(id, productLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + updatedProductLocationDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ProductLocationDTO> responseEntity = new ResponseEntity<>(
                 updatedProductLocationDTO,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -53,13 +53,13 @@ public class ProductLocationController {
     }
 
     @PatchMapping("/product-locations/{id}")
-    public ResponseEntity patchProductLocation(@PathVariable UUID id, @RequestBody ProductLocationDTO productLocationDTO) {
+    public ResponseEntity<ProductLocationDTO> patchProductLocation(@PathVariable UUID id, @RequestBody ProductLocationDTO productLocationDTO) {
         ProductLocationDTO patchedProductLocationDTO = productLocationService.patchById(id, productLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + patchedProductLocationDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ProductLocationDTO> responseEntity = new ResponseEntity<>(
                 patchedProductLocationDTO,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -69,13 +69,13 @@ public class ProductLocationController {
     }
 
     @PatchMapping("/product-locations")
-    public ResponseEntity postProductLocation(@RequestBody ProductLocationDTO productLocationDTO) {
+    public ResponseEntity<ProductLocationDTO> postProductLocation(@RequestBody ProductLocationDTO productLocationDTO) {
         ProductLocationDTO postedProductLocationDTO = productLocationService.create(productLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + postedProductLocationDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ProductLocationDTO> responseEntity = new ResponseEntity<>(
                 postedProductLocationDTO,
                 httpHeaders,
                 HttpStatus.CREATED
@@ -85,10 +85,10 @@ public class ProductLocationController {
     }
 
     @DeleteMapping("/product-locations/{id}")
-    public ResponseEntity deleteProductLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<ProductLocationDTO> deleteProductLocation(@PathVariable("id") UUID id) {
         productLocationService.deleteById(id);
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<ProductLocationDTO> responseEntity = new ResponseEntity<>(
                 HttpStatus.OK
         );
 

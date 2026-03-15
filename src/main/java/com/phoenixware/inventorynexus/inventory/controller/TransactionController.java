@@ -21,13 +21,13 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping("/transactions/{id}")
-    public ResponseEntity getProductLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<TransactionDTO> getProductLocation(@PathVariable("id") UUID id) {
         TransactionDTO transactionDTO = transactionService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + transactionDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<TransactionDTO> responseEntity = new ResponseEntity<>(
                 transactionDTO,
                 httpHeaders,
                 HttpStatus.FOUND
@@ -37,13 +37,13 @@ public class TransactionController {
     }
 
     @PutMapping("/transactions/{id}")
-    public ResponseEntity updateProductLocation(@PathVariable UUID id, @RequestBody TransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> updateProductLocation(@PathVariable UUID id, @RequestBody TransactionDTO transactionDTO) {
         TransactionDTO updatedTransactionDTO = transactionService.updateById(id, transactionDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + updatedTransactionDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<TransactionDTO> responseEntity = new ResponseEntity<>(
                 updatedTransactionDTO,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -53,13 +53,13 @@ public class TransactionController {
     }
 
     @PatchMapping("/transactions/{id}")
-    public ResponseEntity patchProductLocation(@PathVariable UUID id, @RequestBody TransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> patchProductLocation(@PathVariable UUID id, @RequestBody TransactionDTO transactionDTO) {
         TransactionDTO patchedTransactionDTO = transactionService.patchById(id, transactionDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + patchedTransactionDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<TransactionDTO> responseEntity = new ResponseEntity<>(
                 patchedTransactionDTO,
                 httpHeaders,
                 HttpStatus.ACCEPTED
@@ -69,13 +69,13 @@ public class TransactionController {
     }
 
     @PatchMapping("/transactions")
-    public ResponseEntity postProductLocation(@RequestBody TransactionDTO transactionDTO) {
+    public ResponseEntity<TransactionDTO> postProductLocation(@RequestBody TransactionDTO transactionDTO) {
         TransactionDTO postedTransactionDTO = transactionService.create(transactionDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Location", "/products/" + postedTransactionDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<TransactionDTO> responseEntity = new ResponseEntity<>(
                 postedTransactionDTO,
                 httpHeaders,
                 HttpStatus.CREATED
@@ -85,10 +85,10 @@ public class TransactionController {
     }
 
     @DeleteMapping("/transactions/{id}")
-    public ResponseEntity deleteProductLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<TransactionDTO> deleteProductLocation(@PathVariable("id") UUID id) {
         transactionService.deleteById(id);
 
-        ResponseEntity responseEntity = new ResponseEntity(
+        ResponseEntity<TransactionDTO> responseEntity = new ResponseEntity<>(
                 HttpStatus.OK
         );
 
