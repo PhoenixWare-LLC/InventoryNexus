@@ -22,7 +22,7 @@ public class BinLocationController {
     private final BinLocationService binLocationService;
 
     @GetMapping("/bin-locations/{id}")
-    public ResponseEntity getBinLocation(UUID id) {
+    public ResponseEntity getBinLocation(@PathVariable("id") UUID id) {
         BinLocationDTO binLocationDTO = binLocationService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -86,7 +86,7 @@ public class BinLocationController {
     }
 
     @DeleteMapping("/bin-locations/{id}")
-    public ResponseEntity deleteBinLocation(@PathParam("id") UUID id) {
+    public ResponseEntity deleteBinLocation(@PathVariable("id") UUID id) {
         binLocationService.deleteById(id);
 
         ResponseEntity responseEntity = new ResponseEntity(

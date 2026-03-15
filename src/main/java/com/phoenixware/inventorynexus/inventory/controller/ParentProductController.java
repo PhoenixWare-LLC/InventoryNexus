@@ -1,6 +1,15 @@
 package com.phoenixware.inventorynexus.inventory.controller;
 
-import org.springframework.web.bind.annotation.RestController;
+import com.phoenixware.inventorynexus.inventory.dto.parentproduct.ParentProductDTO;
+import com.phoenixware.inventorynexus.inventory.service.ParentProductService;
+import jakarta.websocket.server.PathParam;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 /**
  * Author:      Collin Short
@@ -8,5 +17,82 @@ import org.springframework.web.bind.annotation.RestController;
  * Created:     1/19/2026
  */
 @RestController
+@RequiredArgsConstructor
 public class ParentProductController {
+    private final ParentProductService parentProductService;
+
+    @GetMapping("/parent-products/{id}")
+    public ResponseEntity getParentProduct(@PathVariable("id") UUID id) {
+        ParentProductDTO parentProductDTO = parentProductService.findById(id);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/parent-products/" + parentProductDTO.getId());
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                parentProductDTO,
+                httpHeaders,
+                HttpStatus.FOUND
+        );
+
+        return responseEntity;
+    }
+
+    @PutMapping("/parent-products/{id}")
+    public ResponseEntity putParentProduct(@PathParam("id") UUID id, ParentProductDTO parentProductDTO) {
+        ParentProductDTO updatedParentProductDTO = parentProductService.updateById(id, parentProductDTO);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/parent-products/" + updatedParentProductDTO.getId());
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                updatedParentProductDTO,
+                httpHeaders,
+                HttpStatus.ACCEPTED
+        );
+
+        return responseEntity;
+    }
+
+    @PatchMapping("/parent-products/{id}")
+    public ResponseEntity patchParentProduct(@PathParam("id") UUID id, ParentProductDTO parentProductDTO) {
+        ParentProductDTO patchedParentProductDTO = parentProductService.patchById(id, parentProductDTO);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/parent-products/" + patchedParentProductDTO.getId());
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                patchedParentProductDTO,
+                httpHeaders,
+                HttpStatus.ACCEPTED
+        );
+
+        return responseEntity;
+    }
+
+    @PostMapping("/parent-products")
+    public ResponseEntity postParentProduct(@RequestBody ParentProductDTO parentProductDTO) {
+        ParentProductDTO postedParentProductDto = parentProductService.create(parentProductDTO);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/parent-products/" + postedParentProductDto.getId());
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                postedParentProductDto,
+                httpHeaders,
+                HttpStatus.CREATED
+        );
+
+        return responseEntity;
+    }
+
+    @DeleteMapping("/parent-products/{id}")
+    public ResponseEntity deleteParentProduct(@PathVariable("id") UUID id) {
+        parentProductService.deleteById(id);
+
+        ResponseEntity responseEntity = new ResponseEntity(
+                HttpStatus.OK
+        );
+
+        return responseEntity;
+    }
 }
