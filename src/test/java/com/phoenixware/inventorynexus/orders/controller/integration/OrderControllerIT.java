@@ -1,5 +1,6 @@
-package com.phoenixware.inventorynexus.orders.controller;
+package com.phoenixware.inventorynexus.orders.controller.integration;
 
+import com.phoenixware.inventorynexus.orders.controller.OrderController;
 import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.Order;
 import com.phoenixware.inventorynexus.orders.exception.order.OrderNotFoundException;
