@@ -16,5 +16,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MinimalProductDTO extends BaseProductDTO {
-    private boolean taxable;
+    private Boolean taxable;
 }
