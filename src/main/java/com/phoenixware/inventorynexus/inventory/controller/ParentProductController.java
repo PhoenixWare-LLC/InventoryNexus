@@ -38,7 +38,7 @@ public class ParentProductController {
     }
 
     @PutMapping("/parent-products/{id}")
-    public ResponseEntity putParentProduct(@PathParam("id") UUID id, ParentProductDTO parentProductDTO) {
+    public ResponseEntity putParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO updatedParentProductDTO = parentProductService.updateById(id, parentProductDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -54,7 +54,7 @@ public class ParentProductController {
     }
 
     @PatchMapping("/parent-products/{id}")
-    public ResponseEntity patchParentProduct(@PathParam("id") UUID id, ParentProductDTO parentProductDTO) {
+    public ResponseEntity patchParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO patchedParentProductDTO = parentProductService.patchById(id, parentProductDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
