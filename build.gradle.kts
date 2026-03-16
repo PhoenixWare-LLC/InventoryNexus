@@ -30,6 +30,7 @@ dependencies {
     //adding spring data jpa
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.projectlombok:lombok")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-client")
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
 //    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
