@@ -18,6 +18,7 @@ CREATE TABLE public.contractor
 CREATE TABLE public.bin_location
 (
     id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+
     CONSTRAINT bin_location_pkey PRIMARY KEY (id)
 );
 
