@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -25,53 +24,47 @@ public class OrderController {
     private final OrderService orderService;
     private final OrderMapper orderMapper;
 
-    @GetMapping("/orders/{order_id}")
-    public OrderDetailedDTO getById(@PathVariable("order_id") UUID orderId) {
-        return orderService.findById(orderId);
+    @GetMapping("/orders/{id}")
+    public ResponseEntity<OrderDetailedDTO> getOrder(@PathVariable("id") UUID id) {
+        OrderDetailedDTO orderDetailedDTO = orderService.findById(id);
+        
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/orders/" + orderDetailedDTO.getId());
+        
+        ResponseEntity<OrderDetailedDTO> responseEntity = new ResponseEntity<>(
+                orderDetailedDTO,
+                httpHeaders,
+                HttpStatus.FOUND
+        );
+        
+        return responseEntity;
     }
 
-    @GetMapping("/orders")
-    public List<OrderDetailedDTO> getAll() {
-        return orderService.findAll();
-    }
-
-    @PostMapping("/orders")
-    public ResponseEntity create(@RequestBody OrderDetailedDTO orderDetailedDTO) {
-        OrderDetailedDTO savedOrder = orderService.create(orderDetailedDTO);
+    @PutMapping("/orders/{id}")
+    public ResponseEntity<OrderDetailedDTO> updateOrder(@PathVariable("id") UUID id, @RequestBody OrderDetailedDTO orderDetailedDTO) {
+        OrderDetailedDTO updatedOrderDetailedDTO = orderService.updateById(id, orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/orders/" + savedOrder.getId().toString());
+        httpHeaders.add("Location", "/orders/" + updatedOrderDetailedDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity<>(
-                savedOrder, httpHeaders, HttpStatus.CREATED
+        ResponseEntity<OrderDetailedDTO> responseEntity = new ResponseEntity<>(
+                updatedOrderDetailedDTO,
+                httpHeaders, 
+                HttpStatus.ACCEPTED
         );
 
         return responseEntity;
     }
 
-    @PutMapping("/orders/{order_id}")
-    public ResponseEntity putById(@PathVariable("order_id") UUID id, @RequestBody OrderDetailedDTO orderDetailedDTO) {
-        OrderDetailedDTO updatedOrder = orderService.updateById(id, orderDetailedDTO);
+    @PatchMapping("/orders/{id}")
+    public ResponseEntity<OrderDetailedDTO> patchOrder(@PathVariable("id") UUID id, @RequestBody OrderDetailedDTO orderDetailedDTO) {
+        OrderDetailedDTO patchedOrderDetailedDTO = orderService.patchById(id, orderDetailedDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/orders/" + updatedOrder.getId());
+        httpHeaders.add("Location", "/orders/" + patchedOrderDetailedDTO.getId());
 
-        ResponseEntity responseEntity = new ResponseEntity(
-                updatedOrder, httpHeaders, HttpStatus.ACCEPTED
-        );
-
-        return responseEntity;
-    }
-
-    @PatchMapping("/orders/{order_id}")
-    public ResponseEntity patchById(@PathVariable("order_id") UUID orderId, @RequestBody OrderDetailedDTO orderDetailedDTO) {
-        OrderDetailedDTO patchedOrder = orderService.patchById(orderId, orderDetailedDTO);
-
-        HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/orders/" + patchedOrder.getId());
-
-        ResponseEntity responseEntity = new ResponseEntity(
-                patchedOrder,
+        ResponseEntity<OrderDetailedDTO> responseEntity = new ResponseEntity<>(
+                patchedOrderDetailedDTO,
                 httpHeaders,
                 HttpStatus.ACCEPTED
         );
@@ -79,12 +72,26 @@ public class OrderController {
         return responseEntity;
     }
 
+    @PostMapping("/orders")
+    public ResponseEntity<OrderDetailedDTO> postOrder(@RequestBody OrderDetailedDTO orderDetailedDTO) {
+        OrderDetailedDTO postedOrderDetailedDTO = orderService.create(orderDetailedDTO);
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("Location", "/orders/" + postedOrderDetailedDTO.getId());
+
+        ResponseEntity<OrderDetailedDTO> responseEntity = new ResponseEntity<>(
+                postedOrderDetailedDTO, httpHeaders, HttpStatus.CREATED
+        );
+
+        return responseEntity;
+    }
+
     @DeleteMapping("/orders/{order_id}")
-    public ResponseEntity deleteById(@PathVariable("order_id") UUID id) {
+    public ResponseEntity<OrderDetailedDTO> deleteById(@PathVariable("order_id") UUID id) {
         orderService.deleteById(id);
 
-        ResponseEntity responseEntity = new ResponseEntity(
-                HttpStatus.NO_CONTENT
+        ResponseEntity<OrderDetailedDTO> responseEntity = new ResponseEntity<>(
+                HttpStatus.OK
         );
 
         return responseEntity;
