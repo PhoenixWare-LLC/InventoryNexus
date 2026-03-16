@@ -20,12 +20,12 @@ import java.util.UUID;
 public class ShipmentPackageController {
     private final ShipmentPackageService shipmentPackageService;
 
-    @GetMapping("/shipments/{id}")
+    @GetMapping("/shipment-packages/{id}")
     public ResponseEntity<ShipmentPackageDTO> getShipment(@PathVariable("id") UUID id) {
         ShipmentPackageDTO shipmentPackageDTO = shipmentPackageService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + shipmentPackageDTO.getId());
+        httpHeaders.add("Location", "/shipment-packages/" + shipmentPackageDTO.getId());
 
         ResponseEntity<ShipmentPackageDTO> responseEntity = new ResponseEntity<>(
                 shipmentPackageDTO,
@@ -36,12 +36,12 @@ public class ShipmentPackageController {
         return responseEntity;
     }
 
-    @PutMapping("/shipments/{id}")
+    @PutMapping("/shipment-packages/{id}")
     public ResponseEntity<ShipmentPackageDTO> updateShipment(@PathVariable("id") UUID id, @RequestBody ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackageDTO updatedShipmentPackageDTO = shipmentPackageService.updateById(id, shipmentPackageDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + updatedShipmentPackageDTO.getId());
+        httpHeaders.add("Location", "/shipment-packages/" + updatedShipmentPackageDTO.getId());
 
         ResponseEntity<ShipmentPackageDTO> responseEntity = new ResponseEntity<>(
                 updatedShipmentPackageDTO,
@@ -52,12 +52,12 @@ public class ShipmentPackageController {
         return responseEntity;
     }
 
-    @PatchMapping("/shipments/{id}")
+    @PatchMapping("/shipment-packages/{id}")
     public ResponseEntity<ShipmentPackageDTO> patchShipment(@PathVariable("id") UUID id, @RequestBody ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackageDTO patchedShipmentPackageDTO = shipmentPackageService.patchById(id, shipmentPackageDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + patchedShipmentPackageDTO.getId());
+        httpHeaders.add("Location", "/shipment-packages/" + patchedShipmentPackageDTO.getId());
 
         ResponseEntity<ShipmentPackageDTO> responseEntity = new ResponseEntity<>(
                 patchedShipmentPackageDTO,
@@ -68,12 +68,12 @@ public class ShipmentPackageController {
         return responseEntity;
     }
 
-    @PostMapping("/shipments")
+    @PostMapping("/shipment-packages")
     public ResponseEntity<ShipmentPackageDTO> postShipment(@RequestBody ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackageDTO postedShipmentPackageDTO = shipmentPackageService.create(shipmentPackageDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + postedShipmentPackageDTO.getId());
+        httpHeaders.add("Location", "/shipment-packages/" + postedShipmentPackageDTO.getId());
 
         ResponseEntity<ShipmentPackageDTO> responseEntity = new ResponseEntity<>(
                 postedShipmentPackageDTO,
@@ -84,7 +84,7 @@ public class ShipmentPackageController {
         return responseEntity;
     }
 
-    @DeleteMapping("/shipments/{id}")
+    @DeleteMapping("/shipment-packages/{id}")
     public ResponseEntity<ShipmentPackageDTO> deleteShipment(@PathVariable("id") UUID id) {
         shipmentPackageService.deleteById(id);
 

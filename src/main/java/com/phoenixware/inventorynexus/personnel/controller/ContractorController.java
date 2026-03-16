@@ -20,12 +20,12 @@ import java.util.UUID;
 public class ContractorController {
     private final ContractorService contractorService;
 
-    @GetMapping("/shipments/{id}")
+    @GetMapping("/contractors/{id}")
     public ResponseEntity<ContractorDTO> getShipment(@PathVariable("id") UUID id) {
         ContractorDTO contractorDTO = contractorService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + contractorDTO.getId());
+        httpHeaders.add("Location", "/contractors/" + contractorDTO.getId());
 
         ResponseEntity<ContractorDTO> responseEntity = new ResponseEntity<>(
                 contractorDTO,
@@ -36,12 +36,12 @@ public class ContractorController {
         return responseEntity;
     }
 
-    @PutMapping("/shipments/{id}")
+    @PutMapping("/contractors/{id}")
     public ResponseEntity<ContractorDTO> updateShipment(@PathVariable("id") UUID id, @RequestBody ContractorDTO contractorDTO) {
         ContractorDTO updatedContractorDTO = contractorService.updateById(id, contractorDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + updatedContractorDTO.getId());
+        httpHeaders.add("Location", "/contractors/" + updatedContractorDTO.getId());
 
         ResponseEntity<ContractorDTO> responseEntity = new ResponseEntity<>(
                 updatedContractorDTO,
@@ -52,12 +52,12 @@ public class ContractorController {
         return responseEntity;
     }
 
-    @PatchMapping("/shipments/{id}")
+    @PatchMapping("/contractors/{id}")
     public ResponseEntity<ContractorDTO> patchShipment(@PathVariable("id") UUID id, @RequestBody ContractorDTO contractorDTO) {
         ContractorDTO patchedContractorDTO = contractorService.patchById(id, contractorDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + patchedContractorDTO.getId());
+        httpHeaders.add("Location", "/contractors/" + patchedContractorDTO.getId());
 
         ResponseEntity<ContractorDTO> responseEntity = new ResponseEntity<>(
                 patchedContractorDTO,
@@ -68,12 +68,12 @@ public class ContractorController {
         return responseEntity;
     }
 
-    @PostMapping("/shipments")
+    @PostMapping("/contractors")
     public ResponseEntity<ContractorDTO> postShipment(@RequestBody ContractorDTO contractorDTO) {
         ContractorDTO postedContractorDTO = contractorService.create(contractorDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/shipments/" + postedContractorDTO.getId());
+        httpHeaders.add("Location", "/contractors/" + postedContractorDTO.getId());
 
         ResponseEntity<ContractorDTO> responseEntity = new ResponseEntity<>(
                 postedContractorDTO,
@@ -84,7 +84,7 @@ public class ContractorController {
         return responseEntity;
     }
 
-    @DeleteMapping("/shipments/{id}")
+    @DeleteMapping("/contractors/{id}")
     public ResponseEntity<ContractorDTO> deleteShipment(@PathVariable("id") UUID id) {
         contractorService.deleteById(id);
 
