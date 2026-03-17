@@ -78,4 +78,7 @@ public class BinLocation {
 
     @Column(name = "sticker_location")
     private String stickerLocation;
+
+    @Column(name = "in_use")
+    private Boolean inUse;
 }
