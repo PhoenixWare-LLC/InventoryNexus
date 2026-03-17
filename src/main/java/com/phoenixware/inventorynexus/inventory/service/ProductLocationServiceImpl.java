@@ -2,9 +2,9 @@ package com.phoenixware.inventorynexus.inventory.service;
 
 import com.phoenixware.inventorynexus.inventory.dto.productlocation.ProductLocationDTO;
 import com.phoenixware.inventorynexus.inventory.entity.ProductLocation;
-import com.phoenixware.inventorynexus.inventory.exception.productlocation.ProductLocationNotFoundException;
 import com.phoenixware.inventorynexus.inventory.mapper.ProductLocationMapper;
 import com.phoenixware.inventorynexus.inventory.repository.ProductLocationRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class ProductLocationServiceImpl implements ProductLocationService {
     @Override
     public ProductLocationDTO updateById(UUID id, ProductLocationDTO productLocationDTO) {
         ProductLocation existingProductLocation = productLocationRepository.findById(id)
-                .orElseThrow(ProductLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         ProductLocation updatedProductLocation = productLocationMapper.productLocationDtoToProductLocation(productLocationDTO);
         updatedProductLocation.setId(id);
@@ -45,7 +45,7 @@ public class ProductLocationServiceImpl implements ProductLocationService {
         productLocationRepository.save(updatedProductLocation);
 
         ProductLocation productLocationFromDb = productLocationRepository.findById(id)
-                .orElseThrow(ProductLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return productLocationMapper.productLocationToProductLocationDto(productLocationFromDb);
     }
@@ -53,14 +53,14 @@ public class ProductLocationServiceImpl implements ProductLocationService {
     @Override
     public ProductLocationDTO patchById(UUID id, ProductLocationDTO productLocationDTO) {
         ProductLocation existingProductLocation = productLocationRepository.findById(id)
-                .orElseThrow(ProductLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         ProductLocation patchedProductLocation = productLocationMapper.patchProductLocationFromProductLocationDto(productLocationDTO, existingProductLocation);
 
         productLocationRepository.save(patchedProductLocation);
 
         ProductLocation productLocationFromDb = productLocationRepository.findById(id)
-                .orElseThrow(ProductLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return productLocationMapper.productLocationToProductLocationDto(productLocationFromDb);
     }
@@ -69,7 +69,7 @@ public class ProductLocationServiceImpl implements ProductLocationService {
     public ProductLocationDTO findById(UUID id) {
         return productLocationMapper.productLocationToProductLocationDto(
                 productLocationRepository.findById(id)
-                        .orElseThrow(ProductLocationNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -87,7 +87,7 @@ public class ProductLocationServiceImpl implements ProductLocationService {
         if (productLocationRepository.existsById(id)) {
             productLocationRepository.deleteById(id);
         } else {
-            throw new ProductLocationNotFoundException();
+            throw new GlobalRestException();
         }
     }
 }

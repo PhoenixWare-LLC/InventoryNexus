@@ -1,10 +1,12 @@
 package com.phoenixware.inventorynexus.shared.controller;
 
 import com.phoenixware.inventorynexus.shared.dto.asset.AssetDTO;
+import com.phoenixware.inventorynexus.shared.dto.asset.AssetWithDataDTO;
 import com.phoenixware.inventorynexus.shared.service.AssetService;
 import com.phoenixware.inventorynexus.shared.validation.Create;
 import com.phoenixware.inventorynexus.shared.validation.Patch;
 import com.phoenixware.inventorynexus.shared.validation.Update;
+import jakarta.validation.constraints.NotNull;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -12,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 
@@ -26,17 +29,17 @@ public class AssetController {
     private final AssetService assetService;
 
     @GetMapping("/assets/{id}")
-    public ResponseEntity<AssetDTO> getBinLocation(
+    public ResponseEntity<AssetWithDataDTO> getAsset(
             @PathVariable("id")
             UUID id
     ) {
-        AssetDTO assetDTO = assetService.findById(id);
+        AssetWithDataDTO assetWithDataDTO = assetService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/assets/" + assetDTO.getId());
+        httpHeaders.add("Location", "/assets/" + assetWithDataDTO.getId());
 
-        ResponseEntity<AssetDTO> responseEntity = new ResponseEntity<>(
-                assetDTO,
+        ResponseEntity<AssetWithDataDTO> responseEntity = new ResponseEntity<>(
+                assetWithDataDTO,
                 httpHeaders,
                 HttpStatus.FOUND
         );
@@ -45,19 +48,21 @@ public class AssetController {
     }
 
     @PutMapping("/assets/{id}")
-    public ResponseEntity<AssetDTO> putBinLocation(
+    public ResponseEntity<AssetWithDataDTO> putAsset(
             @PathParam("id")
             UUID id,
-            @RequestBody @Validated(Update.class)
+            @RequestPart("file")
+            MultipartFile multipartFile,
+            @RequestPart("data") @Validated(Update.class)
             AssetDTO assetDTO
     ) {
-        AssetDTO updatedAssetDto = assetService.updateById(id, assetDTO);
+        AssetWithDataDTO updatedAssetWithDataDto = assetService.updateById(id, assetDTO, multipartFile);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/assets/" + updatedAssetDto.getId());
+        httpHeaders.add("Location", "/assets/" + updatedAssetWithDataDto.getId());
 
-        ResponseEntity<AssetDTO> responseEntity = new ResponseEntity<>(
-                updatedAssetDto,
+        ResponseEntity<AssetWithDataDTO> responseEntity = new ResponseEntity<>(
+                updatedAssetWithDataDto,
                 httpHeaders,
                 HttpStatus.ACCEPTED
         );
@@ -66,18 +71,20 @@ public class AssetController {
     }
 
     @PatchMapping("/assets/{id}")
-    public ResponseEntity<AssetDTO> patchBinLocation(
+    public ResponseEntity<AssetWithDataDTO> patchAsset(
             @PathParam("id")
             UUID id,
-            @RequestBody @Validated(Patch.class)
+            @RequestPart("file")
+            MultipartFile multipartFile,
+            @RequestPart("data") @Validated(Patch.class)
             AssetDTO assetDTO) {
-        AssetDTO patchedAssetDto = assetService.patchById(id, assetDTO);
+        AssetWithDataDTO patchedAssetWithDataDto = assetService.patchById(id, assetDTO, multipartFile);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/assets/" + patchedAssetDto);
+        httpHeaders.add("Location", "/assets/" + patchedAssetWithDataDto);
 
-        ResponseEntity<AssetDTO> responseEntity = new ResponseEntity<>(
-                patchedAssetDto,
+        ResponseEntity<AssetWithDataDTO> responseEntity = new ResponseEntity<>(
+                patchedAssetWithDataDto,
                 httpHeaders,
                 HttpStatus.ACCEPTED
         );
@@ -86,17 +93,19 @@ public class AssetController {
     }
 
     @PostMapping("/assets/")
-    public ResponseEntity<AssetDTO> postBinLocation(
-            @RequestBody @Validated(Create.class)
+    public ResponseEntity<AssetWithDataDTO> postAsset(
+            @RequestPart("file") @NotNull
+            MultipartFile multipartFile,
+            @RequestPart("data") @Validated(Create.class)
             AssetDTO assetDTO
     ) {
-        AssetDTO postedAssetDto = assetService.create(assetDTO);
+        AssetWithDataDTO postedAssetWithDataDto = assetService.create(assetDTO, multipartFile);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/assets/" + postedAssetDto.getId());
+        httpHeaders.add("Location", "/assets/" + postedAssetWithDataDto.getId());
 
-        ResponseEntity<AssetDTO> responseEntity = new ResponseEntity<>(
-                postedAssetDto,
+        ResponseEntity<AssetWithDataDTO> responseEntity = new ResponseEntity<>(
+                postedAssetWithDataDto,
                 httpHeaders,
                 HttpStatus.CREATED
         );
@@ -105,13 +114,13 @@ public class AssetController {
     }
 
     @DeleteMapping("/assets/{id}")
-    public ResponseEntity<AssetDTO> deleteBinLocation(
+    public ResponseEntity<AssetWithDataDTO> deleteAsset(
             @PathVariable("id")
             UUID id
     ) {
         assetService.deleteById(id);
 
-        ResponseEntity<AssetDTO> responseEntity = new ResponseEntity<>(
+        ResponseEntity<AssetWithDataDTO> responseEntity = new ResponseEntity<>(
                 HttpStatus.OK
         );
 

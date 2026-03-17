@@ -1,12 +1,14 @@
 package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.dto.asset.AssetDTO;
+import com.phoenixware.inventorynexus.shared.dto.asset.AssetWithDataDTO;
 import com.phoenixware.inventorynexus.shared.entity.Asset;
-import com.phoenixware.inventorynexus.shared.exception.asset.AssetNotFoundException;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import com.phoenixware.inventorynexus.shared.mapper.AssetMapper;
 import com.phoenixware.inventorynexus.shared.repository.AssetRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -24,52 +26,109 @@ public class AssetServiceImpl implements AssetService {
     private final AssetMapper assetMapper;
 
     @Override
-    public AssetDTO create(AssetDTO assetDTO) {
-        return assetMapper.assetToAssetDto(assetRepository.save(assetMapper.assetDtoToAsset(assetDTO)));
+    public AssetWithDataDTO create(AssetDTO assetDTO, MultipartFile multipartFile) {
+        //Validation
+        verifyFileType(assetDTO, multipartFile);
+
+        //TODO: add verification here to prevent malicious file uploads
+
+        AssetWithDataDTO assetWithDataDTO = assetMapper.assetDtoToAssetWithDataDto(assetDTO);
+
+        try {
+            //TODO: add image compression here.
+            assetWithDataDTO.setImageData(multipartFile.getBytes());
+        } catch (Exception exception) {
+            throw new GlobalRestException();
+        }
+
+
+        return assetMapper.assetToAssetWithDataDto(assetRepository.save(assetMapper.assetWithDataDtoToAsset(assetWithDataDTO)));
     }
 
     @Override
-    public AssetDTO updateById(UUID id, AssetDTO assetDTO) {
+    public AssetWithDataDTO updateById(UUID id, AssetDTO assetDTO, MultipartFile multipartFile) {
         Asset existingAsset = assetRepository.findById(id)
-                .orElseThrow(AssetNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
-        Asset updatedAsset = assetMapper.assetDtoToAsset(assetDTO);
+        //Validation
+        verifyFileType(assetDTO, multipartFile);
+
+        //TODO: add verification here to prevent malicious file uploads
+
+        AssetWithDataDTO assetWithDataDTO = assetMapper.assetDtoToAssetWithDataDto(assetDTO);
+        if (!multipartFile.isEmpty() && multipartFile != null) {
+            try {
+                //TODO: add image compression here.
+                assetWithDataDTO.setImageData(multipartFile.getBytes());
+            } catch (Exception exception) {
+                throw new GlobalRestException();
+            }
+        }
+        
+        Asset updatedAsset = assetMapper.assetWithDataDtoToAsset(assetWithDataDTO);
         updatedAsset.setId(id);
 
         assetRepository.save(updatedAsset);
 
-        Asset contactFromDb = assetRepository.findById(id)
-                .orElseThrow(AssetNotFoundException::new);
+        Asset assetFromDb = assetRepository.findById(id)
+                .orElseThrow(GlobalRestException::new);
 
-        return assetMapper.assetToAssetDto(contactFromDb);
+        return assetMapper.assetToAssetWithDataDto(assetFromDb);
     }
 
     @Override
-    public AssetDTO patchById(UUID id, AssetDTO assetDTO) {
+    public AssetWithDataDTO patchById(UUID id, AssetDTO assetDTO, MultipartFile multipartFile) {
         Asset existingAsset = assetRepository.findById(id)
-                .orElseThrow(AssetNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
-        Asset patchedAsset = assetMapper.patchAssetFromAssetDto(assetDTO, existingAsset);
+        //Validation
+        verifyFileType(assetDTO, multipartFile);
+
+        //TODO: add verification here to prevent malicious file uploads
+
+        AssetWithDataDTO assetWithDataDTO = assetMapper.assetDtoToAssetWithDataDto(assetDTO);
+        
+        if (!multipartFile.isEmpty() && multipartFile != null) {
+            try {
+                //TODO: add image compression here.
+                assetWithDataDTO.setImageData(multipartFile.getBytes());
+            } catch (Exception exception) {
+                throw new GlobalRestException();
+            }
+        }
+        Asset patchedAsset = assetMapper.patchAssetFromAssetWithDataDto(assetWithDataDTO, existingAsset);
 
         assetRepository.save(patchedAsset);
 
-        Asset contactFromDb = assetRepository.findById(id)
-                .orElseThrow(AssetNotFoundException::new);
+        Asset assetFromDb = assetRepository.findById(id)
+                .orElseThrow(GlobalRestException::new);
 
-        return assetMapper.assetToAssetDto(contactFromDb);
+        return assetMapper.assetToAssetWithDataDto(assetFromDb);
+    }
+
+    private void verifyFileType(AssetDTO assetDTO, MultipartFile multipartFile) {
+        String contentType = multipartFile.getContentType();
+        if (contentType == null ||
+                !(contentType.equals("image/jpeg") ||
+                        contentType.equals("image/jpg") ||
+                        contentType.equals("image/png") ||
+                        contentType.equals("image/svg+xml") ||
+                        contentType.equals("application/pdf"))) {
+            throw new IllegalArgumentException("Invalid Filetype Detected");
+        }
     }
 
     @Override
-    public AssetDTO findById(UUID id) {
-        return assetMapper.assetToAssetDto(assetRepository.findById(id).orElseThrow(AssetNotFoundException::new));
+    public AssetWithDataDTO findById(UUID id) {
+        return assetMapper.assetToAssetWithDataDto(assetRepository.findById(id).orElseThrow(GlobalRestException::new));
     }
 
     @Override
-    public List<AssetDTO> findAll() {
-        return  assetRepository
+    public List<AssetWithDataDTO> findAll() {
+        return assetRepository
                 .findAll()
                 .stream()
-                .map(assetMapper::assetToAssetDto)
+                .map(assetMapper::assetToAssetWithDataDto)
                 .collect(Collectors.toList());
     }
 
@@ -78,7 +137,7 @@ public class AssetServiceImpl implements AssetService {
         if (assetRepository.existsById(id)) {
             assetRepository.deleteById(id);
         } else {
-            throw new AssetNotFoundException();
+            throw new GlobalRestException();
         }
 
     }

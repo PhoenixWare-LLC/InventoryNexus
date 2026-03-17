@@ -21,7 +21,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssetDTO {
+public class AssetWithDataDTO {
     @Null(groups = Create.class)
     @NotNull(
             groups = {
@@ -32,6 +32,22 @@ public class AssetDTO {
             message = "id cannot be Null"
     )
     private UUID id;
+
+    @NotNull(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "imageData cannot be null!")
+    @NotBlank(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "imageData cannot be blank!")
+    private byte[] imageData;
 
     @NotNull(
             groups = {

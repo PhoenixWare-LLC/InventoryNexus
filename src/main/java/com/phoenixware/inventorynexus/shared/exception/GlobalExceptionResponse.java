@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.shared.exception.appuser;
+package com.phoenixware.inventorynexus.shared.exception;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -10,16 +10,16 @@ import java.time.LocalDateTime;
  * Created:     1/19/2026
  */
 @Slf4j
-public class AppUserExceptionResponse {
+public class GlobalExceptionResponse {
     private int status;
     private String message;
     private LocalDateTime timestamp;
 
-    public AppUserExceptionResponse() {
+    public GlobalExceptionResponse() {
 
     }
 
-    public AppUserExceptionResponse(int status, String message, LocalDateTime timestamp) {
+    public GlobalExceptionResponse(int status, String message, LocalDateTime timestamp) {
         this.status = status;
         this.message = message;
         this.timestamp = timestamp;

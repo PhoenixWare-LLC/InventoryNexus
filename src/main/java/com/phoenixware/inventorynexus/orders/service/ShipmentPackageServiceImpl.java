@@ -2,9 +2,9 @@ package com.phoenixware.inventorynexus.orders.service;
 
 import com.phoenixware.inventorynexus.orders.dto.shipmentpackage.ShipmentPackageDTO;
 import com.phoenixware.inventorynexus.orders.entity.ShipmentPackage;
-import com.phoenixware.inventorynexus.orders.exception.shipmentpackage.ShipmentPackageNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.ShipmentPackageMapper;
 import com.phoenixware.inventorynexus.orders.repository.ShipmentPackageRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class ShipmentPackageServiceImpl implements ShipmentPackageService{
     @Override
     public ShipmentPackageDTO updateById(UUID id, ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackage existingShipmentPackage = shipmentPackageRepository.findById(id)
-                .orElseThrow(ShipmentPackageNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         ShipmentPackage updatedShipmentPackage = shipmentPackageMapper.shipmentPackageDtoToShipmentPackage(shipmentPackageDTO);
         updatedShipmentPackage.setId(id);
@@ -45,7 +45,7 @@ public class ShipmentPackageServiceImpl implements ShipmentPackageService{
         shipmentPackageRepository.save(updatedShipmentPackage);
 
         ShipmentPackage shipmentPackageFromDb = shipmentPackageRepository.findById(id)
-                .orElseThrow(ShipmentPackageNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return shipmentPackageMapper.shipmentPackageToShipmentPackageDto(shipmentPackageFromDb);
     }
@@ -53,14 +53,14 @@ public class ShipmentPackageServiceImpl implements ShipmentPackageService{
     @Override
     public ShipmentPackageDTO patchById(UUID id, ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackage existingShipmentPackage = shipmentPackageRepository.findById(id)
-                .orElseThrow(ShipmentPackageNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         ShipmentPackage patchedShipmentPackage = shipmentPackageMapper.patchShipmentPackageFromShipmentPackageDto(shipmentPackageDTO, existingShipmentPackage);
 
         shipmentPackageRepository.save(patchedShipmentPackage);
 
         ShipmentPackage shipmentPackageFromDb = shipmentPackageRepository.findById(id)
-                .orElseThrow(ShipmentPackageNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return shipmentPackageMapper.shipmentPackageToShipmentPackageDto(shipmentPackageFromDb);
     }
@@ -69,7 +69,7 @@ public class ShipmentPackageServiceImpl implements ShipmentPackageService{
     public ShipmentPackageDTO findById(UUID id) {
         return shipmentPackageMapper.shipmentPackageToShipmentPackageDto(
                 shipmentPackageRepository.findById(id)
-                        .orElseThrow(ShipmentPackageNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -87,7 +87,7 @@ public class ShipmentPackageServiceImpl implements ShipmentPackageService{
         if (shipmentPackageRepository.existsById(id)) {
             shipmentPackageRepository.deleteById(id);
         } else {
-            throw new ShipmentPackageNotFoundException();
+            throw new GlobalRestException();
         }
 
     }

@@ -5,7 +5,7 @@ import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDetailedDTO;
 import com.phoenixware.inventorynexus.shared.entity.AppUser;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
 import com.phoenixware.inventorynexus.shared.entity.Role;
-import com.phoenixware.inventorynexus.shared.exception.appuser.AppUserNotFoundException;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import com.phoenixware.inventorynexus.shared.mapper.AppUserMapper;
 import com.phoenixware.inventorynexus.shared.repository.AppUserRepository;
 import com.phoenixware.inventorynexus.shared.repository.PrivilegeRepository;
@@ -67,7 +67,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUserDTO updateById(UUID id, AppUserDetailedDTO appUserDetailedDTO) {
         AppUser existingAppUser = appUserRepository.findById(id)
-                .orElseThrow(AppUserNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         // sanitize that input
         if (!appUserDetailedDTO.getUserRoles().isEmpty()) {
@@ -100,7 +100,7 @@ public class AppUserServiceImpl implements AppUserService {
         appUserRepository.save(updatedAppUser);
 
         AppUser appUserFromDb = appUserRepository.findById(id)
-                .orElseThrow(AppUserNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return appUserMapper.appUserToAppUserDto(appUserFromDb);
     }
@@ -108,7 +108,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Override
     public AppUserDTO patchById(UUID id, AppUserDetailedDTO appUserDetailedDTO) {
         AppUser existingAppUser = appUserRepository.findById(id)
-                .orElseThrow(AppUserNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         if (!appUserDetailedDTO.getUserRoles().isEmpty()) {
             appUserDetailedDTO.setUserRoles(
@@ -135,7 +135,7 @@ public class AppUserServiceImpl implements AppUserService {
         appUserRepository.save(patchedAppUser);
 
         AppUser appUserFromDb = appUserRepository.findById(id)
-                .orElseThrow(AppUserNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return appUserMapper.appUserToAppUserDto(appUserFromDb);
     }
@@ -144,7 +144,7 @@ public class AppUserServiceImpl implements AppUserService {
     public AppUserDTO findByUsername(String username) {
         return appUserMapper.appUserToAppUserDto(
                 appUserRepository.findByUsername(username).
-                        orElseThrow(AppUserNotFoundException::new)
+                        orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -152,7 +152,7 @@ public class AppUserServiceImpl implements AppUserService {
     public AppUserDTO findById(UUID id) {
         return appUserMapper.appUserToAppUserDto(
                 appUserRepository.findById(id)
-                        .orElseThrow(AppUserNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -170,7 +170,7 @@ public class AppUserServiceImpl implements AppUserService {
         if (appUserRepository.existsById(id)) {
             appUserRepository.deleteById(id);
         } else {
-            throw new AppUserNotFoundException();
+            throw new GlobalRestException();
         }
     }
 

@@ -2,9 +2,9 @@ package com.phoenixware.inventorynexus.orders.service;
 
 import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
 import com.phoenixware.inventorynexus.orders.entity.Order;
-import com.phoenixware.inventorynexus.orders.exception.order.OrderNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.repository.OrderRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +31,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDetailedDTO updateById(UUID id, OrderDetailedDTO orderDetailedDTO) {
         Order existingOrder = orderRepository.findById(id).orElseThrow(
-                OrderNotFoundException::new
+                GlobalRestException::new
         );
 
         if (existingOrder.getFulfilled() || existingOrder.getShipped()) {
@@ -44,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(updatedOrder);
 
         Order orderFromDB = orderRepository.findById(id).orElseThrow(
-                OrderNotFoundException::new
+                GlobalRestException::new
         );
 
         return orderMapper.orderToOrderDetailedDto(orderFromDB);
@@ -53,7 +53,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderDetailedDTO patchById(UUID id, OrderDetailedDTO orderDetailedDTO) {
         Order currentOrder = orderRepository.findById(id).orElseThrow(
-                OrderNotFoundException::new
+                GlobalRestException::new
         );
 
         Order updatedOrder = orderMapper.patchOrderFromOrderDetailedDto(orderDetailedDTO, currentOrder);
@@ -61,7 +61,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(updatedOrder);
 
         Order orderFromDb = orderRepository.findById(id)
-                .orElseThrow(OrderNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return orderMapper.orderToOrderDetailedDto(orderFromDb);
     }
@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDetailedDTO findById(UUID id) {
         return orderMapper.orderToOrderDetailedDto(
                 orderRepository.findById(id).orElseThrow(
-                        OrderNotFoundException::new
+                        GlobalRestException::new
                 )
         );
     }
@@ -90,7 +90,7 @@ public class OrderServiceImpl implements OrderService {
         if (orderRepository.existsById(id)) {
             orderRepository.deleteById(id);
         } else {
-            throw new OrderNotFoundException();
+            throw new GlobalRestException();
         }
     }
 

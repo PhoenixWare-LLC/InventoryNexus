@@ -24,7 +24,7 @@ public class Asset {
 
     @Lob
     @Column(name = "assetData", columnDefinition = "BYTEA")
-    private Byte[] imageData;
+    private byte[] imageData;
 
     @Column(name = "description")
     private String description;
@@ -34,4 +34,7 @@ public class Asset {
 
     @Column(name = "size")
     private Integer size;
+
+    @Column(name = "type")
+    private String type;
 }

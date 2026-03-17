@@ -3,9 +3,9 @@ package com.phoenixware.inventorynexus.personnel.service;
 
 import com.phoenixware.inventorynexus.personnel.dto.contractor.ContractorDTO;
 import com.phoenixware.inventorynexus.personnel.entity.Contractor;
-import com.phoenixware.inventorynexus.personnel.exception.contractor.ContractorNotFoundException;
 import com.phoenixware.inventorynexus.personnel.mapper.ContractorMapper;
 import com.phoenixware.inventorynexus.personnel.repository.ContractorRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +38,7 @@ public class ContractorServiceImpl implements ContractorService{
     @Override
     public ContractorDTO updateById(UUID id, ContractorDTO contractorDTO) {
         Contractor existingContractor = contractorRepository.findById(id)
-                .orElseThrow(ContractorNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Contractor updatedContractor = contractorMapper.contractorDtoToContractor(contractorDTO);
         updatedContractor.setId(id);
@@ -46,7 +46,7 @@ public class ContractorServiceImpl implements ContractorService{
         contractorRepository.save(updatedContractor);
 
         Contractor contractorFromDb = contractorRepository.findById(id)
-                .orElseThrow(ContractorNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return contractorMapper.contractorToContractorDto(contractorFromDb);
     }
@@ -54,14 +54,14 @@ public class ContractorServiceImpl implements ContractorService{
     @Override
     public ContractorDTO patchById(UUID id, ContractorDTO contractorDTO) {
         Contractor existingContractor = contractorRepository.findById(id)
-                .orElseThrow(ContractorNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Contractor patchedContractor = contractorMapper.patchContractorFromContractorDto(contractorDTO, existingContractor);
 
         contractorRepository.save(patchedContractor);
 
         Contractor contractorFromDb = contractorRepository.findById(id)
-                .orElseThrow(ContractorNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return contractorMapper.contractorToContractorDto(contractorFromDb);
     }
@@ -70,7 +70,7 @@ public class ContractorServiceImpl implements ContractorService{
     public ContractorDTO findById(UUID id) {
         return contractorMapper.contractorToContractorDto(
                 contractorRepository.findById(id)
-                        .orElseThrow(ContractorNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -88,7 +88,7 @@ public class ContractorServiceImpl implements ContractorService{
         if (contractorRepository.existsById(id)) {
             contractorRepository.deleteById(id);
         } else {
-            throw new ContractorNotFoundException();
+            throw new GlobalRestException();
         }
     }
 }
