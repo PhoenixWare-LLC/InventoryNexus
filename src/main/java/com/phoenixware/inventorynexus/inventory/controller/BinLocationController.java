@@ -2,11 +2,15 @@ package com.phoenixware.inventorynexus.inventory.controller;
 
 import com.phoenixware.inventorynexus.inventory.dto.binlocation.BinLocationDTO;
 import com.phoenixware.inventorynexus.inventory.service.BinLocationService;
+import com.phoenixware.inventorynexus.shared.validation.Create;
+import com.phoenixware.inventorynexus.shared.validation.Patch;
+import com.phoenixware.inventorynexus.shared.validation.Update;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,7 +26,10 @@ public class BinLocationController {
     private final BinLocationService binLocationService;
 
     @GetMapping("/bin-locations/{id}")
-    public ResponseEntity<BinLocationDTO> getBinLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<BinLocationDTO> getBinLocation(
+            @PathVariable("id")
+            UUID id
+    ) {
         BinLocationDTO binLocationDTO = binLocationService.findById(id);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -38,7 +45,12 @@ public class BinLocationController {
     }
 
     @PutMapping("/bin-locations/{id}")
-    public ResponseEntity<BinLocationDTO> putBinLocation(@PathParam("id") UUID id, @RequestBody BinLocationDTO binLocationDTO) {
+    public ResponseEntity<BinLocationDTO> putBinLocation(
+            @PathParam("id")
+            UUID id,
+            @RequestBody @Validated(Update.class)
+            BinLocationDTO binLocationDTO
+    ) {
         BinLocationDTO updatedBinLocationDto = binLocationService.updateById(id, binLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -54,7 +66,11 @@ public class BinLocationController {
     }
 
     @PatchMapping("/bin-locations/{id}")
-    public ResponseEntity<BinLocationDTO> patchBinLocation(@PathParam("id") UUID id, @RequestBody BinLocationDTO binLocationDTO) {
+    public ResponseEntity<BinLocationDTO> patchBinLocation(
+            @PathParam("id")
+            UUID id,
+            @RequestBody @Validated(Patch.class)
+            BinLocationDTO binLocationDTO) {
         BinLocationDTO patchedBinLocationDto = binLocationService.patchById(id, binLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -70,7 +86,10 @@ public class BinLocationController {
     }
 
     @PostMapping("/bin-locations/")
-    public ResponseEntity<BinLocationDTO> postBinLocation(@RequestBody BinLocationDTO binLocationDTO) {
+    public ResponseEntity<BinLocationDTO> postBinLocation(
+            @RequestBody @Validated(Create.class)
+            BinLocationDTO binLocationDTO
+    ) {
         BinLocationDTO postedBinLocationDto = binLocationService.create(binLocationDTO);
 
         HttpHeaders httpHeaders = new HttpHeaders();
@@ -86,7 +105,10 @@ public class BinLocationController {
     }
 
     @DeleteMapping("/bin-locations/{id}")
-    public ResponseEntity<BinLocationDTO> deleteBinLocation(@PathVariable("id") UUID id) {
+    public ResponseEntity<BinLocationDTO> deleteBinLocation(
+            @PathVariable("id")
+            UUID id
+    ) {
         binLocationService.deleteById(id);
 
         ResponseEntity<BinLocationDTO> responseEntity = new ResponseEntity<>(

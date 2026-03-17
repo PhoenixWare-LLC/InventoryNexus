@@ -18,6 +18,20 @@ CREATE TABLE public.contractor
 CREATE TABLE public.bin_location
 (
     id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    warehouse VARCHAR(5) NOT NULL,
+    floor VARCHAR(5) NOT NULL,
+    isle VARCHAR(5) NOT NULL,
+    row VARCHAR(5) NOT NULL,
+    column VARCHAR(5) NOT NULL,
+    location VARCHAR(5) NOT NULL,
+    height NUMERIC(10,2) NOT NULL,
+    width NUMERIC(10,2) NOT NULL,
+    depth NUMERIC(10,2) NOT NULL,
+    weight_limit NUMERIC(10,2) NOT NULL,
+    unit_of_measure VARCHAR(8) NOT NULL,
+    pallet_shelving BOOLEAN NOT NULL,
+    push_back_shelving BOOLEAN NOT NULL,
+    sticker_location VARCHAR(5) NOT NULL,
     CONSTRAINT bin_location_pkey PRIMARY KEY (id)
 );
 
