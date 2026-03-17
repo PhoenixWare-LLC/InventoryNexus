@@ -15,6 +15,16 @@ CREATE TABLE public.contractor
     CONSTRAINT contractor_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE public.asset
+(
+    id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    image_data BYTEA NOT NULL UNIQUE,
+    description VARCHAR(255) NOT NULL,
+    alt VARCHAR(255) NOT NULL,
+    size NUMERIC(10,2) NOT NULL,
+    CONSTRAINT asset_pkey PRIMARY KEY (id)
+);
+
 CREATE TABLE public.bin_location
 (
     id                 UUID           NOT NULL UNIQUE DEFAULT gen_random_uuid(),
