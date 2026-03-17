@@ -229,4 +229,14 @@ public class BinLocationDTO {
     )
     private String stickerLocation;
 
+    @NotNull(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "inUse cannot be null!"
+    )
+    private Boolean inUse;
+
 }
