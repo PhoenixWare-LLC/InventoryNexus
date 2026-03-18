@@ -89,7 +89,7 @@ public class InventoryNexusProdSecurityConfig {
                 @Override
                 public @Nullable CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                    corsConfiguration.setAllowedOrigins(Collections.singletonList("https://localhost:4200"));
                     corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                     corsConfiguration.setAllowCredentials(true);
                     corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
