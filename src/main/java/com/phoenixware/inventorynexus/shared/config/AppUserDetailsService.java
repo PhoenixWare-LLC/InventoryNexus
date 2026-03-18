@@ -11,8 +11,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Author:      Collin Short
@@ -36,13 +36,18 @@ public class AppUserDetailsService implements UserDetailsService {
         AppUser appUser = appUserRepository.findByUsername(username).orElseThrow(() ->
                 new UsernameNotFoundException("User not found with username: " + username));
 
-        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        Set<GrantedAuthority> authorities = new HashSet<>();
 
         // Gather the roles
-        appUser.getUserRoles().forEach(
-                (role) ->
-                        authorities.add(new SimpleGrantedAuthority(role.getName()))
-        );
+
+//        appUser.getUserRoles().forEach(
+//                (role) ->
+//                        authorities.add(new SimpleGrantedAuthority(role.getName()))
+//        );
+        appUser.getUserRoles().stream()
+                        .flatMap(
+                                role -> role.getRolePrivileges().stream()
+                                        .map(privilege -> new SimpleGrantedAuthority(privilege.getName())));
 
         appUser.getUserPrivileges().forEach(
                 (privilege ) ->
