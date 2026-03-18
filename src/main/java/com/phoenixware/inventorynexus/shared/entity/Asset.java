@@ -36,7 +36,7 @@ public class Asset {
     private String alt;
 
     @Column(name = "size")
-    private Integer size;
+    private Long size;
 
     @Column(name = "type")
     private String type;

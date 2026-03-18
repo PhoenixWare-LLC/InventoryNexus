@@ -67,31 +67,11 @@ public class AssetDTO {
     @Size(min = 1, max = 255, message = "alt must be between 1 and 255 characters!")
     private String alt;
 
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "size cannot be Null"
-    )
-    @Max(value = 100_000)
-    private Integer size;
+    @Null(groups = Create.class)
+    @Max(value = 100_000_000)
+    private Long size;
 
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "type cannot be null!")
-    @NotBlank(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "type cannot be blank!")
+    @Null(groups = Create.class)
     @Size(min = 1, max = 15, message = "type must be between 1 and 15 characters!")
     private String type;
 }

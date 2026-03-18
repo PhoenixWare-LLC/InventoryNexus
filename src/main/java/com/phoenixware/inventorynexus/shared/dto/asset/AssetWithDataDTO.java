@@ -93,8 +93,8 @@ public class AssetWithDataDTO {
             },
             message = "size cannot be Null"
     )
-    @Max(value = 100_000)
-    private Integer size;
+    @Max(value = 100_000_000)
+    private Long size;
 
     @NotNull(
             groups = {

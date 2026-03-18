@@ -22,7 +22,7 @@ CREATE TABLE public.asset
     description VARCHAR(255) NOT NULL,
     alt VARCHAR(255) NOT NULL,
     size NUMERIC(10,2) NOT NULL,
-    type VARCHAR(8),
+    type VARCHAR(15),
     CONSTRAINT asset_pkey PRIMARY KEY (id)
 );
 

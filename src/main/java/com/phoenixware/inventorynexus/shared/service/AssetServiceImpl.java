@@ -37,6 +37,8 @@ public class AssetServiceImpl implements AssetService {
         try {
             //TODO: add image compression here.
             assetWithDataDTO.setImageData(multipartFile.getBytes());
+            assetWithDataDTO.setSize(multipartFile.getSize());
+            assetWithDataDTO.setType(multipartFile.getContentType());
         } catch (Exception exception) {
             throw new GlobalRestException();
         }
@@ -60,6 +62,8 @@ public class AssetServiceImpl implements AssetService {
             try {
                 //TODO: add image compression here.
                 assetWithDataDTO.setImageData(multipartFile.getBytes());
+                assetWithDataDTO.setSize(multipartFile.getSize());
+                assetWithDataDTO.setType(multipartFile.getContentType());
             } catch (Exception exception) {
                 throw new GlobalRestException();
             }
@@ -92,6 +96,8 @@ public class AssetServiceImpl implements AssetService {
             try {
                 //TODO: add image compression here.
                 assetWithDataDTO.setImageData(multipartFile.getBytes());
+                assetWithDataDTO.setSize(multipartFile.getSize());
+                assetWithDataDTO.setType(multipartFile.getContentType());
             } catch (Exception exception) {
                 throw new GlobalRestException();
             }
