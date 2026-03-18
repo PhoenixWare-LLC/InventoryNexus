@@ -80,7 +80,7 @@ public class AssetController {
         AssetWithDataDTO patchedAssetWithDataDto = assetService.patchById(id, assetDTO, multipartFile);
 
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.add("Location", "/assets/" + patchedAssetWithDataDto);
+        httpHeaders.add("Location", "/assets/" + patchedAssetWithDataDto.getId());
 
         ResponseEntity<AssetWithDataDTO> responseEntity = new ResponseEntity<>(
                 patchedAssetWithDataDto,
