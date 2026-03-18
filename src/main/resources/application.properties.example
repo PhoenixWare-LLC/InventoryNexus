@@ -19,9 +19,10 @@ info.app.version=${APP_VERSION:0.1.1}
 info.app.description=${APP_DESCRIPTION:The backend to the shopify integration application that performs business logic, performs API calls to Shopify and stores the data in a database.}
 
 #
-# set the default admin username and password
+# app config
 #
 logging.level.org.springframework.security=${SPRING_SECURITY_LOG_LEVEL:TRACE}
+spring.
 
 
 #

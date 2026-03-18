@@ -50,6 +50,11 @@ CREATE TABLE public.bin_location
 CREATE TABLE public.parent_product
 (
     id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
+    asset_id UUID NOT NULL,
+    title VARCHAR(50),
+    description VARCHAR(255),
+    notes VARCHAR(500),
+    target_margin INTEGER,
     CONSTRAINT parent_product_pk PRIMARY KEY (id)
 );
 

@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.inventory.entity;
 
+import com.phoenixware.inventorynexus.shared.entity.Asset;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,4 +23,20 @@ public class ParentProduct {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @ManyToOne
+    @JoinColumn(name = "asset_id")
+    private Asset asset;
+
+    @Column(name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Column(name = "notes")
+    private String notes;
+
+    @Column(name = "target_margin")
+    private Integer targetMargin;
 }

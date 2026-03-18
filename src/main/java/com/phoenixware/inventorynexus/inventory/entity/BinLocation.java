@@ -1,11 +1,6 @@
 package com.phoenixware.inventorynexus.inventory.entity;
 
-import com.phoenixware.inventorynexus.shared.validation.Create;
-import com.phoenixware.inventorynexus.shared.validation.Get;
-import com.phoenixware.inventorynexus.shared.validation.Patch;
-import com.phoenixware.inventorynexus.shared.validation.Update;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -27,14 +22,6 @@ public class BinLocation {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Null(groups = Create.class)
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Update.class,
-                    Patch.class
-            },
-            message = "id cannot be null!")
     private UUID id;
 
     @Column(name = "warehouse")
