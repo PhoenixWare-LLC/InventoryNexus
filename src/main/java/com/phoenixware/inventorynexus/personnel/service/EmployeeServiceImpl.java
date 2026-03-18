@@ -2,9 +2,9 @@ package com.phoenixware.inventorynexus.personnel.service;
 
 import com.phoenixware.inventorynexus.personnel.dto.employee.EmployeeDTO;
 import com.phoenixware.inventorynexus.personnel.entity.Employee;
-import com.phoenixware.inventorynexus.personnel.exception.employee.EmployeeNotFoundException;
 import com.phoenixware.inventorynexus.personnel.mapper.EmployeeMapper;
 import com.phoenixware.inventorynexus.personnel.repository.EmployeeRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public EmployeeDTO updateById(UUID id, EmployeeDTO employeeDTO) {
         Employee existingEmployee = employeeRepository.findById(id)
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Employee updatedEmployee = employeeMapper.employeeDtoToEmployee(employeeDTO);
         updatedEmployee.setId(id);
@@ -45,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         employeeRepository.save(updatedEmployee);
 
         Employee employeeFromDb = employeeRepository.findById(id)
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return employeeMapper.employeeToEmployeeDto(employeeFromDb);
     }
@@ -53,14 +53,14 @@ public class EmployeeServiceImpl implements EmployeeService{
     @Override
     public EmployeeDTO patchById(UUID id, EmployeeDTO employeeDTO) {
         Employee existingEmployee = employeeRepository.findById(id)
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Employee patchedEmployee = employeeMapper.patchEmployeeFromEmployeeDto(employeeDTO, existingEmployee);
 
         employeeRepository.save(patchedEmployee);
 
         Employee employeeFromDb = employeeRepository.findById(id)
-                .orElseThrow(EmployeeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return employeeMapper.employeeToEmployeeDto(employeeFromDb);
     }
@@ -69,7 +69,7 @@ public class EmployeeServiceImpl implements EmployeeService{
     public EmployeeDTO findById(UUID id) {
         return employeeMapper.employeeToEmployeeDto(
                 employeeRepository.findById(id)
-                        .orElseThrow(EmployeeNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -87,7 +87,7 @@ public class EmployeeServiceImpl implements EmployeeService{
         if (employeeRepository.existsById(id)) {
             employeeRepository.deleteById(id);
         } else {
-            throw new EmployeeNotFoundException();
+            throw new GlobalRestException();
         }
     }
 }

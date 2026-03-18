@@ -2,7 +2,7 @@ package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.dto.role.RoleDTO;
 import com.phoenixware.inventorynexus.shared.entity.Role;
-import com.phoenixware.inventorynexus.shared.exception.role.RoleNotFoundException;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import com.phoenixware.inventorynexus.shared.mapper.RoleMapper;
 import com.phoenixware.inventorynexus.shared.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,7 +36,7 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleDTO updateById(UUID id, RoleDTO roleDTO) {
         Role existingRole = roleRepository.findById(id)
-                .orElseThrow(RoleNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Role updatedRole = roleMapper.roleDtoToRole(roleDTO);
         updatedRole.setId(id);
@@ -44,7 +44,7 @@ public class RoleServiceImpl implements RoleService {
         roleRepository.save(updatedRole);
 
         Role roleFromDb = roleRepository.findById(id)
-                .orElseThrow(RoleNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return roleMapper.roleToRoleDto(roleFromDb);
     }
@@ -52,14 +52,14 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public RoleDTO patchById(UUID id, RoleDTO roleDTO) {
         Role existingRole = roleRepository.findById(id)
-                .orElseThrow(RoleNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Role patchedRole = roleMapper.patchRoleFromRoleDto(roleDTO, existingRole);
 
         roleRepository.save(patchedRole);
 
         Role roleFromDb = roleRepository.findById(id)
-                .orElseThrow(RoleNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return roleMapper.roleToRoleDto(roleFromDb);
     }
@@ -68,7 +68,7 @@ public class RoleServiceImpl implements RoleService {
     public RoleDTO findById(UUID id, RoleDTO roleDTO) {
         return roleMapper.roleToRoleDto(
                 roleRepository.findById(id)
-                        .orElseThrow(RoleNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -86,7 +86,7 @@ public class RoleServiceImpl implements RoleService {
         if (roleRepository.existsById(id)) {
             roleRepository.deleteById(id);
         } else {
-            throw new RoleNotFoundException();
+            throw new GlobalRestException();
         }
 
     }

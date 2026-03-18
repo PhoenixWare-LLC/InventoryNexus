@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.shared.dto.asset;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phoenixware.inventorynexus.shared.validation.Create;
 import com.phoenixware.inventorynexus.shared.validation.Get;
 import com.phoenixware.inventorynexus.shared.validation.Patch;
@@ -21,7 +22,7 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AssetDTO {
+public class AssetWithDataDTO {
     @Null(groups = Create.class)
     @NotNull(
             groups = {
@@ -32,6 +33,23 @@ public class AssetDTO {
             message = "id cannot be Null"
     )
     private UUID id;
+
+    @JsonIgnore
+    @NotNull(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "imageData cannot be null!")
+    @NotBlank(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "imageData cannot be blank!")
+    private byte[] imageData;
 
     @NotNull(
             groups = {
@@ -67,11 +85,31 @@ public class AssetDTO {
     @Size(min = 1, max = 255, message = "alt must be between 1 and 255 characters!")
     private String alt;
 
-    @Null(groups = Create.class)
+    @NotNull(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "size cannot be Null"
+    )
     @Max(value = 100_000_000)
     private Long size;
 
-    @Null(groups = Create.class)
+    @NotNull(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "type cannot be null!")
+    @NotBlank(
+            groups = {
+                    Get.class,
+                    Create.class,
+                    Update.class
+            },
+            message = "type cannot be blank!")
     @Size(min = 1, max = 15, message = "type must be between 1 and 15 characters!")
     private String type;
 }

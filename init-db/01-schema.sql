@@ -18,10 +18,11 @@ CREATE TABLE public.contractor
 CREATE TABLE public.asset
 (
     id UUID NOT NULL UNIQUE DEFAULT gen_random_uuid(),
-    image_data BYTEA NOT NULL UNIQUE,
+    asset_data BYTEA NOT NULL,
     description VARCHAR(255) NOT NULL,
     alt VARCHAR(255) NOT NULL,
     size NUMERIC(10,2) NOT NULL,
+    type VARCHAR(15),
     CONSTRAINT asset_pkey PRIMARY KEY (id)
 );
 

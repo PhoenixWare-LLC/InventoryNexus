@@ -2,9 +2,9 @@ package com.phoenixware.inventorynexus.inventory.service;
 
 import com.phoenixware.inventorynexus.inventory.dto.binlocation.BinLocationDTO;
 import com.phoenixware.inventorynexus.inventory.entity.BinLocation;
-import com.phoenixware.inventorynexus.inventory.exception.binlocation.BinLocationNotFoundException;
 import com.phoenixware.inventorynexus.inventory.mapper.BinLocationMapper;
 import com.phoenixware.inventorynexus.inventory.repository.BinLocationRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +35,7 @@ public class BinLocationServiceImpl implements BinLocationService{
     @Override
     public BinLocationDTO updateById(UUID id, BinLocationDTO binLocationDTO) {
         BinLocation existingBinLocation = binLocationRepository.findById(id)
-                .orElseThrow(BinLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         BinLocation updatedBinLocation = binLocationMapper.binLocationDtoToBinLocation(binLocationDTO);
         updatedBinLocation.setId(id);
@@ -43,7 +43,7 @@ public class BinLocationServiceImpl implements BinLocationService{
         binLocationRepository.save(updatedBinLocation);
 
         BinLocation binLocationFromDb = binLocationRepository.findById(id)
-                .orElseThrow(BinLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return binLocationMapper.binLocationToBinLocationDto(binLocationFromDb);
     }
@@ -51,14 +51,14 @@ public class BinLocationServiceImpl implements BinLocationService{
     @Override
     public BinLocationDTO patchById(UUID id, BinLocationDTO binLocationDTO) {
         BinLocation existingBinLocation = binLocationRepository.findById(id)
-                .orElseThrow(BinLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         BinLocation patchedBinLocation = binLocationMapper.patchBinLocationFromBinLocationDto(binLocationDTO, existingBinLocation);
 
         binLocationRepository.save(patchedBinLocation);
 
         BinLocation binLocationFromDb = binLocationRepository.findById(id)
-                .orElseThrow(BinLocationNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return binLocationMapper.binLocationToBinLocationDto(binLocationFromDb);
     }
@@ -67,7 +67,7 @@ public class BinLocationServiceImpl implements BinLocationService{
     public BinLocationDTO findById(UUID id) {
         return binLocationMapper.binLocationToBinLocationDto(
                 binLocationRepository.findById(id)
-                        .orElseThrow(BinLocationNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -85,7 +85,7 @@ public class BinLocationServiceImpl implements BinLocationService{
         if (binLocationRepository.existsById(id)) {
             binLocationRepository.deleteById(id);
         } else {
-            throw new BinLocationNotFoundException();
+            throw new GlobalRestException();
         }
     }
 }

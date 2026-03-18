@@ -2,7 +2,7 @@ package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.dto.contact.ContactDTO;
 import com.phoenixware.inventorynexus.shared.entity.Contact;
-import com.phoenixware.inventorynexus.shared.exception.contact.ContactNotFoundException;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import com.phoenixware.inventorynexus.shared.mapper.ContactMapper;
 import com.phoenixware.inventorynexus.shared.repository.ContactRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,7 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public ContactDTO updateById(UUID id, ContactDTO contactDTO) {
         Contact existingContact = contactRepository.findById(id)
-                .orElseThrow(ContactNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Contact updatedContact = contactMapper.contactDtoToContact(contactDTO);
         updatedContact.setId(id);
@@ -39,7 +39,7 @@ public class ContactServiceImpl implements ContactService {
         contactRepository.save(updatedContact);
 
         Contact contactFromDb = contactRepository.findById(id)
-                .orElseThrow(ContactNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return contactMapper.contactToContactDto(contactFromDb);
     }
@@ -47,21 +47,21 @@ public class ContactServiceImpl implements ContactService {
     @Override
     public ContactDTO patchById(UUID id, ContactDTO contactDTO) {
         Contact existingContact = contactRepository.findById(id)
-                .orElseThrow(ContactNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Contact patchedContact = contactMapper.patchContactFromContactDto(contactDTO, existingContact);
 
         contactRepository.save(patchedContact);
 
         Contact contactFromDb = contactRepository.findById(id)
-                .orElseThrow(ContactNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return contactMapper.contactToContactDto(contactFromDb);
     }
 
     @Override
     public ContactDTO findById(UUID id) {
-        return contactMapper.contactToContactDto(contactRepository.findById(id).orElseThrow(ContactNotFoundException::new));
+        return contactMapper.contactToContactDto(contactRepository.findById(id).orElseThrow(GlobalRestException::new));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class ContactServiceImpl implements ContactService {
         if (contactRepository.existsById(id)) {
             contactRepository.deleteById(id);
         } else {
-            throw new ContactNotFoundException();
+            throw new GlobalRestException();
         }
 
     }

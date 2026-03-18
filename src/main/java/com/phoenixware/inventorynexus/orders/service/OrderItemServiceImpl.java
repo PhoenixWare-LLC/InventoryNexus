@@ -2,9 +2,9 @@ package com.phoenixware.inventorynexus.orders.service;
 
 import com.phoenixware.inventorynexus.orders.dto.orderitem.OrderItemDTO;
 import com.phoenixware.inventorynexus.orders.entity.OrderItem;
-import com.phoenixware.inventorynexus.orders.exception.orderitem.OrderItemNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.OrderItemMapper;
 import com.phoenixware.inventorynexus.orders.repository.OrderItemRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,14 +37,14 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public OrderItemDTO updateById(UUID id, OrderItemDTO orderItemDTO) {
         OrderItem existingOrderItem = orderItemRepository.findById(id)
-                .orElseThrow(OrderItemNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         OrderItem updateOrderItem = orderItemMapper.orderItemDtoToOrderItem(orderItemDTO);
 
         orderItemRepository.save(updateOrderItem);
 
         OrderItem orderItemFromDb = orderItemRepository.findById(id)
-                .orElseThrow(OrderItemNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return orderItemMapper.orderItemToOrderItemDto(orderItemFromDb);
     }
@@ -52,14 +52,14 @@ public class OrderItemServiceImpl implements OrderItemService {
     @Override
     public OrderItemDTO patchById(UUID id, OrderItemDTO orderItemDTO) {
         OrderItem existingOrderItem = orderItemRepository.findById(id)
-                .orElseThrow(OrderItemNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         OrderItem patchedOrderItem = orderItemMapper.patchOrderItemFromOrderItemDto(orderItemDTO, existingOrderItem);
 
         orderItemRepository.save(patchedOrderItem);
 
         OrderItem orderItemFromDb = orderItemRepository.findById(id)
-                .orElseThrow(OrderItemNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return orderItemMapper.orderItemToOrderItemDto(orderItemFromDb);
     }
@@ -68,7 +68,7 @@ public class OrderItemServiceImpl implements OrderItemService {
     public OrderItemDTO findById(UUID id) {
         return orderItemMapper.orderItemToOrderItemDto(
                 orderItemRepository.findById(id)
-                        .orElseThrow(OrderItemNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -86,7 +86,7 @@ public class OrderItemServiceImpl implements OrderItemService {
         if (orderItemRepository.existsById(id)) {
             orderItemRepository.deleteById(id);
         } else {
-            throw new OrderItemNotFoundException();
+            throw new GlobalRestException();
         }
 
     }

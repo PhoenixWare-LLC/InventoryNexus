@@ -2,7 +2,7 @@ package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.dto.privilege.PrivilegeDTO;
 import com.phoenixware.inventorynexus.shared.entity.Privilege;
-import com.phoenixware.inventorynexus.shared.exception.privilege.PrivilegeNotFoundException;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import com.phoenixware.inventorynexus.shared.mapper.PrivilegeMapper;
 import com.phoenixware.inventorynexus.shared.repository.PrivilegeRepository;
 import lombok.RequiredArgsConstructor;
@@ -37,7 +37,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Override
     public PrivilegeDTO updateById(UUID id, PrivilegeDTO privilegeDTO) {
         Privilege existingPrivilege = privilegeRepository.findById(id)
-                .orElseThrow(PrivilegeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Privilege updatedPrivilege = privilegeMapper.privilegeDtoToPrivilege(privilegeDTO);
         updatedPrivilege.setId(id);
@@ -45,7 +45,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         privilegeRepository.save(updatedPrivilege);
 
         Privilege privilegeFromDb = privilegeRepository.findById(id)
-                .orElseThrow(PrivilegeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return privilegeMapper.privilegeToPrivilegeDto(privilegeFromDb);
     }
@@ -53,14 +53,14 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     @Override
     public PrivilegeDTO patchById(UUID id, PrivilegeDTO privilegeDTO) {
         Privilege existingPrivilege = privilegeRepository.findById(id)
-                .orElseThrow(PrivilegeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Privilege patchedPrivilege = privilegeMapper.patchPrivilegeFromPrivilegeDto(privilegeDTO, existingPrivilege);
 
         privilegeRepository.save(patchedPrivilege);
 
         Privilege privilegeFromDb = privilegeRepository.findById(id)
-                .orElseThrow(PrivilegeNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return privilegeMapper.privilegeToPrivilegeDto(privilegeFromDb);
     }
@@ -69,7 +69,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     public PrivilegeDTO findById(UUID id) {
         return privilegeMapper.privilegeToPrivilegeDto(
                 privilegeRepository.findById(id)
-                        .orElseThrow(PrivilegeNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -87,7 +87,7 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         if (privilegeRepository.existsById(id)) {
             privilegeRepository.deleteById(id);
         } else {
-            throw new PrivilegeNotFoundException();
+            throw new GlobalRestException();
         }
 
     }

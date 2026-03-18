@@ -2,9 +2,9 @@ package com.phoenixware.inventorynexus.inventory.service;
 
 import com.phoenixware.inventorynexus.inventory.dto.transaction.TransactionDTO;
 import com.phoenixware.inventorynexus.inventory.entity.Transaction;
-import com.phoenixware.inventorynexus.inventory.exception.transaction.TransactionNotFoundException;
 import com.phoenixware.inventorynexus.inventory.mapper.TransactionMapper;
 import com.phoenixware.inventorynexus.inventory.repository.TransactionRepository;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +37,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionDTO updateById(UUID id, TransactionDTO transactionDTO) {
         Transaction existingTransaction = transactionRepository.findById(id)
-                .orElseThrow(TransactionNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Transaction updatedTransaction = transactionMapper.transactionDTOToTransaction(transactionDTO);
         updatedTransaction.setId(id);
@@ -45,7 +45,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionRepository.save(updatedTransaction);
 
         Transaction transactionFromDb = transactionRepository.findById(id)
-                .orElseThrow(TransactionNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return transactionMapper.transactionToTransactionDto(transactionFromDb);
     }
@@ -53,14 +53,14 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public TransactionDTO patchById(UUID id, TransactionDTO transactionDTO) {
         Transaction existingTransaction = transactionRepository.findById(id)
-                .orElseThrow(TransactionNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         Transaction patchedTransaction = transactionMapper.patchTransactionFromTransactionDto(transactionDTO, existingTransaction);
 
         transactionRepository.save(patchedTransaction);
 
         Transaction transactionFromDb = transactionRepository.findById(id)
-                .orElseThrow(TransactionNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return transactionMapper.transactionToTransactionDto(transactionFromDb);
     }
@@ -69,7 +69,7 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDTO findById(UUID id) {
         return transactionMapper.transactionToTransactionDto(
                 transactionRepository.findById(id)
-                        .orElseThrow(TransactionNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -87,7 +87,7 @@ public class TransactionServiceImpl implements TransactionService {
         if (transactionRepository.existsById(id)) {
             transactionRepository.deleteById(id);
         } else {
-            throw new TransactionNotFoundException();
+            throw new GlobalRestException();
         }
     }
 }

@@ -2,14 +2,13 @@ package com.phoenixware.inventorynexus.inventory.service;
 
 import com.phoenixware.inventorynexus.inventory.dto.product.ProductDTO;
 import com.phoenixware.inventorynexus.inventory.entity.Product;
-import com.phoenixware.inventorynexus.inventory.exception.product.ProductNotFoundException;
 import com.phoenixware.inventorynexus.inventory.mapper.ProductMapper;
 import com.phoenixware.inventorynexus.orders.dto.minimalproduct.MinimalProductDTO;
 import com.phoenixware.inventorynexus.orders.entity.MinimalProduct;
-import com.phoenixware.inventorynexus.orders.exception.minimalproduct.MinimalProductNotFoundException;
 import com.phoenixware.inventorynexus.orders.mapper.MinimalProductMapper;
 import com.phoenixware.inventorynexus.shared.dto.baseproduct.BaseProductDTO;
 import com.phoenixware.inventorynexus.shared.entity.BaseProduct;
+import com.phoenixware.inventorynexus.shared.exception.GlobalRestException;
 import com.phoenixware.inventorynexus.shared.mapper.BaseProductMapper;
 import com.phoenixware.inventorynexus.shared.repository.BaseProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +44,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public BaseProductDTO updateById(UUID id, BaseProductDTO baseProductDTO) {
         BaseProduct existingBaseProduct = baseProductRepository.findById(id)
-                .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         BaseProduct updatedBaseProduct = baseProductMapper.mapFromDto(baseProductDTO);
         updatedBaseProduct.setId(id);
@@ -53,7 +52,7 @@ public class ProductServiceImpl implements ProductService {
         baseProductRepository.save(updatedBaseProduct);
 
         BaseProduct baseProductFromDb = baseProductRepository.findById(id)
-                .orElseThrow(ProductNotFoundException::new);
+                .orElseThrow(GlobalRestException::new);
 
         return baseProductMapper.mapToDto(baseProductFromDb);
     }
@@ -62,26 +61,26 @@ public class ProductServiceImpl implements ProductService {
     public BaseProductDTO patchById(UUID id, BaseProductDTO baseProductDTO) {
         if (baseProductDTO instanceof ProductDTO productDTO) {
             Product existingProduct = (Product) baseProductRepository.findById(id)
-                    .orElseThrow(ProductNotFoundException::new);
+                    .orElseThrow(GlobalRestException::new);
 
             Product patchedProduct = productMapper.patchFromDto(productDTO, existingProduct);
 
             baseProductRepository.save(patchedProduct);
 
             BaseProduct baseProductFromDb = baseProductRepository.findById(id)
-                    .orElseThrow(ProductNotFoundException::new);
+                    .orElseThrow(GlobalRestException::new);
 
             return baseProductMapper.mapToDto(baseProductFromDb);
         } else if (baseProductDTO instanceof MinimalProductDTO minimalProductDTO) {
             MinimalProduct existingMinimalProduct = (MinimalProduct) baseProductRepository.findById(id)
-                    .orElseThrow(MinimalProductNotFoundException::new);
+                    .orElseThrow(GlobalRestException::new);
 
             MinimalProduct patchedMinimalProduct = minimalProductMapper.patchFromDto(minimalProductDTO, existingMinimalProduct);
 
             baseProductRepository.save(patchedMinimalProduct);
 
             BaseProduct baseProductFromDb = baseProductRepository.findById(id)
-                    .orElseThrow(ProductNotFoundException::new);
+                    .orElseThrow(GlobalRestException::new);
 
             return baseProductMapper.mapToDto(baseProductFromDb);
         } else {
@@ -93,7 +92,7 @@ public class ProductServiceImpl implements ProductService {
     public BaseProductDTO findById(UUID id) {
         return baseProductMapper.mapToDto(
                 baseProductRepository.findById(id)
-                        .orElseThrow(ProductNotFoundException::new)
+                        .orElseThrow(GlobalRestException::new)
         );
     }
 
@@ -111,7 +110,7 @@ public class ProductServiceImpl implements ProductService {
         if (baseProductRepository.existsById(id)) {
             baseProductRepository.deleteById(id);
         } else {
-            throw new ProductNotFoundException();
+            throw new GlobalRestException();
         }
     }
 }

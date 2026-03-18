@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.shared.exception.role;
+package com.phoenixware.inventorynexus.shared.exception;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -15,13 +15,13 @@ import java.time.LocalDateTime;
  */
 @Slf4j
 @ControllerAdvice
-public class RoleRestExceptionHandler {
+public class GlobalRestExceptionHandler {
 
     @ExceptionHandler
-    public ResponseEntity<RoleExceptionResponse> handleException(RoleNotFoundException exc) {
+    public ResponseEntity<GlobalExceptionResponse> handleException(GlobalRestException exc) {
         // create an OrderNotFoundException
 
-        RoleExceptionResponse error = new RoleExceptionResponse();
+        GlobalExceptionResponse error = new GlobalExceptionResponse();
 
         error.setStatus(HttpStatus.NOT_FOUND.value());
         error.setMessage(exc.getMessage());
@@ -33,8 +33,8 @@ public class RoleRestExceptionHandler {
     }
 
     @ExceptionHandler
-    public ResponseEntity<RoleExceptionResponse> handleException(Exception exc) {
-        RoleExceptionResponse error = new RoleExceptionResponse();
+    public ResponseEntity<GlobalExceptionResponse> handleException(Exception exc) {
+        GlobalExceptionResponse error = new GlobalExceptionResponse();
 
         error.setStatus(HttpStatus.BAD_REQUEST.value());
         error.setMessage(exc.getMessage());

@@ -2,7 +2,9 @@ package com.phoenixware.inventorynexus.shared.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
 
+import java.sql.Types;
 import java.util.UUID;
 
 /**
@@ -23,8 +25,9 @@ public class Asset {
     private UUID id;
 
     @Lob
-    @Column(name = "assetData", columnDefinition = "BYTEA")
-    private Byte[] imageData;
+    @JdbcTypeCode(Types.BINARY)
+    @Column(name = "asset_data")
+    private byte[] imageData;
 
     @Column(name = "description")
     private String description;
@@ -33,5 +36,8 @@ public class Asset {
     private String alt;
 
     @Column(name = "size")
-    private Integer size;
+    private Long size;
+
+    @Column(name = "type")
+    private String type;
 }

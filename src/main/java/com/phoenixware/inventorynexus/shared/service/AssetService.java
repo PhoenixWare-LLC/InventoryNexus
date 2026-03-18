@@ -1,6 +1,8 @@
 package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.dto.asset.AssetDTO;
+import com.phoenixware.inventorynexus.shared.dto.asset.AssetWithDataDTO;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -11,10 +13,10 @@ import java.util.UUID;
  * Created:     3/16/2026
  */
 public interface AssetService {
-    AssetDTO create(AssetDTO assetDTO);
-    AssetDTO updateById(UUID id, AssetDTO assetDTO);
-    AssetDTO patchById(UUID id, AssetDTO assetDTO);
-    AssetDTO findById(UUID id);
-    List<AssetDTO> findAll();
+    AssetWithDataDTO create(AssetDTO assetDTO, MultipartFile multipartFile);
+    AssetWithDataDTO updateById(UUID id, AssetDTO assetDTO, MultipartFile multipartFile);
+    AssetWithDataDTO patchById(UUID id, AssetDTO assetDTO, MultipartFile multipartFile);
+    AssetWithDataDTO findById(UUID id);
+    List<AssetWithDataDTO> findAll();
     void deleteById(UUID id);
 }
