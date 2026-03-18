@@ -24,13 +24,6 @@ public class AssetDTO {
     @Null(groups = Create.class)
     private UUID id;
 
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "description cannot be null!")
     @NotBlank(
             groups = {
                     Get.class,
@@ -41,13 +34,6 @@ public class AssetDTO {
     @Size(min = 1, max = 255, message = "description must be between 1 and 255 characters!")
     private String description;
 
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "alt cannot be null!")
     @NotBlank(
             groups = {
                     Get.class,

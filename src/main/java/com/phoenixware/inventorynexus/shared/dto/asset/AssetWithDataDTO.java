@@ -35,13 +35,6 @@ public class AssetWithDataDTO {
     private UUID id;
 
     @JsonIgnore
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "imageData cannot be null!")
     @NotBlank(
             groups = {
                     Get.class,
@@ -51,13 +44,6 @@ public class AssetWithDataDTO {
             message = "imageData cannot be blank!")
     private byte[] imageData;
 
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "description cannot be null!")
     @NotBlank(
             groups = {
                     Get.class,
@@ -68,13 +54,6 @@ public class AssetWithDataDTO {
     @Size(min = 1, max = 255, message = "description must be between 1 and 255 characters!")
     private String description;
 
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "alt cannot be null!")
     @NotBlank(
             groups = {
                     Get.class,
@@ -96,13 +75,6 @@ public class AssetWithDataDTO {
     @Max(value = 100_000_000)
     private Long size;
 
-    @NotNull(
-            groups = {
-                    Get.class,
-                    Create.class,
-                    Update.class
-            },
-            message = "type cannot be null!")
     @NotBlank(
             groups = {
                     Get.class,
