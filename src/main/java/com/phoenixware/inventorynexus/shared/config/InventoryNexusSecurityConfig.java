@@ -65,29 +65,18 @@ public class InventoryNexusSecurityConfig {
                         "/error", "/error/**"
                 ).permitAll()
 
-                // employee endpoints
-                .requestMatchers(
-                        "/orders", "/orders/**",
-                        "/orderitems", "/orderitems/**",
-                        "/binlocations", "/binlocations/**",
-                        "/parentproducts", "/parentproducts/**",
-                        "/shipments", "/shipments/**",
-                        "/shipmentpackages", "/shipmentpackages/**",
-                        "/transactions", "/transactions/**"
-                ).hasAnyRole("EMPLOYEE", "MANAGER", "ADMIN")
-
-                // api calls
-                .requestMatchers(
-                        "/api/**"
-                ).hasAnyRole(
-                        "EMPLOYEE",
-                        "MANAGER",
-                        "ADMIN"
-                )
+                //Employee Endpoints
+                .requestMatchers("/orders", "/orders/**").hasAuthority("orders")
+                .requestMatchers("/order-items", "/order-items/**").hasAuthority("order-items")
+                .requestMatchers("/bin-locations", "/bin-locations/**").hasAuthority("bin-locations")
+                .requestMatchers("/parent-products", "/parent-products/**").hasAuthority("parent-products")
+                .requestMatchers("/shipments", "/shipments/**").hasAuthority("shipments")
+                .requestMatchers("/shipment-packages", "/shipment-packages/**").hasAuthority("shipment-packages")
+                .requestMatchers("/transactions", "/transactions/**").hasAuthority("transactions")
 
                 // admin panels
                 .requestMatchers("/admin/**", "/admin")
-                .hasRole("ADMIN")
+                .hasAuthority("admin")
 
                 // user self management. or admin user administration
                 .requestMatchers("/users", "/users/**")
@@ -173,9 +162,7 @@ public class InventoryNexusSecurityConfig {
 
             boolean isAdmin = appUserDetails.getAppUser().isAdmin();
             if (!isAdmin) {
-                isAdmin = appUserDetails.getAppUser().getUserRoles()
-                        .stream()
-                        .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+                isAdmin = appUserDetails.getAppUser().isAdmin();
             }
 
             UUID currentUserId = appUserDetails.getAppUser().getId();
