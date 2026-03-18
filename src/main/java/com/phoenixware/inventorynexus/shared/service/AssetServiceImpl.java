@@ -28,7 +28,7 @@ public class AssetServiceImpl implements AssetService {
     @Override
     public AssetWithDataDTO create(AssetDTO assetDTO, MultipartFile multipartFile) {
         //Validation
-        verifyFileType(assetDTO, multipartFile);
+        verifyFileType(multipartFile);
 
         //TODO: add verification here to prevent malicious file uploads
 
@@ -51,7 +51,7 @@ public class AssetServiceImpl implements AssetService {
                 .orElseThrow(GlobalRestException::new);
 
         //Validation
-        verifyFileType(assetDTO, multipartFile);
+        verifyFileType(multipartFile);
 
         //TODO: add verification here to prevent malicious file uploads
 
@@ -82,7 +82,7 @@ public class AssetServiceImpl implements AssetService {
                 .orElseThrow(GlobalRestException::new);
 
         //Validation
-        verifyFileType(assetDTO, multipartFile);
+        verifyFileType(multipartFile);
 
         //TODO: add verification here to prevent malicious file uploads
 
@@ -106,7 +106,7 @@ public class AssetServiceImpl implements AssetService {
         return assetMapper.assetToAssetWithDataDto(assetFromDb);
     }
 
-    private void verifyFileType(AssetDTO assetDTO, MultipartFile multipartFile) {
+    private void verifyFileType(MultipartFile multipartFile) {
         String contentType = multipartFile.getContentType();
         if (contentType == null ||
                 !(contentType.equals("image/jpeg") ||
