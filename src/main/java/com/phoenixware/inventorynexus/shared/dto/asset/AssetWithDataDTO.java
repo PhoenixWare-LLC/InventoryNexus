@@ -1,5 +1,6 @@
 package com.phoenixware.inventorynexus.shared.dto.asset;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.phoenixware.inventorynexus.shared.validation.Create;
 import com.phoenixware.inventorynexus.shared.validation.Get;
 import com.phoenixware.inventorynexus.shared.validation.Patch;
@@ -33,6 +34,7 @@ public class AssetWithDataDTO {
     )
     private UUID id;
 
+    @JsonIgnore
     @NotNull(
             groups = {
                     Get.class,

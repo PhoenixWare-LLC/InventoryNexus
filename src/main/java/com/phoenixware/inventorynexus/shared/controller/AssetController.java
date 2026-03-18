@@ -92,7 +92,7 @@ public class AssetController {
         return responseEntity;
     }
 
-    @PostMapping("/assets/")
+    @PostMapping("/assets")
     public ResponseEntity<AssetWithDataDTO> postAsset(
             @RequestPart("file") @NotNull
             MultipartFile multipartFile,
