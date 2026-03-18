@@ -7,7 +7,6 @@ import com.phoenixware.inventorynexus.shared.validation.Create;
 import com.phoenixware.inventorynexus.shared.validation.Patch;
 import com.phoenixware.inventorynexus.shared.validation.Update;
 import jakarta.validation.constraints.NotNull;
-import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -49,7 +48,7 @@ public class AssetController {
 
     @PutMapping("/assets/{id}")
     public ResponseEntity<AssetWithDataDTO> putAsset(
-            @PathParam("id")
+            @PathVariable("id")
             UUID id,
             @RequestPart("file")
             MultipartFile multipartFile,
@@ -72,7 +71,7 @@ public class AssetController {
 
     @PatchMapping("/assets/{id}")
     public ResponseEntity<AssetWithDataDTO> patchAsset(
-            @PathParam("id")
+            @PathVariable("id")
             UUID id,
             @RequestPart("file")
             MultipartFile multipartFile,
