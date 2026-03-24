@@ -2,7 +2,10 @@ package com.phoenixware.inventorynexus.shared.config;
 
 import com.phoenixware.inventorynexus.shared.exception.auth.CustomAccessDeniedHandler;
 import com.phoenixware.inventorynexus.shared.exception.auth.CustomBasicAuthenticationEntryPoint;
+import com.phoenixware.inventorynexus.shared.filter.AuthoritiesLoggingAtFilter;
 import com.phoenixware.inventorynexus.shared.filter.CsrfCookieFilter;
+import com.phoenixware.inventorynexus.shared.filter.RequestValidationAfterFilter;
+import com.phoenixware.inventorynexus.shared.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +46,10 @@ import java.util.UUID;
 @EnableWebSecurity(debug = false)
 @RequiredArgsConstructor
 public class InventoryNexusSecurityConfig {
+
+    private final RequestValidationBeforeFilter requestValidationBeforeFilter;
+    private final AuthoritiesLoggingAtFilter authoritiesLoggingAtFilter;
+    private final RequestValidationAfterFilter requestValidationAfterFilter;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
@@ -114,6 +121,9 @@ public class InventoryNexusSecurityConfig {
                                 "/error", "/error/**"));
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(requestValidationBeforeFilter, BasicAuthenticationFilter.class);
+        http.addFilterAt(authoritiesLoggingAtFilter, BasicAuthenticationFilter.class);
+        http.addFilterAfter(requestValidationAfterFilter, BasicAuthenticationFilter.class);
 
         // TODO: add feature in here for session timeout based on endpoints/role
 

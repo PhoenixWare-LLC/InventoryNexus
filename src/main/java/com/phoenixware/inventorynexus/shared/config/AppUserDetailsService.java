@@ -47,11 +47,11 @@ public class AppUserDetailsService implements UserDetailsService {
         appUser.getUserRoles().stream()
                         .flatMap(
                                 role -> role.getRolePrivileges().stream()
-                                        .map(privilege -> new SimpleGrantedAuthority(privilege.getName())));
+                                        .map(privilege -> new SimpleGrantedAuthority(privilege.getResourceName())));
 
         appUser.getUserPrivileges().forEach(
                 (privilege ) ->
-                        authorities.add(new SimpleGrantedAuthority(privilege.getName()))
+                        authorities.add(new SimpleGrantedAuthority(privilege.getResourceName()))
         );
         return new AppUserDetails(appUser, authorities);
     }

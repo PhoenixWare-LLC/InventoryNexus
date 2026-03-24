@@ -210,10 +210,10 @@ INSERT INTO public.privilege (id,
                               write_privilege,
                               update_privilege,
                               delete_privilege)
-VALUES ('e5a46dec-51f2-4cf7-aafc-9b1e3d5a00f1', 'Order FA', 'Order', true, true, true, true),
-       ('5915143b-a5ec-4f10-a830-478a31e73c20', 'Order R/W', 'Order', true, true, true, false),
-       ('76063414-b71f-42c1-9c4e-09716d35153d', 'Order R/C', 'Order', true, true, false, false),
-       ('011e344c-1e32-4b72-9541-51bad77458b5', 'Order R', 'Order', true, false, false, false) ON CONFLICT DO NOTHING;
+VALUES ('e5a46dec-51f2-4cf7-aafc-9b1e3d5a00f1', 'orders FA', 'orders', true, true, true, true),
+       ('5915143b-a5ec-4f10-a830-478a31e73c20', 'orders R/W', 'orders', true, true, true, false),
+       ('76063414-b71f-42c1-9c4e-09716d35153d', 'orders R/C', 'orders', true, true, false, false),
+       ('011e344c-1e32-4b72-9541-51bad77458b5', 'orders R', 'orders', true, false, false, false) ON CONFLICT DO NOTHING;
 
 INSERT INTO public.role (id,
     name)
