@@ -1,7 +1,10 @@
 package com.phoenixware.inventorynexus.shared.config;
 
 import com.phoenixware.inventorynexus.shared.exception.auth.CustomBasicAuthenticationEntryPoint;
+import com.phoenixware.inventorynexus.shared.filter.AuthoritiesLoggingAtFilter;
 import com.phoenixware.inventorynexus.shared.filter.CsrfCookieFilter;
+import com.phoenixware.inventorynexus.shared.filter.RequestValidationAfterFilter;
+import com.phoenixware.inventorynexus.shared.filter.RequestValidationBeforeFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,6 +46,10 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InventoryNexusProdSecurityConfig {
 
+    private final RequestValidationBeforeFilter requestValidationBeforeFilter;
+    private final AuthoritiesLoggingAtFilter authoritiesLoggingAtFilter;
+    private final RequestValidationAfterFilter requestValidationAfterFilter;
+
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
 
@@ -64,34 +71,18 @@ public class InventoryNexusProdSecurityConfig {
                 ).permitAll()
 
                 // employee endpoints
-                .requestMatchers(
-                        "/orders", "/orders/**",
-                        "/orderitems", "/orderitems/**",
-                        "/binlocations", "/binlocations/**",
-                        "/parentproducts", "/parentproducts/**",
-                        "/shipments", "/shipments/**",
-                        "/shipmentpackages", "/shipmentpackages/**",
-                        "/transactions", "/transactions/**"
-                ).hasAnyRole(
-                        "EMPLOYEE",
-                        "MANAGER",
-                        "ADMIN"
-                )
-
-                // api calls
-                .requestMatchers(
-                        "/api/**"
-                ).hasAnyRole(
-                        "EMPLOYEE",
-                        "MANAGER",
-                        "ADMIN"
-                )
+                //Employee Endpoints
+                .requestMatchers("/orders", "/orders/**").hasAuthority("orders")
+                .requestMatchers("/order-items", "/order-items/**").hasAuthority("order-items")
+                .requestMatchers("/bin-locations", "/bin-locations/**").hasAuthority("bin-locations")
+                .requestMatchers("/parent-products", "/parent-products/**").hasAuthority("parent-products")
+                .requestMatchers("/shipments", "/shipments/**").hasAuthority("shipments")
+                .requestMatchers("/shipment-packages", "/shipment-packages/**").hasAuthority("shipment-packages")
+                .requestMatchers("/transactions", "/transactions/**").hasAuthority("transactions")
 
                 // admin panels
                 .requestMatchers("/admin/**", "/admin")
-                .hasAnyRole(
-                        "ADMIN"
-                )
+                .hasAuthority("admin")
 
                 // user self management. or admin user administration
                 .requestMatchers("/users", "/users/**")
@@ -105,7 +96,7 @@ public class InventoryNexusProdSecurityConfig {
                 @Override
                 public @Nullable CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                     CorsConfiguration corsConfiguration = new CorsConfiguration();
-                    corsConfiguration.setAllowedOrigins(Collections.singletonList("http://localhost:4200"));
+                    corsConfiguration.setAllowedOrigins(Collections.singletonList("https://localhost:4200"));
                     corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                     corsConfiguration.setAllowCredentials(true);
                     corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
@@ -130,6 +121,9 @@ public class InventoryNexusProdSecurityConfig {
                                 "/error", "/error/**"));
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(requestValidationBeforeFilter, BasicAuthenticationFilter.class);
+        http.addFilterAt(authoritiesLoggingAtFilter, BasicAuthenticationFilter.class);
+        http.addFilterAfter(requestValidationAfterFilter, BasicAuthenticationFilter.class);
 
 
         http.sessionManagement(smc -> smc.
@@ -164,9 +158,7 @@ public class InventoryNexusProdSecurityConfig {
 
             boolean isAdmin = appUserDetails.getAppUser().isAdmin();
             if (!isAdmin) {
-                isAdmin = appUserDetails.getAppUser().getUserRoles()
-                        .stream()
-                        .anyMatch(role -> role.getName().equals("ROLE_ADMIN"));
+                isAdmin = appUserDetails.getAppUser().isAdmin();
             }
 
             UUID currentUserId = appUserDetails.getAppUser().getId();
