@@ -30,7 +30,7 @@ public class ContractorController {
         ResponseEntity<ContractorDTO> responseEntity = new ResponseEntity<>(
                 contractorDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

@@ -30,7 +30,7 @@ public class TransactionController {
         ResponseEntity<TransactionDTO> responseEntity = new ResponseEntity<>(
                 transactionDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

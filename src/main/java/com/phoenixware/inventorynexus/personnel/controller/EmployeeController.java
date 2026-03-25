@@ -30,7 +30,7 @@ public class EmployeeController {
         ResponseEntity<EmployeeDTO> responseEntity = new ResponseEntity<>(
                 employeeDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

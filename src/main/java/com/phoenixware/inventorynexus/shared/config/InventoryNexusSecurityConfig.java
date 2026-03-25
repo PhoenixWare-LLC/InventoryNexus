@@ -43,7 +43,7 @@ import java.util.UUID;
 @Profile("!prod")
 @Slf4j
 @Configuration
-@EnableWebSecurity(debug = false)
+@EnableWebSecurity(debug = true)
 @RequiredArgsConstructor
 public class InventoryNexusSecurityConfig {
 

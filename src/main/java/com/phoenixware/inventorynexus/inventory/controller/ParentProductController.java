@@ -31,7 +31,7 @@ public class ParentProductController {
         ResponseEntity<ParentProductDTO> responseEntity = new ResponseEntity<>(
                 parentProductDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

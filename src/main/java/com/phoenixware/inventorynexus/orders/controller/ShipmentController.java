@@ -30,7 +30,7 @@ public class ShipmentController {
         ResponseEntity<ShipmentDTO> responseEntity = new ResponseEntity<>(
                 shipmentDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

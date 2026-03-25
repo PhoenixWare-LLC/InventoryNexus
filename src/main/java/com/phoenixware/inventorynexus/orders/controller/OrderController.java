@@ -1,7 +1,6 @@
 package com.phoenixware.inventorynexus.orders.controller;
 
 import com.phoenixware.inventorynexus.orders.dto.order.OrderDetailedDTO;
-import com.phoenixware.inventorynexus.orders.mapper.OrderMapper;
 import com.phoenixware.inventorynexus.orders.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,7 +21,6 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-    private final OrderMapper orderMapper;
 
     @GetMapping("/orders/{id}")
     public ResponseEntity<OrderDetailedDTO> getOrder(@PathVariable("id") UUID id) {
@@ -34,7 +32,7 @@ public class OrderController {
         ResponseEntity<OrderDetailedDTO> responseEntity = new ResponseEntity<>(
                 orderDetailedDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
         
         return responseEntity;

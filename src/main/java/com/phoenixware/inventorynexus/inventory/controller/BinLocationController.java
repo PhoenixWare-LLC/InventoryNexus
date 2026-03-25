@@ -38,7 +38,7 @@ public class BinLocationController {
         ResponseEntity<BinLocationDTO> responseEntity = new ResponseEntity<>(
                 binLocationDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;
