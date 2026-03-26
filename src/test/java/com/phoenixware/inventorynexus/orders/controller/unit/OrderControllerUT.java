@@ -69,7 +69,7 @@ public class OrderControllerUT {
 
         given(orderService.updateById(orderId, inputDetailedOrderDTO)).willReturn(outputDetailedOrderDTO);
 
-        ResponseEntity<?> responseEntity = orderController.putById(orderId, inputDetailedOrderDTO);
+        ResponseEntity<?> responseEntity = orderController.updateOrder(orderId, inputDetailedOrderDTO);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.ACCEPTED);
         assertThat(responseEntity.getHeaders().getFirst("Location")).isEqualTo("/orders/" + orderId);
