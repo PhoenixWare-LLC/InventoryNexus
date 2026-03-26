@@ -31,6 +31,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    //adding jwt support
+    implementation("io.jsonwebtoken:jjwt-api")
+    implementation("io.jsonwebtoken:jjwt-impl")
+    implementation("io.jsonwebtoken:jjwt-jackson")
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-client")
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
 //    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
