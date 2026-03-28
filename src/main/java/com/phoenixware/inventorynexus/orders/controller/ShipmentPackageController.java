@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class ShipmentPackageController {
     private final ShipmentPackageService shipmentPackageService;
 
     @GetMapping("/shipment-packages/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'shipment-packages', 'read')")
     public ResponseEntity<ShipmentPackageDTO> getShipment(@PathVariable("id") UUID id) {
         ShipmentPackageDTO shipmentPackageDTO = shipmentPackageService.findById(id);
 
@@ -37,6 +39,7 @@ public class ShipmentPackageController {
     }
 
     @PutMapping("/shipment-packages/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'shipment-packages', 'update')")
     public ResponseEntity<ShipmentPackageDTO> updateShipment(@PathVariable("id") UUID id, @RequestBody ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackageDTO updatedShipmentPackageDTO = shipmentPackageService.updateById(id, shipmentPackageDTO);
 
@@ -53,6 +56,7 @@ public class ShipmentPackageController {
     }
 
     @PatchMapping("/shipment-packages/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'shipment-packages', 'update')")
     public ResponseEntity<ShipmentPackageDTO> patchShipment(@PathVariable("id") UUID id, @RequestBody ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackageDTO patchedShipmentPackageDTO = shipmentPackageService.patchById(id, shipmentPackageDTO);
 
@@ -69,6 +73,7 @@ public class ShipmentPackageController {
     }
 
     @PostMapping("/shipment-packages")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'shipment-packages', 'create')")
     public ResponseEntity<ShipmentPackageDTO> postShipment(@RequestBody ShipmentPackageDTO shipmentPackageDTO) {
         ShipmentPackageDTO postedShipmentPackageDTO = shipmentPackageService.create(shipmentPackageDTO);
 
@@ -85,6 +90,7 @@ public class ShipmentPackageController {
     }
 
     @DeleteMapping("/shipment-packages/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'shipment-packages', 'delete')")
     public ResponseEntity<ShipmentPackageDTO> deleteShipment(@PathVariable("id") UUID id) {
         shipmentPackageService.deleteById(id);
 
