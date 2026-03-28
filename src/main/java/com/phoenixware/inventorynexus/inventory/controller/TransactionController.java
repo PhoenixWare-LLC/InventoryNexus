@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping("/transactions/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'transactions', 'read')")
     public ResponseEntity<TransactionDTO> getProductLocation(@PathVariable("id") UUID id) {
         TransactionDTO transactionDTO = transactionService.findById(id);
 
@@ -37,6 +39,7 @@ public class TransactionController {
     }
 
     @PutMapping("/transactions/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'transactions', 'update')")
     public ResponseEntity<TransactionDTO> updateProductLocation(@PathVariable UUID id, @RequestBody TransactionDTO transactionDTO) {
         TransactionDTO updatedTransactionDTO = transactionService.updateById(id, transactionDTO);
 
@@ -53,6 +56,7 @@ public class TransactionController {
     }
 
     @PatchMapping("/transactions/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'transactions', 'update')")
     public ResponseEntity<TransactionDTO> patchProductLocation(@PathVariable UUID id, @RequestBody TransactionDTO transactionDTO) {
         TransactionDTO patchedTransactionDTO = transactionService.patchById(id, transactionDTO);
 
@@ -69,6 +73,7 @@ public class TransactionController {
     }
 
     @PatchMapping("/transactions")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'transactions', 'create')")
     public ResponseEntity<TransactionDTO> postProductLocation(@RequestBody TransactionDTO transactionDTO) {
         TransactionDTO postedTransactionDTO = transactionService.create(transactionDTO);
 
@@ -85,6 +90,7 @@ public class TransactionController {
     }
 
     @DeleteMapping("/transactions/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'transactions', 'delete')")
     public ResponseEntity<TransactionDTO> deleteProductLocation(@PathVariable("id") UUID id) {
         transactionService.deleteById(id);
 
