@@ -24,7 +24,7 @@ services:
     ports:
       - "8200:8200"
     environment:
-      VAULT_DEV_TOKEN: "myroot"
+      VAULT_DEV_TOKEN: ${DEV_TOKEN}
       VAULT_DEV_LISTEN_ADDR: "0.0.0.0:8200"
       VAULT_ADDR: "http://0.0.0.0:8200"
     cap_add:
@@ -35,8 +35,34 @@ services:
     command:
       - server
       - -dev
-      - -dev-root-token-id=myroot
+      - -dev-root-token-id=${DEV_TOKEN}
       - -dev-listen-address=0.0.0.0:8200
+  key-cloak:
+    image: keycloak/keycloak:26.5
+    command: start-dev
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_ADMIN}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KC_ADMIN_PASSWORD}
+
+      KC_DB: postgres
+      KC_DB_URL_HOST: db
+      KC_DB_URL_DATABASE: ${DB_NAME}
+      KC_DB_USERNAME: ${DB_USER}
+      KC_DB_PASSWORD: ${DB_PASSWORD}
+
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8180
+
+      KC_HEALTH_ENABLED: true
+      KC_METRICS_ENABLED: true
+    ports:
+      - "8180:8080"
+    depends_on:
+      - db
+
+
+
+
 
 volumes:
   pgdata:
