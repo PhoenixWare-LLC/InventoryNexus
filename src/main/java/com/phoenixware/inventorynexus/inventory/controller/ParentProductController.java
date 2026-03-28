@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class ParentProductController {
     private final ParentProductService parentProductService;
 
     @GetMapping("/parent-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'parent-products', 'read')")
     public ResponseEntity<ParentProductDTO> getParentProduct(@PathVariable("id") UUID id) {
         ParentProductDTO parentProductDTO = parentProductService.findById(id);
 
@@ -38,6 +40,7 @@ public class ParentProductController {
     }
 
     @PutMapping("/parent-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'parent-products', 'update')")
     public ResponseEntity<ParentProductDTO> putParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO updatedParentProductDTO = parentProductService.updateById(id, parentProductDTO);
 
@@ -54,6 +57,7 @@ public class ParentProductController {
     }
 
     @PatchMapping("/parent-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'parent-products', 'update')")
     public ResponseEntity<ParentProductDTO> patchParentProduct(@PathParam("id") UUID id, @RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO patchedParentProductDTO = parentProductService.patchById(id, parentProductDTO);
 
@@ -70,6 +74,7 @@ public class ParentProductController {
     }
 
     @PostMapping("/parent-products")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'parent-products', 'create')")
     public ResponseEntity<ParentProductDTO> postParentProduct(@RequestBody ParentProductDTO parentProductDTO) {
         ParentProductDTO postedParentProductDto = parentProductService.create(parentProductDTO);
 
@@ -86,6 +91,7 @@ public class ParentProductController {
     }
 
     @DeleteMapping("/parent-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'parent-products', 'delete')")
     public ResponseEntity<ParentProductDTO> deleteParentProduct(@PathVariable("id") UUID id) {
         parentProductService.deleteById(id);
 
