@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,7 @@ public class BinLocationController {
     private final BinLocationService binLocationService;
 
     @GetMapping("/bin-locations/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'bin-locations', 'read')")
     public ResponseEntity<BinLocationDTO> getBinLocation(
             @PathVariable("id")
             UUID id
@@ -45,6 +47,7 @@ public class BinLocationController {
     }
 
     @PutMapping("/bin-locations/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'bin-locations', 'update')")
     public ResponseEntity<BinLocationDTO> putBinLocation(
             @PathParam("id")
             UUID id,
@@ -66,6 +69,7 @@ public class BinLocationController {
     }
 
     @PatchMapping("/bin-locations/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'bin-locations', 'update')")
     public ResponseEntity<BinLocationDTO> patchBinLocation(
             @PathParam("id")
             UUID id,
@@ -86,6 +90,7 @@ public class BinLocationController {
     }
 
     @PostMapping("/bin-locations/")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'bin-locations', 'create')")
     public ResponseEntity<BinLocationDTO> postBinLocation(
             @RequestBody @Validated(Create.class)
             BinLocationDTO binLocationDTO
@@ -105,6 +110,7 @@ public class BinLocationController {
     }
 
     @DeleteMapping("/bin-locations/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'bin-locations', 'delete')")
     public ResponseEntity<BinLocationDTO> deleteBinLocation(
             @PathVariable("id")
             UUID id
