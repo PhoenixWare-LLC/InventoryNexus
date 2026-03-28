@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class MinimalProductController {
     private final MinimalProductService minimalProductService;
 
     @GetMapping("/minimal-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'read')")
     public ResponseEntity<BaseProductDTO> getMinimalProduct(@PathVariable("id") UUID id) {
         BaseProductDTO minimalProduct = minimalProductService.findById(id);
 
@@ -38,6 +40,7 @@ public class MinimalProductController {
     }
 
     @PutMapping("/minimal-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'update')")
     public ResponseEntity<BaseProductDTO> updateMinimalProduct(@PathVariable("id") UUID id, @RequestBody MinimalProductDTO minimalProductDTO) {
         BaseProductDTO updatedMinimalProduct = minimalProductService.updateById(id, minimalProductDTO);
 
@@ -54,6 +57,7 @@ public class MinimalProductController {
     }
 
     @PatchMapping("/minimal-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'update')")
     public ResponseEntity<BaseProductDTO> patchMinimalProduct(@PathVariable("id") UUID id, @RequestBody MinimalProductDTO minimalProductDTO) {
         BaseProductDTO patchedMinimalProduct = minimalProductService.patchById(id, minimalProductDTO);
 
@@ -70,6 +74,7 @@ public class MinimalProductController {
     }
 
     @PostMapping("/minimal-products")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'create')")
     public ResponseEntity<BaseProductDTO> postMinimalProduct(@RequestBody MinimalProductDTO minimalProductDTO) {
         BaseProductDTO postedMinimalProduct = minimalProductService.create(minimalProductDTO);
 
@@ -86,6 +91,7 @@ public class MinimalProductController {
     }
 
     @DeleteMapping("/minimal-products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'delete')")
     public ResponseEntity<BaseProductDTO> deleteMinimalProduct(@PathVariable("id") UUID id) {
         minimalProductService.deleteById(id);
 
