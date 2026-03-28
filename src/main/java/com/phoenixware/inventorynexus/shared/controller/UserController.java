@@ -3,7 +3,7 @@ package com.phoenixware.inventorynexus.shared.controller;
 import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDTO;
 import com.phoenixware.inventorynexus.shared.dto.appuser.AppUserDetailedDTO;
 import com.phoenixware.inventorynexus.shared.service.AppUserService;
-import com.phoenixware.inventorynexus.shared.util.CurrentUserService;
+import com.phoenixware.inventorynexus.shared.service.CurrentUserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;

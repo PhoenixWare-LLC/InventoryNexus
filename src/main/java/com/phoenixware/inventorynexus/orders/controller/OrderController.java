@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -23,6 +24,7 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/orders/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'orders', 'read')")
     public ResponseEntity<OrderDetailedDTO> getOrder(@PathVariable("id") UUID id) {
         OrderDetailedDTO orderDetailedDTO = orderService.findById(id);
         
@@ -39,6 +41,7 @@ public class OrderController {
     }
 
     @PutMapping("/orders/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'orders', 'update')")
     public ResponseEntity<OrderDetailedDTO> updateOrder(@PathVariable("id") UUID id, @RequestBody OrderDetailedDTO orderDetailedDTO) {
         OrderDetailedDTO updatedOrderDetailedDTO = orderService.updateById(id, orderDetailedDTO);
 
@@ -55,6 +58,7 @@ public class OrderController {
     }
 
     @PatchMapping("/orders/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'orders', 'update')")
     public ResponseEntity<OrderDetailedDTO> patchOrder(@PathVariable("id") UUID id, @RequestBody OrderDetailedDTO orderDetailedDTO) {
         OrderDetailedDTO patchedOrderDetailedDTO = orderService.patchById(id, orderDetailedDTO);
 
@@ -71,6 +75,7 @@ public class OrderController {
     }
 
     @PostMapping("/orders")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'orders', 'create')")
     public ResponseEntity<OrderDetailedDTO> postOrder(@RequestBody OrderDetailedDTO orderDetailedDTO) {
         OrderDetailedDTO postedOrderDetailedDTO = orderService.create(orderDetailedDTO);
 
@@ -85,6 +90,7 @@ public class OrderController {
     }
 
     @DeleteMapping("/orders/{order_id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'orders', 'delete')")
     public ResponseEntity<OrderDetailedDTO> deleteById(@PathVariable("order_id") UUID id) {
         orderService.deleteById(id);
 

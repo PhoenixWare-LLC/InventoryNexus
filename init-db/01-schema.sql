@@ -200,10 +200,10 @@ CREATE TABLE public.privilege
     id               UUID        NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
     name             VARCHAR(50) NOT NULL UNIQUE,
     resource_name    VARCHAR(50) NOT NULL,
-    read_privilege   BOOLEAN     NOT NULL DEFAULT false,
-    write_privilege  BOOLEAN     NOT NULL DEFAULT false,
-    update_privilege BOOLEAN     NOT NULL DEFAULT false,
-    delete_privilege BOOLEAN     NOT NULL DEFAULT false,
+    read   BOOLEAN     NOT NULL DEFAULT false,
+    "create"  BOOLEAN     NOT NULL DEFAULT false,
+    update BOOLEAN     NOT NULL DEFAULT false,
+    delete BOOLEAN     NOT NULL DEFAULT false,
     created_at       TIMESTAMP            DEFAULT CURRENT_TIMESTAMP,
     created_by       VARCHAR(50)          DEFAULT CURRENT_USER
 );

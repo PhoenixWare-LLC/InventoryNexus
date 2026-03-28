@@ -206,10 +206,10 @@ VALUES
 INSERT INTO public.privilege (id,
                               name,
                               resource_name,
-                              read_privilege,
-                              write_privilege,
-                              update_privilege,
-                              delete_privilege)
+                              read,
+                              "create",
+                              update,
+                              delete)
 VALUES ('e5a46dec-51f2-4cf7-aafc-9b1e3d5a00f1', 'orders FA', 'orders', true, true, true, true),
        ('5915143b-a5ec-4f10-a830-478a31e73c20', 'orders R/W', 'orders', true, true, true, false),
        ('76063414-b71f-42c1-9c4e-09716d35153d', 'orders R/C', 'orders', true, true, false, false),

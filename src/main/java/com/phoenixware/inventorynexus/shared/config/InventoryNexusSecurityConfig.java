@@ -48,6 +48,7 @@ public class InventoryNexusSecurityConfig {
     private final RequestValidationBeforeFilter requestValidationBeforeFilter;
     private final AuthoritiesLoggingAtFilter authoritiesLoggingAtFilter;
     private final AuthoritiesLoggingAfterFilter authoritiesLoggingAfterFilter;
+    private final JWTTokenValidatorFilter jwtTokenValidatorFilter;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
@@ -121,7 +122,7 @@ public class InventoryNexusSecurityConfig {
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
         http.addFilterBefore(requestValidationBeforeFilter, BasicAuthenticationFilter.class);
-        http.addFilterBefore(new JWTTokenValidatorFilter(), BasicAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class);
         http.addFilterAt(authoritiesLoggingAtFilter, BasicAuthenticationFilter.class);
         http.addFilterAfter(authoritiesLoggingAfterFilter, BasicAuthenticationFilter.class);
         http.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class);
