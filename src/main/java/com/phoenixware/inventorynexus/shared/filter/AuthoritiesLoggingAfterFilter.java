@@ -20,7 +20,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class RequestValidationAfterFilter implements Filter {
+public class AuthoritiesLoggingAfterFilter implements Filter {
 
     private final IpUtils ipUtils;
 

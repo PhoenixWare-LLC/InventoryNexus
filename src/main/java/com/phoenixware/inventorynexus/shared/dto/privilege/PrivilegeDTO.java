@@ -25,8 +25,8 @@ public class PrivilegeDTO {
     private Set<AppUser> appUsers;
     private String name;
     private String resourceName;
-    private boolean readPrivilege = false;
-    private boolean writePrivilege = false;
-    private boolean updatePrivilege = false;
-    private boolean deletePrivilege = false;
+    private Boolean readPrivilege = false;
+    private Boolean writePrivilege = false;
+    private Boolean updatePrivilege = false;
+    private Boolean deletePrivilege = false;
 }

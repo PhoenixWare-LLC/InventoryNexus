@@ -1,4 +1,4 @@
-package com.phoenixware.inventorynexus.shared.util;
+package com.phoenixware.inventorynexus.shared.service;
 
 import com.phoenixware.inventorynexus.shared.config.AppUserDetails;
 import com.phoenixware.inventorynexus.shared.entity.AppUser;

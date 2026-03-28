@@ -1,10 +1,7 @@
 package com.phoenixware.inventorynexus.shared.config;
 
 import com.phoenixware.inventorynexus.shared.exception.auth.CustomBasicAuthenticationEntryPoint;
-import com.phoenixware.inventorynexus.shared.filter.AuthoritiesLoggingAtFilter;
-import com.phoenixware.inventorynexus.shared.filter.CsrfCookieFilter;
-import com.phoenixware.inventorynexus.shared.filter.RequestValidationAfterFilter;
-import com.phoenixware.inventorynexus.shared.filter.RequestValidationBeforeFilter;
+import com.phoenixware.inventorynexus.shared.filter.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,6 +28,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -48,7 +46,8 @@ public class InventoryNexusProdSecurityConfig {
 
     private final RequestValidationBeforeFilter requestValidationBeforeFilter;
     private final AuthoritiesLoggingAtFilter authoritiesLoggingAtFilter;
-    private final RequestValidationAfterFilter requestValidationAfterFilter;
+    private final AuthoritiesLoggingAfterFilter authoritiesLoggingAfterFilter;
+    private final JWTTokenValidatorFilter jwtTokenValidatorFilter;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
@@ -100,13 +99,12 @@ public class InventoryNexusProdSecurityConfig {
                     corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                     corsConfiguration.setAllowCredentials(true);
                     corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+                    corsConfiguration.setExposedHeaders(Arrays.asList("Authorization"));
                     corsConfiguration.setMaxAge(3600L);
                     return corsConfiguration;
                 }
             });
         });
-
-        // TODO: add feature in here for session timeout based on endpoints/role
 
         // Documentation states that for any Javascript or Typescript UI applications, .withHttpOnlyFalse must be called, as the frontend UI would not be able to see the token.
         http.csrf(csrf ->
@@ -122,12 +120,14 @@ public class InventoryNexusProdSecurityConfig {
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
         http.addFilterBefore(requestValidationBeforeFilter, BasicAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class);
         http.addFilterAt(authoritiesLoggingAtFilter, BasicAuthenticationFilter.class);
-        http.addFilterAfter(requestValidationAfterFilter, BasicAuthenticationFilter.class);
+        http.addFilterAfter(authoritiesLoggingAfterFilter, BasicAuthenticationFilter.class);
+        http.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class);
 
 
         http.sessionManagement(smc -> smc.
-                sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .sessionFixation().changeSessionId()                                         // mitigate session fixation attacks
                 .maximumSessions(2).maxSessionsPreventsLogin(true)// set max sessions to 2
         );

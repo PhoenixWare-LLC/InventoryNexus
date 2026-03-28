@@ -40,7 +40,7 @@ public class AssetController {
         ResponseEntity<AssetWithDataDTO> responseEntity = new ResponseEntity<>(
                 assetWithDataDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

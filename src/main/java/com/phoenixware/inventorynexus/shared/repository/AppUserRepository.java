@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 @Repository
 public interface AppUserRepository extends JpaRepository<AppUser, UUID> {
-    @EntityGraph(attributePaths = {"userRoles", "userPrivileges"})
+    @EntityGraph(attributePaths = {"userRoles", "userPrivileges", "userRoles.rolePrivileges"})
     Optional<AppUser> findByUsername(String username);
     Optional<AppUser> findByEmail(String email);
 }

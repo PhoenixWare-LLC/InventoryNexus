@@ -30,7 +30,7 @@ public class ProductLocationController {
         ResponseEntity<ProductLocationDTO> responseEntity = new ResponseEntity<>(
                 productLocationDTO,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

@@ -3,8 +3,8 @@ plugins {
     id("org.springframework.boot") version "4.0.0"
     id("io.spring.dependency-management") version "1.1.7"
 }
-val springCloudVersion by extra("2025.1.0")
-
+val springCloudVersion = "2025.1.0"
+val jwtWebVersion =  "0.12.5"
 group = "com.phoenixware.InventoryNexus"
 version = "0.1.1"
 description = "InventoryNexus"
@@ -31,6 +31,10 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.projectlombok:lombok")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    //adding jwt support
+    implementation("io.jsonwebtoken:jjwt-api:${jwtWebVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-impl:${jwtWebVersion}")
+    runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jwtWebVersion}")
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-client")
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
 //    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")

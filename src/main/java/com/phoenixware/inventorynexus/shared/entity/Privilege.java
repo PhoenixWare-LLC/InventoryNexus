@@ -40,15 +40,15 @@ public class Privilege {
     @Column(name = "resource_name", nullable = false, length = 50)
     private String resourceName;
 
-    @Column(name = "read_privilege", nullable = false)
-    private boolean readPrivilege = false;
+    @Column(name = "read", nullable = false)
+    private Boolean read = false;
 
-    @Column(name = "write_privilege", nullable = false)
-    private boolean writePrivilege = false;
+    @Column(name = "create", nullable = false)
+    private Boolean create = false;
 
-    @Column(name = "update_privilege", nullable = false)
-    private boolean updatePrivilege = false;
+    @Column(name = "update", nullable = false)
+    private Boolean update = false;
 
-    @Column(name = "delete_privilege", nullable = false)
-    private boolean deletePrivilege = false;
+    @Column(name = "delete", nullable = false)
+    private Boolean delete = false;
 }

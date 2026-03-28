@@ -31,7 +31,7 @@ public class MinimalProductController {
         ResponseEntity<BaseProductDTO> responseEntity = new ResponseEntity<>(
                 minimalProduct,
                 httpHeaders,
-                HttpStatus.FOUND
+                HttpStatus.OK
         );
 
         return responseEntity;

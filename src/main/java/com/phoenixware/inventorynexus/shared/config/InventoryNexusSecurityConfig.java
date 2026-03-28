@@ -2,10 +2,7 @@ package com.phoenixware.inventorynexus.shared.config;
 
 import com.phoenixware.inventorynexus.shared.exception.auth.CustomAccessDeniedHandler;
 import com.phoenixware.inventorynexus.shared.exception.auth.CustomBasicAuthenticationEntryPoint;
-import com.phoenixware.inventorynexus.shared.filter.AuthoritiesLoggingAtFilter;
-import com.phoenixware.inventorynexus.shared.filter.CsrfCookieFilter;
-import com.phoenixware.inventorynexus.shared.filter.RequestValidationAfterFilter;
-import com.phoenixware.inventorynexus.shared.filter.RequestValidationBeforeFilter;
+import com.phoenixware.inventorynexus.shared.filter.*;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +29,7 @@ import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.UUID;
 
@@ -49,7 +47,8 @@ public class InventoryNexusSecurityConfig {
 
     private final RequestValidationBeforeFilter requestValidationBeforeFilter;
     private final AuthoritiesLoggingAtFilter authoritiesLoggingAtFilter;
-    private final RequestValidationAfterFilter requestValidationAfterFilter;
+    private final AuthoritiesLoggingAfterFilter authoritiesLoggingAfterFilter;
+    private final JWTTokenValidatorFilter jwtTokenValidatorFilter;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
@@ -102,6 +101,7 @@ public class InventoryNexusSecurityConfig {
                     corsConfiguration.setAllowedMethods(Collections.singletonList("*"));
                     corsConfiguration.setAllowCredentials(true);
                     corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+                    corsConfiguration.setExposedHeaders(Arrays.asList("Authorization"));
                     corsConfiguration.setMaxAge(3600L);
                     return corsConfiguration;
                 }
@@ -122,18 +122,14 @@ public class InventoryNexusSecurityConfig {
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
         http.addFilterBefore(requestValidationBeforeFilter, BasicAuthenticationFilter.class);
+        http.addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class);
         http.addFilterAt(authoritiesLoggingAtFilter, BasicAuthenticationFilter.class);
-        http.addFilterAfter(requestValidationAfterFilter, BasicAuthenticationFilter.class);
-
-        // TODO: add feature in here for session timeout based on endpoints/role
+        http.addFilterAfter(authoritiesLoggingAfterFilter, BasicAuthenticationFilter.class);
+        http.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class);
 
         http.sessionManagement(smc -> smc.
-                sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .sessionFixation().changeSessionId()                                         // mitigate session fixation attacks
-                .maximumSessions(2).maxSessionsPreventsLogin(true)// set max sessions to 2
+                sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
-
-        http.securityContext(contextConfig -> contextConfig.requireExplicitSave(false));
 
 
         // to disable form login (API only)
