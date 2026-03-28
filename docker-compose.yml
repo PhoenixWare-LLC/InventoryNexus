@@ -1,7 +1,7 @@
 services:
   db:
     image: postgres:16
-    container_name: my-dev-postgres
+    container_name: InventoryNexus-Postgres
     restart: unless-stopped
     ports:
       - "5432:5432"
@@ -38,7 +38,8 @@ services:
       - -dev-root-token-id=${DEV_TOKEN}
       - -dev-listen-address=0.0.0.0:8200
   key-cloak:
-    image: keycloak/keycloak:26.5
+    image: quay.io/keycloak/keycloak:26.5
+    container_name: InventoryNexus-KeyCloak
     command: start-dev
     environment:
       KC_BOOTSTRAP_ADMIN_USERNAME: ${KC_ADMIN}
