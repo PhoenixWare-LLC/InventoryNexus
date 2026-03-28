@@ -1,28 +1,19 @@
 package com.phoenixware.inventorynexus.shared.config;
 
 import com.phoenixware.inventorynexus.shared.exception.auth.CustomAccessDeniedHandler;
-import com.phoenixware.inventorynexus.shared.exception.auth.CustomBasicAuthenticationEntryPoint;
-import com.phoenixware.inventorynexus.shared.filter.*;
+import com.phoenixware.inventorynexus.shared.filter.CsrfCookieFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
-import org.springframework.security.authentication.password.CompromisedPasswordChecker;
-import org.springframework.security.authorization.AuthorizationDecision;
-import org.springframework.security.authorization.AuthorizationManager;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.intercept.RequestAuthorizationContext;
-import org.springframework.security.web.authentication.password.HaveIBeenPwnedRestApiPasswordChecker;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.security.web.csrf.CsrfTokenRequestAttributeHandler;
@@ -31,7 +22,6 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.UUID;
 
 /**
  * Author:      Collin Short
@@ -45,13 +35,19 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class InventoryNexusSecurityConfig {
 
-    private final RequestValidationBeforeFilter requestValidationBeforeFilter;
-    private final AuthoritiesLoggingAtFilter authoritiesLoggingAtFilter;
-    private final AuthoritiesLoggingAfterFilter authoritiesLoggingAfterFilter;
-    private final JWTTokenValidatorFilter jwtTokenValidatorFilter;
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.introspection-uri}")
+    private String introspectionUri;
+
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-id}")
+    private String clientId;
+
+    @Value("${spring.security.oauth2.resourceserver.opaquetoken.client-secret}")
+    private String clientSecret;
 
     @Bean
     SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) {
+//        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+//        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new KeycloakRoleConverter());
 
         CsrfTokenRequestAttributeHandler csrfTokenRequestAttributeHandler = new CsrfTokenRequestAttributeHandler();
 
@@ -86,7 +82,7 @@ public class InventoryNexusSecurityConfig {
 
                 // user self management. or admin user administration
                 .requestMatchers("/users", "/users/**")
-                .access(userSelfAccessOrAdmin())
+                .hasAuthority("admin")
 
                 // everything else requires authentication (default deny)
                 .anyRequest().authenticated());
@@ -121,27 +117,22 @@ public class InventoryNexusSecurityConfig {
                                 "/error", "/error/**"));
 
         http.addFilterAfter(new CsrfCookieFilter(), BasicAuthenticationFilter.class);
-        http.addFilterBefore(requestValidationBeforeFilter, BasicAuthenticationFilter.class);
-        http.addFilterBefore(jwtTokenValidatorFilter, BasicAuthenticationFilter.class);
-        http.addFilterAt(authoritiesLoggingAtFilter, BasicAuthenticationFilter.class);
-        http.addFilterAfter(authoritiesLoggingAfterFilter, BasicAuthenticationFilter.class);
-        http.addFilterAfter(new JWTTokenGeneratorFilter(), BasicAuthenticationFilter.class);
 
         http.sessionManagement(smc -> smc.
                 sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         );
 
 
-        // to disable form login (API only)
-        //http.formLogin(flc -> flc.disable());
-        http.formLogin(Customizer.withDefaults());
+        //again, this works, and saves network bandwidth. However, makes key rotation more painful.
+//        http.oauth2ResourceServer(rsc -> rsc
+//                .jwt(jwtConfigurer -> jwtConfigurer
+//                        .jwtAuthenticationConverter(jwtAuthenticationConverter)));
 
-        // To disable http basic (very basic API authentication)
-        // Disable below as I am going to implement OAuth2.0
-//        // http.httpBasic(hbc -> hbc.disable());
-        http.httpBasic(hbc -> hbc
-                .authenticationEntryPoint(new CustomBasicAuthenticationEntryPoint())
-        );
+        http.oauth2ResourceServer(rsc -> rsc.
+                opaqueToken(otc -> otc.
+                        authenticationConverter(new KeycloakOpaqueRoleConverter())
+                        .introspectionUri(this.introspectionUri)
+                        .introspectionClientCredentials(this.clientId, this.clientSecret)));
 
         http.exceptionHandling(ehc -> ehc.
                 accessDeniedHandler(new CustomAccessDeniedHandler())
@@ -149,45 +140,6 @@ public class InventoryNexusSecurityConfig {
 
 
         return http.build();
-    }
-
-
-    private AuthorizationManager<RequestAuthorizationContext> userSelfAccessOrAdmin() {
-        return (auth, context) -> {
-
-            Authentication authentication = auth.get();
-            Object principal = authentication.getPrincipal();
-
-            if (!(principal instanceof AppUserDetails appUserDetails)) {
-                return new AuthorizationDecision(false);
-            }
-            String path = context.getRequest().getRequestURI();
-            String pathUserId = path.substring(path.lastIndexOf("/") + 1);
-
-            String httpMethod = context.getRequest().getMethod();
-
-            boolean isAdmin = appUserDetails.getAppUser().isAdmin();
-            if (!isAdmin) {
-                isAdmin = appUserDetails.getAppUser().isAdmin();
-            }
-
-            UUID currentUserId = appUserDetails.getAppUser().getId();
-
-
-            return new AuthorizationDecision(isAdmin || (currentUserId.toString().equals(pathUserId) && !httpMethod.equals("DELETE")));
-
-
-        };
-    }
-
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return PasswordEncoderFactories.createDelegatingPasswordEncoder();
-    }
-
-    @Bean
-    CompromisedPasswordChecker compromisedPasswordChecker() {
-        return new HaveIBeenPwnedRestApiPasswordChecker();
     }
 
 }

@@ -1,6 +1,5 @@
 package com.phoenixware.inventorynexus.shared.components;
 
-import com.phoenixware.inventorynexus.shared.config.AppUserDetails;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
@@ -13,11 +12,7 @@ import org.springframework.stereotype.Component;
 public class MethodAuthorizationComponent {
 
     public boolean hasPrivilege(Authentication authentication, String resource, String action) {
-        Object principal = authentication.getPrincipal();
-
-        if (principal instanceof AppUserDetails appUser) {
-            return appUser.hasPrivilege(resource, action);
-        }
+        //TODO: re-implement with new keycloak authorization server
         return false;
     }
 }

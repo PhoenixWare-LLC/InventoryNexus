@@ -5,6 +5,14 @@ spring.datasource.password=${DATABASE_PASSWORD:yourEquallyAwesomePassword}
 
 spring.security.user.name=${SECURITY_USERNAME:admin}
 spring.security.user.password=${SECURITY_PASSWORD:devFinch}
+#
+#User info.... KeyCloak
+#
+# Below saves on network bandwidth, however if a key gets compromised, this makes rotating keys more difficult.
+#spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${JWK_SET_URI:http://localhost:8080/realms/InventoryNexus/protocol/openid-connect/certs}
+spring.security.oauth2.resourceserver.opaquetoken.introspection-uri=${INTROSPECT_URI:http://localhost:8080/realms/InventoryNexus/protocol/openid-connect/token/introspect}
+spring.security.oauth2.resourceserver.opaquetoken.client-id=${INTROSPECT_ID:whateveryouthinkisbest}
+spring.security.oauth2.resourceserver.opaquetoken.client-secret=${INTROSPECT_SECRET:somecoolkey}
 
 #
 # Hashicorp Vault

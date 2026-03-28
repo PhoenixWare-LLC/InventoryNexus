@@ -1,6 +1,5 @@
 package com.phoenixware.inventorynexus.shared.events;
 
-import com.phoenixware.inventorynexus.shared.service.LoginAttemptService;
 import com.phoenixware.inventorynexus.shared.util.IpUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 @Slf4j
 @RequiredArgsConstructor
 public class AuthenticationEvents {
-    private final LoginAttemptService loginAttemptService;
     private final IpUtils ipUtils;
 
 
@@ -30,8 +28,7 @@ public class AuthenticationEvents {
         String username = authenticationSuccessEvent.getAuthentication().getName();
         String ip = ipUtils.getClientIP(getCurrentRequest());
 
-        loginAttemptService.reset(ip, username);
-        log.info("Login successful for the user : {}", authenticationSuccessEvent.getAuthentication().getName());
+        log.info("Login successful for the user : {} with the IP {}", authenticationSuccessEvent.getAuthentication().getName(), ip);
     }
 
     @EventListener
@@ -39,7 +36,6 @@ public class AuthenticationEvents {
         String username = authenticationFailureBadCredentialsEvent.getAuthentication().getName();
         String ip = ipUtils.getClientIP(getCurrentRequest());
 
-        loginAttemptService.recordFailedAttempt(ip, username);
         log.error("Login failed for the user : {} with ip : {} due to : {}",
                 username,
                 ip,

@@ -36,7 +36,8 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:${jwtWebVersion}")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:${jwtWebVersion}")
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-client")
-//    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
+
+    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
 //    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 
 

@@ -11,7 +11,6 @@ import com.phoenixware.inventorynexus.shared.repository.AppUserRepository;
 import com.phoenixware.inventorynexus.shared.repository.PrivilegeRepository;
 import com.phoenixware.inventorynexus.shared.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +30,6 @@ public class AppUserServiceImpl implements AppUserService {
     private final AppUserMapper appUserMapper;
     private final RoleRepository roleRepository;
     private final PrivilegeRepository privilegeRepository;
-    private final PasswordEncoder passwordEncoder;
 
     /**
      * @param appUserDetailedDTO
@@ -54,9 +52,7 @@ public class AppUserServiceImpl implements AppUserService {
 
         // Hash that password
         appUserDetailedDTO.setPassword(
-                passwordEncoder.encode(
                         appUserDetailedDTO.getPassword()
-                )
         );
 
         return appUserMapper.appUserToAppUserDto(
@@ -89,7 +85,7 @@ public class AppUserServiceImpl implements AppUserService {
 
         // make sure we don't mistakenly get rid of the password
         if (!appUserDetailedDTO.getPassword().isEmpty()) {
-            appUserDetailedDTO.setPassword(passwordEncoder.encode(appUserDetailedDTO.getPassword()));
+            appUserDetailedDTO.setPassword(appUserDetailedDTO.getPassword());
         } else {
             appUserDetailedDTO.setPassword(existingAppUser.getPassword());
         }
@@ -127,7 +123,7 @@ public class AppUserServiceImpl implements AppUserService {
         }
 
         if (!appUserDetailedDTO.getPassword().isEmpty()) {
-            appUserDetailedDTO.setPassword(passwordEncoder.encode(appUserDetailedDTO.getPassword()));
+            appUserDetailedDTO.setPassword(appUserDetailedDTO.getPassword());
         }
 
         AppUser patchedAppUser = appUserMapper.patchAppUserFromAppUserDetailedDto(appUserDetailedDTO, existingAppUser);
