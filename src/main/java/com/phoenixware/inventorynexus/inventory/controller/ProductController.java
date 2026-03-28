@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -22,6 +23,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'read')")
     public ResponseEntity<BaseProductDTO> getProduct(@PathVariable("id") UUID id) {
         BaseProductDTO baseProductDTO = productService.findById(id);
 
@@ -38,6 +40,7 @@ public class ProductController {
     }
 
     @PutMapping("/products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'update')")
     public ResponseEntity<BaseProductDTO> updateProduct(@PathVariable UUID id, @RequestBody ProductDTO productDTO) {
         BaseProductDTO updatedBaseProductDTO = productService.updateById(id, productDTO);
 
@@ -54,6 +57,7 @@ public class ProductController {
     }
 
     @PatchMapping("/products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'update')")
     public ResponseEntity<BaseProductDTO> patchProduct(@PathVariable UUID id, @RequestBody ProductDTO productDTO) {
         BaseProductDTO patchedBaseProductDTO = productService.patchById(id, productDTO);
 
@@ -70,6 +74,7 @@ public class ProductController {
     }
 
     @PatchMapping("/products")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'create')")
     public ResponseEntity<BaseProductDTO> postProduct(@RequestBody ProductDTO productDTO) {
         BaseProductDTO postedBaseProduct = productService.create(productDTO);
 
@@ -86,6 +91,7 @@ public class ProductController {
     }
 
     @DeleteMapping("/products/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'products', 'delete')")
     public ResponseEntity<BaseProductDTO> deleteProduct(@PathVariable("id") UUID id) {
         productService.deleteById(id);
 
