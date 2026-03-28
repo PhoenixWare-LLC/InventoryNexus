@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
@@ -21,6 +22,7 @@ public class ContractorController {
     private final ContractorService contractorService;
 
     @GetMapping("/contractors/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'contractors', 'read')")
     public ResponseEntity<ContractorDTO> getShipment(@PathVariable("id") UUID id) {
         ContractorDTO contractorDTO = contractorService.findById(id);
 
@@ -37,6 +39,7 @@ public class ContractorController {
     }
 
     @PutMapping("/contractors/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'contractors', 'update')")
     public ResponseEntity<ContractorDTO> updateShipment(@PathVariable("id") UUID id, @RequestBody ContractorDTO contractorDTO) {
         ContractorDTO updatedContractorDTO = contractorService.updateById(id, contractorDTO);
 
@@ -53,6 +56,7 @@ public class ContractorController {
     }
 
     @PatchMapping("/contractors/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'contractors', 'update')")
     public ResponseEntity<ContractorDTO> patchShipment(@PathVariable("id") UUID id, @RequestBody ContractorDTO contractorDTO) {
         ContractorDTO patchedContractorDTO = contractorService.patchById(id, contractorDTO);
 
@@ -69,6 +73,7 @@ public class ContractorController {
     }
 
     @PostMapping("/contractors")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'contractors', 'create')")
     public ResponseEntity<ContractorDTO> postShipment(@RequestBody ContractorDTO contractorDTO) {
         ContractorDTO postedContractorDTO = contractorService.create(contractorDTO);
 
@@ -85,6 +90,7 @@ public class ContractorController {
     }
 
     @DeleteMapping("/contractors/{id}")
+    @PreAuthorize("@method_authorization.hasPrivilege(authentication, 'contractors', 'delete')")
     public ResponseEntity<ContractorDTO> deleteShipment(@PathVariable("id") UUID id) {
         contractorService.deleteById(id);
 
