@@ -24,7 +24,7 @@ To provide a stateless, high-performance API that synchronizes products and orde
 - **NIST 800-53 Ready:** Architecture supports Access Control, Audit & Accountability, and System & Communications Protection controls.
 
 ##  Roadmap
-- [ ] **Phase 1:** Basic Schema with Authentication including MFA, OAuth2.0, IdP integration (KeyCloak), Session Management, RBAC, ABAC
+- [x] **Phase 1:** Basic Schema with Authentication including MFA, OAuth2.0, IdP integration (KeyCloak), Session Management, RBAC, ABAC
 - [ ] **Phase 2:** Complete Schema mapping with API calls and Business Logic
 - [ ] **Phase 3:** Order/Product Pulling (Amazon/Shopify Read-only)
 - [ ] **Phase 4:** Inventory Synchronization & Nexus Dashboard

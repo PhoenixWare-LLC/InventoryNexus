@@ -26,17 +26,37 @@ services:
     environment:
       VAULT_DEV_TOKEN: ${DEV_TOKEN}
       VAULT_DEV_LISTEN_ADDR: "0.0.0.0:8200"
-      VAULT_ADDR: "http://0.0.0.0:8200"
+      VAULT_ADDR: "http://127.0.0.1:8200"
     cap_add:
       - IPC_LOCK
     volumes:
       - vaultdata:/vault/file
-    entrypoint: "/usr/local/bin/docker-entrypoint.sh"
+    entrypoint: ["/usr/local/bin/docker-entrypoint.sh"]
     command:
       - server
       - -dev
       - -dev-root-token-id=${DEV_TOKEN}
       - -dev-listen-address=0.0.0.0:8200
+    healthcheck:
+      test: ["CMD", "sh", "-c", "vault status -address=http://127.0.0.1:8200 2>&1 | grep -q 'Initialized.*true'"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+  vault-init:
+    image: hashicorp/vault:1.21.3
+    container_name: InventoryNexus-Vault-Init
+    restart: "no"
+    environment:
+      VAULT_ADDR: "http://vault:8200"
+      VAULT_TOKEN: ${DEV_TOKEN}
+    env_file: .env
+    volumes:
+      - ./init-vault/00-init-secrets.sh:/vaultdata/scripts/00-init-secrets.sh
+    entrypoint: ["/bin/sh", "/vaultdata/scripts/00-init-secrets.sh"]
+    depends_on:
+      vault:
+          condition: service_healthy
   key-cloak:
     image: quay.io/keycloak/keycloak:26.5
     container_name: InventoryNexus-KeyCloak
@@ -62,9 +82,11 @@ services:
     ports:
       - "8180:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     volumes:
       - ./keycloak-export:/opt/keycloak/data/import
+
 
 
 

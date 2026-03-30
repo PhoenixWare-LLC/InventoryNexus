@@ -1,38 +1,25 @@
 spring.config.activate.on-profile=dev
-spring.datasource.url=${DATABASE_URL:jdbc:postgresql://localhost:5432/yourAwesomeDatabase}
-spring.datasource.username=${DATABASE_USERNAME:yourAwesomeUsername}
-spring.datasource.password=${DATABASE_PASSWORD:yourEquallyAwesomePassword}
+spring.datasource.url=${dbUrl}
+spring.datasource.username=${dbUsername}
+spring.datasource.password=${dbPassword}
 
-spring.security.user.name=${SECURITY_USERNAME:admin}
-spring.security.user.password=${SECURITY_PASSWORD:devFinch}
 #
 #User info.... KeyCloak
 #
-# Below saves on network bandwidth, however if a key gets compromised, this makes rotating keys more difficult.
-#spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${JWK_SET_URI:http://localhost:8080/realms/InventoryNexus/protocol/openid-connect/certs}
-spring.security.oauth2.resourceserver.opaquetoken.introspection-uri=${INTROSPECT_URI:http://localhost:8080/realms/InventoryNexus/protocol/openid-connect/token/introspect}
-spring.security.oauth2.resourceserver.opaquetoken.client-id=${INTROSPECT_ID:whateveryouthinkisbest}
-spring.security.oauth2.resourceserver.opaquetoken.client-secret=${INTROSPECT_SECRET:somecoolkey}
+#Below saves on network bandwidth, however if a key gets compromised, this makes rotating keys more difficult.
+#spring.security.oauth2.resourceserver.jwt.jwk-set-uri=${jwk-uri}
+spring.security.oauth2.resourceserver.opaquetoken.introspection-uri=${introspectionUri}
+spring.security.oauth2.resourceserver.opaquetoken.client-id=${clientId}
+spring.security.oauth2.resourceserver.opaquetoken.client-secret=${clientSecret}
 
 #
-# Hashicorp Vault
+#bootstrap our vault
 #
-spring.cloud.vault.host=localhost
-spring.cloud.vault.port=8200
-spring.cloud.vault.schem=http
-
-spring.cloud.vault.authentication=TOKEN
-spring.cloud.vault.token=myroot
-
-spring.cloud.vault.fail-fast=false
-spring.config.import=optional:vault://
-
-spring.cloud.vault.kv.enabled=true
-spring.cloud.vault.kv.backend=secret
-spring.cloud.vault.kv.default-context=application
-
-logging.level.org.springframework.cloud.vault=WARN
-logging.level.org.springframework.vault=WARN
+spring.cloud.vault.uri=http://localhost:8200
+spring.cloud.vault.token=${VAULT_TOKEN}
+spring.config.import=vault://secret/inventory-nexus/db,vault://secret/inventory-nexus/keycloak
+logging.level.org.springframework.cloud.vault=DEBUG
+logging.level.org.springframework.boot.context.config=DEBUG
 
 #
 # Port

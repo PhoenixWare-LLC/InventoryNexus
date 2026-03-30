@@ -38,7 +38,7 @@ dependencies {
 //    implementation("org.springframework.boot:spring-boot-starter-security-oauth2-client")
 
     implementation("org.springframework.boot:spring-boot-starter-security-oauth2-resource-server")
-//    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
+    implementation("org.springframework.cloud:spring-cloud-starter-vault-config")
 
 
     // PostgresSQL driver

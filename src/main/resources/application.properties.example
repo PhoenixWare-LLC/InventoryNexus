@@ -1,6 +1,13 @@
 spring.application.name=${SPRING_APP_NAME:inventorynexus}
 
 #
+#bootstrap our vault
+#
+spring.cloud.vault.kv.enabled=true
+spring.cloud.vault.kv.backend=secret
+spring.cloud.vault.fail-fast=true
+
+#
 # expose the /info endpoint and /health endpoint
 #
 management.endpoints.web.exposure.include=health, info
@@ -15,15 +22,15 @@ management.endpoints.web.exposure.exclude=beans
 #app information
 #
 info.app.name=${APP_NAME:InventoryNexus}
-info.app.version=${APP_VERSION:0.1.1}
+info.app.version=${APP_VERSION:0.3.0}
 info.app.description=${APP_DESCRIPTION:The backend to the shopify integration application that performs business logic, performs API calls to Shopify and stores the data in a database.}
 
 #
 # app config
 #
 logging.level.org.springframework.security=${SPRING_SECURITY_LOG_LEVEL:TRACE}
-spring.
-
+spring.servlet.multipart.max-file-size=50MB
+spring.servlet.multipart.max-request-size=55MB
 
 #
 # springdoc settings (hopefully they'll fix this in the future)
